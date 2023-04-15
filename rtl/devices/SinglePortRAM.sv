@@ -43,5 +43,6 @@ module SinglePortRAM #(
     end
 
     assign bus.ready = bus.wstrobe == 0 ? ready_reg : bus.valid;
+    assign bus.irq   = 0;
 
 endmodule
