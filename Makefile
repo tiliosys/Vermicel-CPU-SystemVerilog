@@ -21,6 +21,7 @@ TESTS=\
 	ArithLogicUnit_tb \
 	Comparator_tb \
 	RegisterUnit_tb \
+	Virgule_tb
 
 RTL_SRC=$(addprefix rtl/,$(addsuffix .sv,$(RTL)))
 TESTS_SRC=$(addprefix tests/,$(addsuffix .sv,$(TESTS)))

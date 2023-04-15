@@ -36,7 +36,7 @@ module Comparator_tb;
     endtask
 
     initial begin
-        $display("[TEST] comparator_tb");
+        $display("[TEST] Comparator_tb");
         check("BEQ",  funct3_beq,   10,  20, 0);
         check("BEQ",  funct3_beq,   10,  10, 1);
         check("BEQ",  funct3_beq,  -10, -20, 0);
@@ -69,7 +69,7 @@ module Comparator_tb;
         check("BGEU", funct3_bgeu,  10,  10, 1);
         check("BGEU", funct3_bgeu, -10, -10, 1);
         check("BGEU", funct3_bgeu, -10, -20, 1);
-        $display("[DONE] comparator_tb");
+        $display("[DONE] Comparator_tb");
     end
 endmodule
 

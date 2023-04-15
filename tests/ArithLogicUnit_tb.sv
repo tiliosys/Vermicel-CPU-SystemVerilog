@@ -35,7 +35,7 @@ module ArithLogicUnit_tb;
     endtask
 
     initial begin
-        $display("[TEST] arith_logic_unit_tb");
+        $display("[TEST] ArithLogicUnit_tb");
         check("NOP",  alu_nop,         10,     20,         20);
         check("ADD",  alu_add,         10,     20,         30);
         check("ADD",  alu_add,        -10,    -20,        -30);
@@ -61,7 +61,7 @@ module ArithLogicUnit_tb;
         check("SRA",  alu_sra, 'hF0005432,     12, 'hFFFF0005);
         check("SRL",  alu_srl,    'h12345,     12,       'h12);
         check("SRL",  alu_srl, 'hF0005432,     12, 'h000F0005);
-        $display("[DONE] arith_logic_unit_tb");
+        $display("[DONE] ArithLogicUnit_tb");
     end
 endmodule
 

@@ -53,7 +53,7 @@ module Decoder_tb;
     endtask
 
     initial begin
-        $display("[TEST] decoder_tb");
+        $display("[TEST] Decoder_tb");
         //                                                           rd  rs1 rs2 imm         funct3          alu_fn    use_pc use_imm has_rd is_load is_store is_jump is_branch is_mret
         // Test rd, rs1, rs2 for R-type instruction.
         check("ADD x0,  x0,  x0",       asm_add(0,  0,  0),        '{0,  0,  0,  0,          funct3_add_sub, alu_add,  0,     0,      0,     0,      0,       0,      0,        0}, ignore_imm);
@@ -152,6 +152,6 @@ module Decoder_tb;
         check("AND x0, x5, 10",         asm_and(0, 5, 10),         '{0,  0,  0, 0,           funct3_and,     alu_and,  0,     0,      0,     0,      0,       0,      0,        0}, ignore_rd|ignore_rs1|ignore_rs2|ignore_imm);
         check("AND x31, x5, 10",        asm_and(31, 5, 10),        '{0,  0,  0, 0,           funct3_and,     alu_and,  0,     0,      1,     0,      0,       0,      0,        0}, ignore_rd|ignore_rs1|ignore_rs2|ignore_imm);
         //                                                           rd  rs1 rs2 imm         funct3          alu_fn    use_pc use_imm has_rd is_load is_store is_jump is_branch is_mret
-        $display("[DONE] decoder_tb");
+        $display("[DONE] Decoder_tb");
     end
 endmodule

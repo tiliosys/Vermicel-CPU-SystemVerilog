@@ -70,7 +70,7 @@ module RegisterUnit_tb;
     always #1 regs_clk = ~regs_clk;
 
     initial begin
-        $display("[TEST] register_unit_tb");
+        $display("[TEST] RegisterUnit_tb");
 
         regs_enable = 0;
         regs_reset  = 1;
@@ -85,7 +85,7 @@ module RegisterUnit_tb;
             check_read(n, n + 1);
         end
 
-        $display("[DONE] register_unit_tb");
+        $display("[DONE] RegisterUnit_tb");
         $finish;
     end
 endmodule
