@@ -17,7 +17,7 @@ module load_store_unit (
     output word_t        wdata
 );
 
-    bit[3:0] size;
+    bit[2:0] size;
 
     always_comb begin
         case (instr.funct3)

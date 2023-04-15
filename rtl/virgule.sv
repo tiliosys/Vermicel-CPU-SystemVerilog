@@ -61,9 +61,9 @@ module virgule (
     );
 
     instruction_t instr_reg;
-    register_index_t xd;
-    register_index_t xs1;
-    register_index_t xs2;
+    word_t        xd;
+    word_t        xs1;
+    word_t        xs2;
 
     register_unit #(
         .size(register_unit_size)
@@ -135,6 +135,7 @@ module virgule (
     );
 
     word_t pc_incr_reg;
+    word_t alu_r_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin
