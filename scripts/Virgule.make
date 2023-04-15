@@ -1,4 +1,8 @@
 
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 # Variables:
 #   C_DEPS: C source files to link with the main program
 #	C_FLAGS_USER: additional options for the compiler or the assembler
