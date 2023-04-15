@@ -5,9 +5,7 @@
 
 `default_nettype none
 
-module Virgule (
-    Bus.m bus
-);
+module Virgule (Bus.m bus);
 
     import Types_pkg::*;
     import Opcodes_pkg::*;

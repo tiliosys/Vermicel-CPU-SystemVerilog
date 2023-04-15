@@ -8,31 +8,26 @@
 module SinglePortRAM #(
     parameter int unsigned SIZE,
     parameter string INIT_FILENAME
-)
-(
-    Bus.s bus
-);
+) (Bus.s bus);
 
     import Types_pkg::*;
 
-    word_t data_reg[0:SIZE-1];
-    bit[29:0] word_address;
-    bit ready_reg;
+    word_t    data_reg[0:SIZE-1];
+    bit[29:0] local_address;
+    word_t    rdata;
+    bit       ready_reg;
 
     initial begin
         $readmemh(INIT_FILENAME, data_reg);
     end
 
-    assign word_address = bus.address[31:2];
+    assign local_address = bus.address[31:2] % SIZE;
+    assign rdata         = data_reg[local_address];
 
     always_ff @(posedge bus.clk) begin
         if (bus.valid) begin
-            bus.rdata <= data_reg[word_address];
-            for (int i = 0; i < 4; i ++) begin
-                if (bus.wstrobe[i]) begin
-                    data_reg[word_address][i*8+:8] <= bus.wdata[i*8+:8];
-                end
-            end
+            bus.rdata <= rdata;
+            data_reg[local_address] <= bus.write_into(rdata);
         end
     end
 
