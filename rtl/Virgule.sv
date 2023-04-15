@@ -13,7 +13,7 @@ module Virgule
     Bus.m     bus
 );
 
-    typedef enum {fetch, decode, execute, load, store, writeback} state_t;
+    typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
 
     state_t       state_reg;    // The state of the sequencer
     bit           fetch_en;     // Are we fetching an instruction?
@@ -46,29 +46,29 @@ module Virgule
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            state_reg <= fetch;
+            state_reg <= FETCH;
         end
         else begin
             case (state_reg)
-                fetch     : if (bus.ready)      state_reg <= decode;
-                decode    :                     state_reg <= execute;
-                execute   : if (instr.is_load)  state_reg <= load;
-                       else if (instr.is_store) state_reg <= store;
-                       else if (instr.has_rd)   state_reg <= writeback;
-                       else                     state_reg <= fetch;
-                load      : if (bus.ready)      state_reg <= writeback;
-                store     : if (bus.ready)      state_reg <= fetch;
-                default   :                     state_reg <= fetch;
+                FETCH     : if (bus.ready)      state_reg <= DECODE;
+                DECODE    :                     state_reg <= EXECUTE;
+                EXECUTE   : if (instr.is_load)  state_reg <= LOAD;
+                       else if (instr.is_store) state_reg <= STORE;
+                       else if (instr.has_rd)   state_reg <= WRITEBACK;
+                       else                     state_reg <= FETCH;
+                LOAD      : if (bus.ready)      state_reg <= WRITEBACK;
+                STORE     : if (bus.ready)      state_reg <= FETCH;
+                default   :                     state_reg <= FETCH;
             endcase
         end
     end
 
-    assign decode_en    = state_reg == decode;
-    assign execute_en   = state_reg == execute;
-    assign fetch_en     = state_reg == fetch;
-    assign load_en      = state_reg == load;
-    assign store_en     = state_reg == store;
-    assign writeback_en = state_reg == writeback;
+    assign decode_en    = state_reg == DECODE;
+    assign execute_en   = state_reg == EXECUTE;
+    assign fetch_en     = state_reg == FETCH;
+    assign load_en      = state_reg == LOAD;
+    assign store_en     = state_reg == STORE;
+    assign writeback_en = state_reg == WRITEBACK;
 
     // 
     //  Instruction decoding:
@@ -95,7 +95,7 @@ module Virgule
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            instr_reg <= instr_nop;
+            instr_reg <= INSTR_NOP;
             xs1_reg   <= 0;
             xs2_reg   <= 0;
             alu_a_reg <= 0;

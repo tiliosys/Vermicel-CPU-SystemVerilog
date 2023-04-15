@@ -29,36 +29,36 @@ module Decoder
 
     always_comb begin
         case (opcode)
-            opcode_op                : imm = 0;
-            opcode_store             : imm = signed_word_t'(signed'({funct7, rd}));
-            opcode_branch            : imm = signed_word_t'(signed'({data[31], data[7], data[30:25], data[11:8], 1'b0}));
-            opcode_lui, opcode_auipc : imm = signed_word_t'(signed'({funct7, rs2, rs1, funct3, 12'b0}));
-            opcode_jal               : imm = signed_word_t'(signed'({data[31], rs1, funct3, data[20], data[30:21], 1'b0}));
+            OPCODE_OP                : imm = 0;
+            OPCODE_STORE             : imm = signed_word_t'(signed'({funct7, rd}));
+            OPCODE_BRANCH            : imm = signed_word_t'(signed'({data[31], data[7], data[30:25], data[11:8], 1'b0}));
+            OPCODE_LUI, OPCODE_AUIPC : imm = signed_word_t'(signed'({funct7, rs2, rs1, funct3, 12'b0}));
+            OPCODE_JAL               : imm = signed_word_t'(signed'({data[31], rs1, funct3, data[20], data[30:21], 1'b0}));
             default                  : imm = signed_word_t'(signed'({funct7, rs2}));
         endcase
     end
 
     always_comb begin
         case (opcode)
-            opcode_lui               : alu_fn = alu_nop;
-            opcode_op, opcode_op_imm : begin
+            OPCODE_LUI               : alu_fn = ALU_NOP;
+            OPCODE_OP, OPCODE_OP_IMM : begin
                 case (funct3)
-                    funct3_slt       : alu_fn = alu_slt;
-                    funct3_sltu      : alu_fn = alu_sltu;
-                    funct3_and       : alu_fn = alu_and;
-                    funct3_or        : alu_fn = alu_or;
-                    funct3_xor       : alu_fn = alu_xor;
-                    funct3_sll       : alu_fn = alu_sll;
-                    funct3_srl_sra   : alu_fn = (funct7 == funct7_sub_sra)
-                                                    ? alu_sra
-                                                    : alu_srl;
-                    funct3_add_sub   : alu_fn = (opcode == opcode_op && funct7 == funct7_sub_sra)
-                                                    ? alu_sub
-                                                    : alu_add;
-                    default          : alu_fn = alu_add;
+                    FUNCT3_SLT       : alu_fn = ALU_SLT;
+                    FUNCT3_SLTU      : alu_fn = ALU_SLTU;
+                    FUNCT3_AND       : alu_fn = ALU_AND;
+                    FUNCT3_OR        : alu_fn = ALU_OR;
+                    FUNCT3_XOR       : alu_fn = ALU_XOR;
+                    FUNCT3_SLL       : alu_fn = ALU_SLL;
+                    FUNCT3_SRL_SRA   : alu_fn = (funct7 == FUNCT7_SUB_SRA)
+                                                    ? ALU_SRA
+                                                    : ALU_SRL;
+                    FUNCT3_ADD_SUB   : alu_fn = (opcode == OPCODE_OP && funct7 == FUNCT7_SUB_SRA)
+                                                    ? ALU_SUB
+                                                    : ALU_ADD;
+                    default          : alu_fn = ALU_ADD;
                 endcase
             end
-            default                  : alu_fn = alu_add;
+            default                  : alu_fn = ALU_ADD;
         endcase
     end
 
@@ -69,13 +69,13 @@ module Decoder
         imm       : imm,
         funct3    : funct3,
         alu_fn    : alu_fn,
-        use_pc    : opcode == opcode_auipc || opcode == opcode_jal || opcode == opcode_branch,
-        use_imm   : opcode != opcode_op,
-        is_load   : opcode == opcode_load,
-        is_store  : opcode == opcode_store,
-        is_mret   : opcode == opcode_system && funct3 == funct3_mret && imm == imm_mret,
-        is_jump   : opcode == opcode_jal || opcode == opcode_jalr,
-        is_branch : opcode == opcode_branch,
-        has_rd    : !(opcode == opcode_branch || opcode == opcode_store || rd == 0)
+        use_pc    : opcode == OPCODE_AUIPC || opcode == OPCODE_JAL || opcode == OPCODE_BRANCH,
+        use_imm   : opcode != OPCODE_OP,
+        is_load   : opcode == OPCODE_LOAD,
+        is_store  : opcode == OPCODE_STORE,
+        is_mret   : opcode == OPCODE_SYSTEM && funct3 == FUNCT3_MRET && imm == IMM_MRET,
+        is_jump   : opcode == OPCODE_JAL || opcode == OPCODE_JALR,
+        is_branch : opcode == OPCODE_BRANCH,
+        has_rd    : !(opcode == OPCODE_BRANCH || opcode == OPCODE_STORE || rd == 0)
     };
 endmodule

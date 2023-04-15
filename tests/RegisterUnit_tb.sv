@@ -36,8 +36,8 @@ module RegisterUnit_tb;
     endfunction
 
     task write(register_index_t rd);
-        regs_src_instr         = instr_nop;
-        regs_dest_instr        = instr_nop;
+        regs_src_instr         = INSTR_NOP;
+        regs_dest_instr        = INSTR_NOP;
         regs_dest_instr.has_rd = rd > 0;
         regs_dest_instr.rd     = rd;
         regs_xd                = write_value(rd);
@@ -49,10 +49,10 @@ module RegisterUnit_tb;
         automatic word_t xs1 = read_value(rs1);
         automatic word_t xs2 = read_value(rs2);
 
-        regs_src_instr         = instr_nop;
+        regs_src_instr         = INSTR_NOP;
         regs_src_instr.rs1     = rs1;
         regs_src_instr.rs2     = rs2;
-        regs_dest_instr        = instr_nop;
+        regs_dest_instr        = INSTR_NOP;
         regs_xd                = 0;
         regs_enable            = 0;
 

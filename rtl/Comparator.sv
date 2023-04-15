@@ -15,12 +15,12 @@ module Comparator
 
     always_comb begin
         case (instr.funct3)
-            funct3_beq  : taken = a == b;
-            funct3_bne  : taken = a != b;
-            funct3_blt  : taken = signed'(a) <  signed'(b);
-            funct3_bge  : taken = signed'(a) >= signed'(b);
-            funct3_bltu : taken = a <  b;
-            funct3_bgeu : taken = a >= b;
+            FUNCT3_BEQ  : taken = a == b;
+            FUNCT3_BNE  : taken = a != b;
+            FUNCT3_BLT  : taken = signed'(a) <  signed'(b);
+            FUNCT3_BGE  : taken = signed'(a) >= signed'(b);
+            FUNCT3_BLTU : taken = a <  b;
+            FUNCT3_BGEU : taken = a >= b;
             default     : taken = 0;
         endcase
     end

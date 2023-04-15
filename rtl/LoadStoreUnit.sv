@@ -24,15 +24,15 @@ module LoadStoreUnit
 
     always_comb begin
         case (instr.funct3)
-            funct3_lb_sb, funct3_lbu : begin
+            FUNCT3_LB_SB, FUNCT3_LBU : begin
                 size  = 1;
                 wdata = {4{store_data[7:0]}};
             end
-            funct3_lh_sh, funct3_lhu : begin
+            FUNCT3_LH_SH, FUNCT3_LHU : begin
                 size  = 2;
                 wdata = {2{store_data[15:0]}};
             end
-            funct3_lw_sw: begin
+            FUNCT3_LW_SW: begin
                 size  = 4;
                 wdata = store_data;
             end
@@ -65,10 +65,10 @@ module LoadStoreUnit
 
     always_comb begin
         case (instr.funct3)
-            funct3_lb_sb : load_data = word_t'(signed'(rdata_byte));
-            funct3_lbu   : load_data = word_t'(rdata_byte);
-            funct3_lh_sh : load_data = word_t'(signed'(rdata_half));
-            funct3_lhu   : load_data = word_t'(rdata_half);
+            FUNCT3_LB_SB : load_data = word_t'(signed'(rdata_byte));
+            FUNCT3_LBU   : load_data = word_t'(rdata_byte);
+            FUNCT3_LH_SH : load_data = word_t'(signed'(rdata_half));
+            FUNCT3_LHU   : load_data = word_t'(rdata_half);
             default      : load_data = rdata;
         endcase
     end

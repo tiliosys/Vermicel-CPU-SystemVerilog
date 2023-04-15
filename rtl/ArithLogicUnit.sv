@@ -19,17 +19,17 @@ module ArithLogicUnit
 
     always_comb begin
         case (instr.alu_fn)
-            alu_nop  : r = b;
-            alu_add  : r = a + b;
-            alu_sub  : r = a - b;
-            alu_slt  : r = word_t'(signed'(a) < signed'(b));
-            alu_sltu : r = word_t'(a < b);
-            alu_xor  : r = a ^ b;
-            alu_or   : r = a | b;
-            alu_and  : r = a & b;
-            alu_sll  : r = a << sh;
-            alu_srl  : r = a >> sh;
-            alu_sra  : r = signed'(a) >>> sh;
+            ALU_NOP  : r = b;
+            ALU_ADD  : r = a + b;
+            ALU_SUB  : r = a - b;
+            ALU_SLT  : r = word_t'(signed'(a) < signed'(b));
+            ALU_SLTU : r = word_t'(a < b);
+            ALU_XOR  : r = a ^ b;
+            ALU_OR   : r = a | b;
+            ALU_AND  : r = a & b;
+            ALU_SLL  : r = a << sh;
+            ALU_SRL  : r = a >> sh;
+            ALU_SRA  : r = signed'(a) >>> sh;
         endcase
     end
 endmodule
