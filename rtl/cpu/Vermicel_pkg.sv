@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-package Virgule_pkg;
+package Vermicel_pkg;
 
     import Types_pkg::*;
 

@@ -30,8 +30,8 @@ set src "
     $rtl_dir/cpu/Decoder.sv
     $rtl_dir/cpu/LoadStoreUnit.sv
     $rtl_dir/cpu/RegisterUnit.sv
-    $rtl_dir/cpu/Virgule_pkg.sv
-    $rtl_dir/cpu/Virgule.sv
+    $rtl_dir/cpu/Vermicel_pkg.sv
+    $rtl_dir/cpu/Vermicel.sv
     $rtl_dir/devices/SinglePortRAM.sv
     $rtl_dir/devices/Timer_pkg.sv
     $rtl_dir/devices/Timer.sv

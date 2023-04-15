@@ -5,11 +5,11 @@
 
 `default_nettype none
 
-module Virgule (Bus.m bus);
+module Vermicel (Bus.m bus);
 
     import Types_pkg::*;
     import Opcodes_pkg::*;
-    import Virgule_pkg::*;
+    import Vermicel_pkg::*;
 
     typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
 

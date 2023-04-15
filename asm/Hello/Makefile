@@ -1,5 +1,5 @@
 
 all: Hello.mem
 
-include ../../scripts/Virgule.make
+include ../../scripts/Vermicel.make
 

@@ -17,5 +17,5 @@ C_FLAGS_USER=-DTEST_FUNC_NAME=$(notdir $(basename $<)) \
 			 -DTEST_FUNC_TXT='"$(notdir $(basename $<))"' \
 			 -DTEST_FUNC_RET=$(notdir $(basename $<))_ret
 
-include ../../scripts/Virgule.make
+include ../../scripts/Vermicel.make
 

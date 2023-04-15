@@ -13,8 +13,8 @@ RTL = \
 	cpu/RegisterUnit \
 	cpu/BranchUnit \
 	cpu/LoadStoreUnit \
-	cpu/Virgule_pkg \
-	cpu/Virgule \
+	cpu/Vermicel_pkg \
+	cpu/Vermicel \
 	devices/SinglePortRAM \
 	devices/Timer_pkg \
 	devices/Timer \
@@ -29,7 +29,7 @@ TESTS ?= \
 	ArithLogicUnit_tb \
 	Comparator_tb \
 	RegisterUnit_tb \
-	Virgule_tb \
+	Vermicel_tb \
 	rv32ui_tb \
 	UART_tb
 
@@ -54,6 +54,6 @@ lint: $(RTL_SRC)
 	verilator -sv --lint-only --timing -Wall --top-module $(TOP) lint.vlt $^
 
 clean:
-	rm -rf obj_dir tests.log *.vcd vivado*
+	rm -rf obj_dir tests.log *.vcd vivado* .Xil
 	$(MAKE) -C tests/rv32ui clean
 

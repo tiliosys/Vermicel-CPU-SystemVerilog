@@ -24,7 +24,7 @@ module rv32ui_tb;
     // CPU instance
     //
 
-    Virgule cpu (cpu_bus.m);
+    Vermicel cpu (cpu_bus.m);
 
     //
     // Device control

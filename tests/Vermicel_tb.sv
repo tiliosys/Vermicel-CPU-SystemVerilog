@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Virgule_tb;
+module Vermicel_tb;
 
     import Types_pkg::*;
     import Opcodes_pkg::*;
@@ -14,7 +14,7 @@ module Virgule_tb;
 
     Bus cpu_bus (clk, reset);
 
-    Virgule cpu (cpu_bus.m);
+    Vermicel cpu (cpu_bus.m);
 
     typedef bit[2:0] field_ignore_t;
     localparam field_ignore_t ignore_none    = 'b000;
@@ -62,7 +62,7 @@ module Virgule_tb;
     always #1 clk = ~clk;
 
     initial begin
-        $display("[TEST] Virgule_tb");
+        $display("[TEST] Vermicel_tb");
 
         reset = 1;
         @(posedge clk);
@@ -194,7 +194,7 @@ module Virgule_tb;
 
         check_reg("LB x14, 0x103(x4)", 14, cpu.regs.x_reg[14], 32'hFFFFFF8C);
 
-        $display("[DONE] Virgule_tb");
+        $display("[DONE] Vermicel_tb");
         $finish;
     end
 endmodule
