@@ -15,9 +15,12 @@ RTL = \
 	cpu/LoadStoreUnit \
 	cpu/Virgule_pkg \
 	cpu/Virgule \
-	devices/SinglePortRAM
+	devices/SinglePortRAM \
+	devices/Timer_pkg \
+	devices/Timer \
+	simple-soc/SimpleSoC
 
-TOP = Virgule
+TOP = SimpleSoC
 
 TESTS ?= \
 	Decoder_tb \

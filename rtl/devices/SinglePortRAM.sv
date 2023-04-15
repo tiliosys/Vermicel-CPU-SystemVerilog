@@ -12,16 +12,18 @@ module SinglePortRAM #(
 
     import Types_pkg::*;
 
-    word_t    data_reg[0:SIZE-1];
-    bit[29:0] local_address;
-    word_t    rdata;
-    bit       ready_reg;
+    localparam LOCAL_ADDRESS_WIDTH = $clog2(SIZE);
+
+    word_t                       data_reg[0:SIZE-1];
+    bit[LOCAL_ADDRESS_WIDTH-1:0] local_address;
+    word_t                       rdata;
+    bit                          ready_reg;
 
     initial begin
         $readmemh(INIT_FILENAME, data_reg);
     end
 
-    assign local_address = bus.address[31:2] % SIZE;
+    assign local_address = bus.address[2+:LOCAL_ADDRESS_WIDTH];
     assign rdata         = data_reg[local_address];
 
     always_ff @(posedge bus.clk) begin

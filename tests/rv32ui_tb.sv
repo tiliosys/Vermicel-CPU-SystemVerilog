@@ -7,8 +7,10 @@
 
 module rv32ui_tb;
 
-    localparam RAM_ADDRESS = 8'h00;
-    localparam OUT_ADDRESS = 8'h10;
+    localparam RAM_ADDRESS       = 8'h00;
+    localparam RAM_SIZE          = 65536;
+    localparam RAM_INIT_FILENAME = "tests/rv32ui/tests.txt";
+    localparam OUT_ADDRESS       = 8'h10;
 
     bit clk, reset;
     Bus cpu_bus (clk, reset);
@@ -28,7 +30,7 @@ module rv32ui_tb;
     // Device control
     //
 
-    assign dev_address = cpu_bus.address[31:24];
+    assign dev_address = cpu_bus.address[24+:8];
 
     assign cpu_bus.irq = 0;
 
@@ -54,8 +56,8 @@ module rv32ui_tb;
     //
 
     SinglePortRAM #(
-        .SIZE(65536),
-        .INIT_FILENAME("tests/rv32ui/tests.txt")
+        .SIZE(RAM_SIZE),
+        .INIT_FILENAME(RAM_INIT_FILENAME)
     ) ram (ram_bus.s);
 
     assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
