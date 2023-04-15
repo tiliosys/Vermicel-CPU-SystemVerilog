@@ -32,9 +32,12 @@ module UART_tb;
 
     always #1 clk = ~clk;
 
+    //
+    // Reference TX frame generator and checker.
+    //
+
     initial tx_ref = 1;
 
-    // Reference TX frame generator and checker.
     always @(posedge uart.control_reg.tx_enable)
     begin
         automatic byte_t data = uart.tx_data_reg;
@@ -85,9 +88,12 @@ module UART_tb;
         tx_done = 1;
     end
 
+    //
+    // Reference RX frame generator and checker.
+    //
+
     initial uart_rx = 1;
 
-    // Reference RX frame generator and checker.
     always @(posedge rx_enable)
     begin
         rx_flag_error = 0;
