@@ -5,13 +5,13 @@
 
 `default_nettype none
 
-module Virgule
-    import Types_pkg::*,
-           Opcodes_pkg::*,
-           Virgule_pkg::*;
-(
+module Virgule (
     Bus.m bus
 );
+
+    import Types_pkg::*;
+    import Opcodes_pkg::*;
+    import Virgule_pkg::*;
 
     typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
 

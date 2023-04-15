@@ -5,12 +5,12 @@
 
 `default_nettype none
 
-interface Bus
-    import Types_pkg::*;
-(
+interface Bus (
     input bit clk,
     input bit reset
 );
+
+    import Types_pkg::*;
 
     bit       valid;
     bit       ready;

@@ -5,15 +5,15 @@
 
 `default_nettype none
 
-module SinglePortRAM
-    import Types_pkg::*;
-#(
+module SinglePortRAM #(
     parameter int unsigned SIZE,
     parameter string INIT_FILENAME
 )
 (
     Bus.s bus
 );
+
+    import Types_pkg::*;
 
     word_t data_reg[0:SIZE-1];
     bit[29:0] word_address;
