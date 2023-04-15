@@ -19,51 +19,37 @@ module LoadStoreUnit
     output word_t        wdata
 );
 
-    bit[2:0]  size;       // Size of the data to load/store, in bytes (1, 2, 4)
-    bit[1:0]  align;      // Address alignment (0 to 3)
-    bit[15:0] rdata_half; // rdata, re-aligned for half-word access.
+    bit[1:0]  align_byte; // Byte address alignment (0 to 3)
+    bit       align_half; // Half-word address alignment (0 to 1)
     bit[7:0]  rdata_byte; // rdata, re-aligned for byte access.
+    bit[15:0] rdata_half; // rdata, re-aligned for half-word access.
 
     always_comb begin
+        wstrobe = 0;
         case (instr.funct3)
             FUNCT3_LB_SB, FUNCT3_LBU : begin
-                size  = 1;
-                wdata = {4{store_data[7:0]}};
+                wdata               = {4{store_data[7:0]}};
+                wstrobe[align_byte] = store_enable;
             end
             FUNCT3_LH_SH, FUNCT3_LHU : begin
-                size  = 2;
-                wdata = {2{store_data[15:0]}};
+                wdata                  = {2{store_data[15:0]}};
+                wstrobe[align_byte+:2] = {2{store_enable}};
             end
             FUNCT3_LW_SW: begin
-                size  = 4;
-                wdata = store_data;
+                wdata   = store_data;
+                wstrobe = {4{store_enable}};
             end
             default : begin
-                size  = 0;
-                wdata = store_data;
+                wdata   = store_data;
             end
         endcase
     end
 
-    assign align = address[1:0];
+    assign align_byte = address[1:0];
+    assign align_half = address[1];
 
-    genvar i;
-    generate
-        for (i = 0; i < 4; i ++) begin
-            assign wstrobe[i] = store_enable && i >= align && i < align + size;
-        end
-    endgenerate
-
-    assign rdata_half = align == 2'b00 ? rdata[15:0] : rdata[31:16];
-
-    always_comb begin
-        case (align)
-            3:       rdata_byte = rdata[31:24];
-            2:       rdata_byte = rdata[23:16];
-            1:       rdata_byte = rdata[15:8];
-            default: rdata_byte = rdata[7:0];
-        endcase
-    end
+    assign rdata_byte = rdata[align_byte*8+:8];
+    assign rdata_half = rdata[align_half*16+:16];
 
     always_comb begin
         case (instr.funct3)
