@@ -7,21 +7,21 @@
     .set TIMER_REFILL_REG,  0x04
     .set TIMER_COUNT_REG,   0x08
 
-    .set TIMER_CONTROL_EVENT_FLAG,   0x01
-    .set TIMER_CONTROL_IRQ_ENABLE,   0x02
-    .set TIMER_CONTROL_CYCLIC_MODE,  0x04
-    .set TIMER_CONTROL_COUNT_ENABLE, 0x08
+    .set TIMER_CONTROL_COUNT_ENABLE, 0x01
+    .set TIMER_CONTROL_CYCLIC_MODE,  0x02
+    .set TIMER_CONTROL_IRQ_ENABLE,   0x04
+    .set TIMER_CONTROL_EVENT_FLAG,   0x08
 
     .set UART_CONTROL_REG,  0x00
-    .set UART_DIVISION_REG, 0x01
-    .set UART_TX_DATA_REG,  0x02
-    .set UART_RX_DATA_REG,  0x03
+    .set UART_DIVISION_REG, 0x04
+    .set UART_TX_DATA_REG,  0x08
+    .set UART_RX_DATA_REG,  0x0C
 
-    .set UART_CONTROL_TX_EVENT_FLAG, 0x01
-    .set UART_CONTROL_RX_EVENT_FLAG, 0x02
+    .set UART_CONTROL_TX_ENABLE,     0x01
+    .set UART_CONTROL_RX_IRQ_ENABLE, 0x02
     .set UART_CONTROL_TX_IRQ_ENABLE, 0x04
-    .set UART_CONTROL_RX_IRQ_ENABLE, 0x08
-    .set UART_CONTROL_TX_ENABLE,     0x10
+    .set UART_CONTROL_RX_EVENT_FLAG, 0x08
+    .set UART_CONTROL_TX_EVENT_FLAG, 0x10
 
     .set UART_DIVISION_VALUE, 867
 
@@ -60,26 +60,38 @@ uart_putc_loop:
 
     // a0: the address of the string to send.
 uart_puts:
-    addi sp, sp, -4
-    sw s0, (sp)
+    addi sp, sp, -8
+    sw ra, (sp)
+    sw s0, 4(sp)
+
     mv s0, a0
 uart_puts_loop:
     lb a0, (s0)
     beqz a0, uart_puts_end
+
     call uart_putc
+
     addi s0, s0, 1
     j uart_puts_loop
+
 uart_puts_end:
-    lw s0, (sp)
-    addi sp, sp, 4
+    lw ra, (sp)
+    lw s0, 4(sp)
+    addi sp, sp, 8
     ret
     
     .global main
 main:
+    addi sp, sp, -4
+    sw ra, (sp)
+
     li a0, UART_DIVISION_VALUE
     call uart_set_division
 
     la a0, str
     call uart_puts
+
+    lw ra, (sp)
+    addi sp, sp, 4
     ret
 
