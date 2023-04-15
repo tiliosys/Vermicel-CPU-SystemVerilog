@@ -34,14 +34,14 @@ RTL_SRC   = $(addprefix rtl/,$(addsuffix .sv,$(RTL)))
 TESTS_SRC = $(addprefix tests/,$(addsuffix .sv,$(TESTS)))
 TESTS_BIN = $(addprefix obj_dir/,$(TESTS))
 
-run-tests: tests/rv32ui/tests.txt $(TESTS_BIN)
+run-tests: tests/rv32ui/tests.mem $(TESTS_BIN)
 	for f in $^; do $$f; done | tee tests.log
 	@echo "--"
 	@echo "Total PASS: " $$(egrep "PASS|OK"    tests.log | wc -l)
 	@echo "Total FAIL: " $$(egrep "FAIL|ERROR" tests.log | wc -l)
 	@echo "--"
 
-tests/rv32ui/tests.txt:
+tests/rv32ui/tests.mem:
 	$(MAKE) -C $(@D) $(@F)
 
 obj_dir/%: $(RTL_SRC) tests/%.sv

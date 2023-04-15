@@ -37,8 +37,8 @@ OBJ_DEPS     = $(C_DEPS:.c=.o) $(ASM_DEPS:.S=.o)
 %.hex: %.elf
 	$(OBJCOPY) -O ihex $< $@
 
-%.txt: %.hex
+%.mem: %.hex
 	$(OBJCOPY) --reverse-bytes=4 -O verilog --verilog-data-width=4 $< $@
 
 clean:
-	rm -f *.o *.hex *.txt *.elf
+	rm -f *.o *.hex *.mem *.elf

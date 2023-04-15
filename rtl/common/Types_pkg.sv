@@ -7,9 +7,10 @@
 
 package Types_pkg;
 
-    typedef int unsigned word_t;
-    typedef int signed   signed_word_t;
-    typedef bit[3:0]     wstrobe_t;
+    typedef int unsigned  word_t;
+    typedef int signed    signed_word_t;
+    typedef bit[3:0]      wstrobe_t;
+    typedef byte unsigned byte_t;
 
 endpackage
 

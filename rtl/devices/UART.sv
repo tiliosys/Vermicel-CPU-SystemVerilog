@@ -35,10 +35,12 @@ module UART (
     state_t     tx_state_reg;
     word_t      tx_count_reg;
     bit_index_t tx_index_reg;
+    byte_t      tx_buffer_reg;
 
     state_t     rx_state_reg;
     word_t      rx_count_reg;
     bit_index_t rx_index_reg;
+    byte_t      rx_buffer_reg;
 
     assign local_address = local_address_t'(bus.address[2+:LOCAL_ADDRESS_WIDTH]);
 
@@ -77,8 +79,8 @@ module UART (
         if (bus.reset) begin
             tx_data_reg <= 0;
         end
-        else if (bus.write_enabled() && local_address == DATA_ADDRESS) begin
-            tx_data_reg <= bus.write_into(tx_data_as_word);
+        else if (bus.write_enabled() && local_address == TX_DATA_ADDRESS) begin
+            tx_data_reg <= bus.write_into(tx_data_reg_as_word);
         end 
     end
 
@@ -91,10 +93,11 @@ module UART (
             case (tx_state_reg)
                 IDLE: begin
                     if (control_reg.tx_enable) begin
-                        tx_state_reg <= BUSY;
-                        tx_count_reg <= division_reg;
-                        tx_index_reg <= BIT_INDEX_MAX;
-                        tx           <= 0;
+                        tx_state_reg  <= BUSY;
+                        tx_count_reg  <= division_reg;
+                        tx_index_reg  <= BIT_INDEX_MAX;
+                        tx_buffer_reg <= tx_data_reg;
+                        tx            <= 0;
                     end
                 end
                 BUSY: begin
@@ -102,10 +105,10 @@ module UART (
                         tx_count_reg <= tx_count_reg - 1;
                     end
                     else if (tx_index_reg != 0) begin
-                        tx_count_reg <= division_reg;
-                        tx           <= tx_index_reg == 1 | tx_data[0];
-                        tx_data[6:0] <= tx_data[7:1];
-                        tx_index_reg <= tx_index_reg - 1;
+                        tx_count_reg       <= division_reg;
+                        tx                 <= tx_index_reg == 1 || tx_buffer_reg[0];
+                        tx_buffer_reg[6:0] <= tx_buffer_reg[7:1];
+                        tx_index_reg       <= tx_index_reg - 1;
                     end
                     else begin
                         tx_state_reg <= DONE;
@@ -134,7 +137,7 @@ module UART (
                 BUSY: begin
                     if (rx_index_reg != 0) begin
                         if (rx_count_reg == division_reg / 2) begin
-                            rx_data_reg <= {rx, rx_data_reg[7:1]};
+                            rx_buffer_reg <= {rx, rx_buffer_reg[7:1]};
                         end
                         if (rx_count_reg != 0) begin
                             rx_count_reg <= rx_count_reg - 1;
@@ -145,6 +148,7 @@ module UART (
                         end
                     end
                     else if (rx) begin
+                        rx_data_reg  <= rx_buffer_reg;
                         rx_state_reg <= DONE;
                     end
                 end
@@ -157,9 +161,10 @@ module UART (
 
     always_comb begin
         case (local_address)
-            CONTROL_ADDRESS:  bus.rdata = control_reg_as_word;
-            DIVISION_ADDRESS: bus.rdata = division_reg;
-            default:          bus.rdata = rx_data_reg_as_word;
+            CONTROL_ADDRESS  : bus.rdata = control_reg_as_word;
+            DIVISION_ADDRESS : bus.rdata = division_reg;
+            TX_DATA_ADDRESS  : bus.rdata = tx_data_reg_as_word;
+            default          : bus.rdata = rx_data_reg_as_word;
         endcase
     end
 

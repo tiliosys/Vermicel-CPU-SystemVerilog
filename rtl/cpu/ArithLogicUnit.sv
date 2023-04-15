@@ -21,7 +21,6 @@ module ArithLogicUnit
 
     always_comb begin
         case (instr.alu_fn)
-            ALU_NOP  : r = b;
             ALU_ADD  : r = a + b;
             ALU_SUB  : r = a - b;
             ALU_SLT  : r = word_t'(signed'(a) < signed'(b));
@@ -32,6 +31,7 @@ module ArithLogicUnit
             ALU_SLL  : r = a << sh;
             ALU_SRL  : r = a >> sh;
             ALU_SRA  : r = signed'(a) >>> sh;
+            default  : r = b;
         endcase
     end
 endmodule

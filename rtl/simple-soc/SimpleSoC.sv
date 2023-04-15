@@ -5,17 +5,26 @@
 
 `default_nettype none
 
-module SimpleSoC (
-    input bit clk,
-    input bit reset
+module SimpleSoC #(
+    parameter RAM_SIZE_WORDS,
+    parameter RAM_INIT_FILENAME
+)
+(
+    input  bit clk,
+    input  bit reset,
+
+    output bit uart_tx,
+    input  bit uart_rx
 );
 
     localparam RAM_ADDRESS   = 8'h00;
-    localparam TIMER_ADDRESS = 8'h10;
+    localparam TIMER_ADDRESS = 8'h80;
+    localparam UART_ADDRESS  = 8'h81;
 
     Bus cpu_bus   (clk, reset);
     Bus ram_bus   (clk, reset);
     Bus timer_bus (clk, reset);
+    Bus uart_bus  (clk, reset);
 
     bit[7:0] dev_address;
 
@@ -43,6 +52,10 @@ module SimpleSoC (
                 cpu_bus.rdata = timer_bus.rdata;
                 cpu_bus.ready = timer_bus.ready;
             end
+            UART_ADDRESS: begin
+                cpu_bus.rdata = uart_bus.rdata;
+                cpu_bus.ready = uart_bus.ready;
+            end
             default: begin
                 cpu_bus.rdata = 0;
                 cpu_bus.ready = cpu_bus.valid;
@@ -55,8 +68,8 @@ module SimpleSoC (
     //
 
     SinglePortRAM #(
-        .SIZE(65536),
-        .INIT_FILENAME("tests/rv32ui/tests.txt")
+        .SIZE_WORDS(RAM_SIZE_WORDS),
+        .INIT_FILENAME(RAM_INIT_FILENAME)
     ) ram (ram_bus.s);
 
     assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
@@ -74,6 +87,21 @@ module SimpleSoC (
     assign timer_bus.address = cpu_bus.address;
     assign timer_bus.wstrobe = cpu_bus.wstrobe;
     assign timer_bus.wdata   = cpu_bus.wdata;
+
+    //
+    // UART instance
+    //
+
+    UART uart (
+        .bus(uart_bus.s),
+        .rx(uart_rx),
+        .tx(uart_tx)
+    );
+
+    assign uart_bus.valid   = cpu_bus.valid && dev_address == UART_ADDRESS;
+    assign uart_bus.address = cpu_bus.address;
+    assign uart_bus.wstrobe = cpu_bus.wstrobe;
+    assign uart_bus.wdata   = cpu_bus.wdata;
 
 endmodule
 

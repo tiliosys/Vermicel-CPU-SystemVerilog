@@ -6,15 +6,15 @@
 `default_nettype none
 
 module SinglePortRAM #(
-    parameter int unsigned SIZE,
-    parameter string INIT_FILENAME
+    parameter int unsigned SIZE_WORDS,
+    parameter INIT_FILENAME // Implicit string type, not supported by Xilinx Vivado 2019.1
 ) (Bus.s bus);
 
     import Types_pkg::*;
 
-    localparam LOCAL_ADDRESS_WIDTH = $clog2(SIZE);
+    localparam LOCAL_ADDRESS_WIDTH = $clog2(SIZE_WORDS);
 
-    word_t                       data_reg[0:SIZE-1];
+    word_t                       data_reg[0:SIZE_WORDS-1];
     bit[LOCAL_ADDRESS_WIDTH-1:0] local_address;
     word_t                       rdata;
     bit                          ready_reg;

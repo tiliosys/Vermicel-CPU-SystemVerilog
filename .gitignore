@@ -1,5 +1,8 @@
 .nvim
 obj_dir
 *.log
-tests/rv32ui/tests.txt
+*.mem
+build
+.Xil
+vivado*
 

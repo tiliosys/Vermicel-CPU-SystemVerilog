@@ -10,7 +10,8 @@ package UART_pkg;
     typedef enum {
         CONTROL_ADDRESS,  // Control/status register  (RW)
         DIVISION_ADDRESS, // Frequency divisor config (RW)
-        DATA_ADDRESS,     // RX/TX data               (RO/WO)
+        TX_DATA_ADDRESS,  // TX data                  (RW)
+        RX_DATA_ADDRESS,  // RX data                  (RO)
         LOCAL_ADDRESS_NUM // The number of supported local addresses
     } local_address_t;
 

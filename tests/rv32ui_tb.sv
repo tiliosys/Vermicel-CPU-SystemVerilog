@@ -8,8 +8,8 @@
 module rv32ui_tb;
 
     localparam RAM_ADDRESS       = 8'h00;
-    localparam RAM_SIZE          = 65536;
-    localparam RAM_INIT_FILENAME = "tests/rv32ui/tests.txt";
+    localparam RAM_SIZE_WORDS    = 65536;
+    localparam RAM_INIT_FILENAME = "tests/rv32ui/tests.mem";
     localparam OUT_ADDRESS       = 8'h10;
 
     bit clk, reset;
@@ -56,7 +56,7 @@ module rv32ui_tb;
     //
 
     SinglePortRAM #(
-        .SIZE(RAM_SIZE),
+        .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
     ) ram (ram_bus.s);
 
