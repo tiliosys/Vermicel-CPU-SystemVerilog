@@ -20,6 +20,7 @@ module branch_unit #(
     input  word_t        pc_next,
     output word_t        pc
 );
+
     bit cmp_taken;
 
     comparator cmp_inst (
@@ -28,6 +29,8 @@ module branch_unit #(
         .b(xs2),
         .taken(cmp_taken)
     ); 
+
+    word_t mepc;
 
     word_t pc_target =
         instr.is_mret                                   ? mepc                  :
@@ -51,8 +54,6 @@ module branch_unit #(
     end
 
     bit accept_irq = irq && !irq_state;
-
-    word_t mepc;
 
     always @(posedge clk) begin
         if (reset) begin

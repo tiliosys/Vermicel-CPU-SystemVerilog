@@ -12,6 +12,7 @@ RTL=\
 	comparator \
 	register_unit \
 	branch_unit \
+	load_store_unit \
 	virgule_pkg
 
 TESTS=\
