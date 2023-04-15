@@ -33,7 +33,7 @@ obj_dir/%: $(RTL_SRC) tests/%.sv
 	verilator -sv --binary --timing -Wno-lint --top-module $* -o $* $^
 
 lint: $(RTL_SRC)
-	verilator -sv --lint-only --timing -Wall --top-module $(lastword $(RTL)) $^
+	verilator -sv --lint-only --timing -Wall --top-module $(lastword $(RTL)) lint.vlt $^
 
 clean:
 	rm -rf obj_dir
