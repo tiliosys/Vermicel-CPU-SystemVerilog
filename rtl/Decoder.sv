@@ -71,12 +71,12 @@ module Decoder
         alu_fn    : alu_fn,
         use_pc    : opcode == OPCODE_AUIPC || opcode == OPCODE_JAL || opcode == OPCODE_BRANCH,
         use_imm   : opcode != OPCODE_OP,
+        has_rd    : !(opcode == OPCODE_BRANCH || opcode == OPCODE_STORE || rd == 0),
         is_load   : opcode == OPCODE_LOAD,
         is_store  : opcode == OPCODE_STORE,
-        is_trap   : opcode == OPCODE_SYSTEM && funct3 == FUNCT3_DEFAULT && (imm == IMM_ECALL || imm == IMM_EBREAK),
-        is_mret   : opcode == OPCODE_SYSTEM && funct3 == FUNCT3_DEFAULT && imm == IMM_MRET,
         is_jump   : opcode == OPCODE_JAL || opcode == OPCODE_JALR,
         is_branch : opcode == OPCODE_BRANCH,
-        has_rd    : !(opcode == OPCODE_BRANCH || opcode == OPCODE_STORE || rd == 0)
+        is_mret   : opcode == OPCODE_SYSTEM && funct3 == FUNCT3_DEFAULT && imm == IMM_MRET,
+        is_trap   : opcode == OPCODE_SYSTEM && funct3 == FUNCT3_DEFAULT && (imm == IMM_ECALL || imm == IMM_EBREAK)
     };
 endmodule

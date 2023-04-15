@@ -32,8 +32,8 @@ TESTS_BIN=$(addprefix obj_dir/,$(TESTS))
 run: tests/rv32ui/tests.txt $(TESTS_BIN)
 	for f in $^; do $$f; done | tee tests.log
 	@echo "--"
-	@echo "Total PASS: " $$(grep PASS tests.log | wc -l)
-	@echo "Total FAIL: " $$(grep FAIL tests.log | wc -l)
+	@echo "Total PASS: " $$(egrep "PASS|OK"    tests.log | wc -l)
+	@echo "Total FAIL: " $$(egrep "FAIL|ERROR" tests.log | wc -l)
 	@echo "--"
 
 tests/rv32ui/tests.txt:

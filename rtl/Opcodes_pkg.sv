@@ -76,8 +76,8 @@ package Opcodes_pkg;
         bit              is_store;
         bit              is_jump;
         bit              is_branch;
-        bit              is_trap;
         bit              is_mret;
+        bit              is_trap;
     } instruction_t;
 
     localparam instruction_t INSTR_NOP = '{
@@ -94,8 +94,8 @@ package Opcodes_pkg;
         is_store  : 0,
         is_jump   : 0,
         is_branch : 0,
-        is_trap   : 0,
-        is_mret   : 0
+        is_mret   : 0,
+        is_trap   : 0
     };
 
     function static word_t encode(
