@@ -3,19 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+`default_nettype none
+
 module Virgule_tb;
 
     import Types_pkg::*;
     import Opcodes_pkg::*;
 
-    bit cpu_clk, cpu_reset;
-    Bus cpu_bus;
+    bit clk, reset;
 
-    Virgule cpu (
-        .clk(cpu_clk),
-        .reset(cpu_reset),
-        .bus(cpu_bus.m)
-    );
+    Bus cpu_bus (clk, reset);
+
+    Virgule cpu (cpu_bus.m);
 
     typedef bit[2:0] field_ignore_t;
     localparam field_ignore_t ignore_none    = 'b000;
@@ -48,7 +47,7 @@ module Virgule_tb;
                 cpu_bus.wstrobe, wstrobe,
                 cpu_bus.wdata, wdata);
         end
-        @(posedge cpu_clk);
+        @(posedge clk);
     endtask
 
     task check_reg(string label, register_index_t n, word_t actual, word_t expected);
@@ -60,15 +59,15 @@ module Virgule_tb;
         end
     endtask
 
-    always #1 cpu_clk = ~cpu_clk;
+    always #1 clk = ~clk;
 
     initial begin
         $display("[TEST] Virgule_tb");
 
-        cpu_reset = 1;
-        @(posedge cpu_clk);
-        cpu_reset = 0;
-        @(posedge cpu_clk);
+        reset = 1;
+        @(posedge clk);
+        reset = 0;
+        @(posedge clk);
 
         //                          rdata           ready irq valid address    wstrobe  wdata             state
         check("INIT (F)",           0,                  0, 0, 1, 32'h00000000, 4'b0000, 32'hxxxxxxxx, ignore_wdata);

@@ -3,13 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+`default_nettype none
+
 module rv32ui_tb;
 
     localparam RAM_ADDRESS = 8'h00;
     localparam OUT_ADDRESS = 8'h10;
 
     bit clk, reset;
-    Bus cpu_bus, ram_bus, out_bus;
+    Bus cpu_bus (clk, reset);
+    Bus ram_bus (clk, reset);
+    Bus out_bus (clk, reset);
     bit[7:0] dev_address;
 
     always #10 clk = ~clk;
@@ -18,11 +22,7 @@ module rv32ui_tb;
     // CPU instance
     //
 
-    Virgule cpu (
-        .clk(clk),
-        .reset(reset),
-        .bus(cpu_bus.m)
-    );
+    Virgule cpu (cpu_bus.m);
 
     //
     // Device control
@@ -56,14 +56,11 @@ module rv32ui_tb;
     SinglePortRAM #(
         .SIZE(65536),
         .INIT_FILENAME("tests/rv32ui/tests.txt")
-    ) ram (
-        .clk(clk),
-        .reset(reset),
-        .bus(ram_bus.s)
-    );
+    ) ram (ram_bus.s);
 
     assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
     assign ram_bus.address = cpu_bus.address;
+    assign ram_bus.wstrobe = cpu_bus.wstrobe;
     assign ram_bus.wdata   = cpu_bus.wdata;
 
     //
@@ -72,12 +69,13 @@ module rv32ui_tb;
 
     assign out_bus.valid   = cpu_bus.valid && dev_address == OUT_ADDRESS;
     assign out_bus.address = cpu_bus.address;
+    assign out_bus.wstrobe = cpu_bus.wstrobe;
     assign out_bus.wdata   = cpu_bus.wdata;
     assign out_bus.rdata   = 0;
     assign out_bus.ready   = cpu_bus.valid;
 
     always_ff @(posedge clk) begin
-        if (out_bus.valid) begin
+        if (out_bus.valid && out_bus.wstrobe[0]) begin
             $write("%s", out_bus.wdata[7:0]);
         end
     end

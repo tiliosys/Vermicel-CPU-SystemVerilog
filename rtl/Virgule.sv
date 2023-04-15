@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+`default_nettype none
+
 module Virgule
     import Types_pkg::*,
            Opcodes_pkg::*,
            Virgule_pkg::*;
 (
-    input bit clk,
-    input bit reset,
-    Bus.m     bus
+    Bus.m bus
 );
 
     typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
@@ -44,8 +44,8 @@ module Virgule
     // Sequencer
     //
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge bus.clk) begin
+        if (bus.reset) begin
             state_reg <= FETCH;
         end
         else begin
@@ -83,8 +83,8 @@ module Virgule
     RegisterUnit #(
         .SIZE(REGISTER_UNIT_SIZE)
     ) regs (
-        .clk(clk),
-        .reset(reset),
+        .clk(bus.clk),
+        .reset(bus.reset),
         .enable(writeback_en),
         .src_instr(instr),
         .dest_instr(instr_reg),
@@ -93,8 +93,8 @@ module Virgule
         .xs2(xs2)
     );
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge bus.clk) begin
+        if (bus.reset) begin
             instr_reg <= INSTR_NOP;
             xs1_reg   <= 0;
             xs2_reg   <= 0;
@@ -129,8 +129,8 @@ module Virgule
         .IRQ_ADDRESS(IRQ_ADDRESS),
         .TRAP_ADDRESS(TRAP_ADDRESS)
     ) branch (
-        .clk(clk),
-        .reset(reset),
+        .clk(bus.clk),
+        .reset(bus.reset),
         .enable(execute_en),
         .irq(bus.irq),
         .instr(instr_reg),
@@ -141,8 +141,8 @@ module Virgule
         .pc_next(pc_next)
     );
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge bus.clk) begin
+        if (bus.reset) begin
             alu_r_reg   <= 0;
             pc_reg      <= 0;
             pc_incr_reg <= 0;
@@ -159,8 +159,8 @@ module Virgule
     // align data to/from memory, drive control outputs.
     //
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge bus.clk) begin
+        if (bus.reset) begin
             rdata_reg <= 0;
         end
         else if (bus.valid && bus.ready) begin

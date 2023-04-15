@@ -3,9 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-interface Bus;
+`default_nettype none
 
+interface Bus
     import Types_pkg::*;
+(
+    input bit clk,
+    input bit reset
+);
 
     bit       valid;
     bit       ready;
@@ -16,11 +21,13 @@ interface Bus;
     bit       irq;
 
     modport m (
+        input clk, reset,
         output valid, address, wstrobe, wdata,
         input  ready, rdata, irq
     );
 
     modport s (
+        input clk, reset,
         input  valid, address, wstrobe, wdata,
         output ready, rdata, irq
     );

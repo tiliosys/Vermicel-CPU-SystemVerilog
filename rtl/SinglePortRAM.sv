@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+`default_nettype none
+
 module SinglePortRAM
     import Types_pkg::*;
 #(
@@ -10,8 +12,6 @@ module SinglePortRAM
     parameter string INIT_FILENAME
 )
 (
-    input bit clk,
-    input bit reset,
     Bus.s bus
 );
 
@@ -25,7 +25,7 @@ module SinglePortRAM
 
     assign word_address = bus.address[31:2];
 
-    always_ff @(posedge clk) begin
+    always_ff @(posedge bus.clk) begin
         if (bus.valid) begin
             bus.rdata <= data_reg[word_address];
             for (int i = 0; i < 4; i ++) begin
@@ -36,8 +36,8 @@ module SinglePortRAM
         end
     end
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge bus.clk) begin
+        if (bus.reset) begin
             ready_reg <= 0;
         end
         else if (bus.valid && bus.wstrobe == 0) begin
