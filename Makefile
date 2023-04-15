@@ -16,7 +16,7 @@ RTL=\
 	Virgule_pkg \
 	Virgule
 
-TESTS=\
+TESTS?=\
 	Decoder_tb \
 	ArithLogicUnit_tb \
 	Comparator_tb \
@@ -28,7 +28,11 @@ TESTS_SRC=$(addprefix tests/,$(addsuffix .sv,$(TESTS)))
 TESTS_BIN=$(addprefix obj_dir/,$(TESTS))
 
 run: $(TESTS_BIN)
-	for f in $^; do $$f; done
+	for f in $^; do $$f; done | tee test.log
+	@echo "--"
+	@echo "Total PASS: " $$(grep PASS test.log | wc -l)
+	@echo "Total FAIL: " $$(grep FAIL test.log | wc -l)
+	@echo "--"
 
 obj_dir/%: $(RTL_SRC) tests/%.sv
 	verilator -sv --binary --timing -Wno-lint --top-module $* -o $* $^
