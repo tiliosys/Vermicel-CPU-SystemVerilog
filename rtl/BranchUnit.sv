@@ -22,23 +22,23 @@ module BranchUnit
     output word_t        pc_next
 );
 
-    bit cmp_taken;
+    bit    taken;         // Is the branch taken?
+    word_t pc_target;     // Target program counter in normal execution flow.
+    bit    irq_state_reg; // Are we processing an IRQ?
+    bit    accept_irq;    // Are we switching to IRQ mode?
+    word_t mepc_reg;      // Saved program counter when switching to IRQ mode.
 
     Comparator cmp (
         .instr(instr),
         .a(xs1),
         .b(xs2),
-        .taken(cmp_taken)
+        .taken(taken)
     ); 
 
-    word_t mepc_reg;
-
-    word_t pc_target =
-        instr.is_mret                                   ? mepc_reg                  :
-        instr.is_jump || (instr.is_branch && cmp_taken) ? {address[31:2], 2'b0} :
-                                                          pc_incr;
-
-    bit irq_state_reg;
+    assign pc_target =
+        instr.is_mret                               ? mepc_reg                  :
+        instr.is_jump || (instr.is_branch && taken) ? {address[31:2], 2'b0} :
+                                                      pc_incr;
 
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -54,7 +54,7 @@ module BranchUnit
         end
     end
 
-    bit accept_irq = irq && !irq_state_reg;
+    assign accept_irq = irq && !irq_state_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin

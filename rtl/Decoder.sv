@@ -11,14 +11,22 @@ module Decoder
     output instruction_t instr
 );
 
-    funct7_t         funct7 = data[31:25];
-    register_index_t rs2    = data[24:20];
-    register_index_t rs1    = data[19:15];
-    funct3_t         funct3 = data[14:12];
-    register_index_t rd     = data[11: 7];
-    base_opcode_t    opcode = data[ 6: 0];
+    funct7_t         funct7; // Funct7 field of the instruction word.
+    register_index_t rs2;    // Source register index for operand 2.
+    register_index_t rs1;    // Source register index for operand 1.
+    funct3_t         funct3; // Funct3 field of the instruction word.
+    register_index_t rd;     // Destination register index.
+    base_opcode_t    opcode; // Base opcode of the instruction.
+    signed_word_t    imm;    // Decoded immediate value.
+    alu_fn_t         alu_fn; // Decoded ALU operation.
 
-    signed_word_t imm;
+    assign funct7 = data[31:25];
+    assign rs2    = data[24:20];
+    assign rs1    = data[19:15];
+    assign funct3 = data[14:12];
+    assign rd     = data[11: 7];
+    assign opcode = data[ 6: 0];
+
     always_comb begin
         case (opcode)
             opcode_op                : imm = 0;
@@ -30,7 +38,6 @@ module Decoder
         endcase
     end
 
-    alu_fn_t alu_fn;
     always_comb begin
         case (opcode)
             opcode_lui               : alu_fn = alu_nop;

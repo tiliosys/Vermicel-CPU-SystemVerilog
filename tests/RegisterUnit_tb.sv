@@ -66,7 +66,6 @@ module RegisterUnit_tb;
         end
     endtask
 
-
     always #1 regs_clk = ~regs_clk;
 
     initial begin

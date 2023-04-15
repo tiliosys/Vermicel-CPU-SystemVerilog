@@ -17,7 +17,10 @@ module LoadStoreUnit
     output word_t        wdata
 );
 
-    bit[2:0] size;
+    bit[2:0]  size;       // Size of the data to load/store, in bytes (1, 2, 4)
+    bit[1:0]  align;      // Address alignment (0 to 3)
+    bit[15:0] rdata_half; // rdata, re-aligned for half-word access.
+    bit[7:0]  rdata_byte; // rdata, re-aligned for byte access.
 
     always_comb begin
         case (instr.funct3)
@@ -40,7 +43,7 @@ module LoadStoreUnit
         endcase
     end
 
-    bit[1:0] align = address[1:0];
+    assign align = address[1:0];
 
     genvar i;
     generate
@@ -49,15 +52,24 @@ module LoadStoreUnit
         end
     endgenerate
 
-    word_t aligned_rdata = rdata >> (align * 8);
+    assign rdata_half = align == 2'b00 ? rdata[15:0] : rdata[31:16];
+
+    always_comb begin
+        case (align)
+            3:       rdata_byte = rdata[31:24];
+            2:       rdata_byte = rdata[23:16];
+            1:       rdata_byte = rdata[15:8];
+            default: rdata_byte = rdata[7:0];
+        endcase
+    end
 
     always_comb begin
         case (instr.funct3)
-            funct3_lb_sb : load_data = word_t'(signed'(aligned_rdata[7:0]));
-            funct3_lbu   : load_data = word_t'(aligned_rdata[7:0]);
-            funct3_lh_sh : load_data = word_t'(signed'(aligned_rdata[15:0]));
-            funct3_lhu   : load_data = word_t'(aligned_rdata[15:0]);
-            default      : load_data = aligned_rdata;
+            funct3_lb_sb : load_data = word_t'(signed'(rdata_byte));
+            funct3_lbu   : load_data = word_t'(rdata_byte);
+            funct3_lh_sh : load_data = word_t'(signed'(rdata_half));
+            funct3_lhu   : load_data = word_t'(rdata_half);
+            default      : load_data = rdata;
         endcase
     end
 endmodule

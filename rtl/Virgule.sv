@@ -13,14 +13,36 @@ module Virgule
     Bus.m     bus
 );
 
+    typedef enum {fetch, decode, execute, load, store, writeback} state_t;
+
+    state_t       state_reg;    // The state of the sequencer
+    bit           fetch_en;     // Are we fetching an instruction?
+    bit           decode_en;    // Are we decoding an instruction?
+    bit           execute_en;   // Are we executing an instruction?
+    bit           load_en;      // Are we loading data from memory?
+    bit           store_en;     // Are we storing data to memory?
+    bit           writeback_en; // Are we writing results to a register?
+    instruction_t instr;        // The decoded instruction.
+    instruction_t instr_reg;    // Decoded instruction register.
+    word_t        rdata_reg;    // Read data bus register.
+    word_t        xs1;          // Source register value for operand 1.
+    word_t        xs1_reg;      // Source register value for operand 1, registered.
+    word_t        xs2;          // Source register value for operand 2.
+    word_t        xs2_reg;      // Source register value for operand 2, registered.
+    word_t        xd;           // Destination register value.
+    word_t        pc_next;      // Next program counter, according to branch unit.
+    word_t        pc_reg;       // Program counter register.
+    word_t        pc_incr;      // Address of next instruction in sequence.
+    word_t        pc_incr_reg;  // Address of next instruction in sequence, registered.
+    word_t        alu_a_reg;    // ALU operand A, registered.
+    word_t        alu_b_reg;    // ALU operand B, registered.
+    word_t        alu_r;        // ALU result.
+    word_t        alu_r_reg;    // ALU result, registered
+    word_t        load_data;    // Data from load operation, re-aligned.
+
     //
     // Sequencer
     //
-
-    typedef enum {fetch, decode, execute, load, store, writeback} state_t;
-
-    state_t state_reg;
-    instruction_t instr; // From decoding stage
 
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -41,29 +63,22 @@ module Virgule
         end
     end
 
-    bit fetch_en     = state_reg == fetch;
-    bit decode_en    = state_reg == decode;
-    bit execute_en   = state_reg == execute;
-    bit load_en      = state_reg == load;
-    bit store_en     = state_reg == store;
-    bit writeback_en = state_reg == writeback;
+    assign decode_en    = state_reg == decode;
+    assign execute_en   = state_reg == execute;
+    assign fetch_en     = state_reg == fetch;
+    assign load_en      = state_reg == load;
+    assign store_en     = state_reg == store;
+    assign writeback_en = state_reg == writeback;
 
     // 
     //  Instruction decoding:
     //  decode, read registers, select ALU operands.
     // 
 
-    word_t rdata_reg; // From memory access stage
-
     Decoder dec (
         .data(rdata_reg),
         .instr(instr)
     );
-
-    instruction_t instr_reg;
-    word_t        xd; // From writeback stage
-    word_t        xs1;
-    word_t        xs2;
 
     RegisterUnit #(
         .SIZE(REGISTER_UNIT_SIZE)
@@ -77,12 +92,6 @@ module Virgule
         .xs1(xs1),
         .xs2(xs2)
     );
-
-    word_t pc_reg; // From execution stage
-    word_t xs1_reg;
-    word_t xs2_reg;
-    word_t alu_a_reg;
-    word_t alu_b_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -107,8 +116,6 @@ module Virgule
     // update program counter.
     //
 
-    word_t alu_r;
-
     ArithLogicUnit alu (
         .instr(instr_reg),
         .a(alu_a_reg),
@@ -116,8 +123,7 @@ module Virgule
         .r(alu_r)
     );
 
-    word_t pc_next;
-    word_t pc_incr = pc_reg + 4;
+    assign pc_incr = pc_reg + 4;
 
     BranchUnit #(
         .IRQ_ADDRESS(IRQ_ADDRESS)
@@ -133,9 +139,6 @@ module Virgule
         .pc_incr(pc_incr),
         .pc_next(pc_next)
     );
-
-    word_t pc_incr_reg;
-    word_t alu_r_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -164,8 +167,6 @@ module Virgule
         end
     end
 
-    word_t load_data;
-
     LoadStoreUnit ld_st (
         .instr(instr_reg),
         .address(alu_r_reg),
@@ -184,8 +185,8 @@ module Virgule
     // Write back
     //
 
-    assign xd = instr_reg.is_load ? load_data :
-                instr_reg.is_jump ? pc_incr_reg     :
+    assign xd = instr_reg.is_load ? load_data   :
+                instr_reg.is_jump ? pc_incr_reg :
                                     alu_r_reg;
 endmodule
 
