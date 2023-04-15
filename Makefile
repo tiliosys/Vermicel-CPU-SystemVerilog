@@ -4,13 +4,15 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 RTL=\
-	virgule_pkg \
+	types_pkg \
 	opcodes_pkg \
 	bus \
 	decoder \
 	arith_logic_unit \
 	comparator \
-	register_unit
+	register_unit \
+	branch_unit \
+	virgule_pkg
 
 TESTS=\
 	decoder_tb \
