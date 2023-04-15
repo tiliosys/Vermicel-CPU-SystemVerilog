@@ -12,7 +12,7 @@ module comparator_tb;
     word_t        cmp_a, cmp_b;
     bit           cmp_taken;
 
-    comparator cmp_inst (
+    comparator cmp (
         .instr(cmp_instr),
         .a(cmp_a),
         .b(cmp_b),

@@ -10,10 +10,10 @@ module register_unit #(
     parameter int unsigned size
 ) (
     input  bit           clk,
-    input  instruction_t src_instr, 
-    input  instruction_t dest_instr, 
     input  bit           reset, 
     input  bit           enable, 
+    input  instruction_t src_instr, 
+    input  instruction_t dest_instr, 
     input  word_t        xd, 
     output word_t        xs1, 
     output word_t        xs2

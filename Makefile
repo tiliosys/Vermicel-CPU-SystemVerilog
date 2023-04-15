@@ -13,7 +13,8 @@ RTL=\
 	register_unit \
 	branch_unit \
 	load_store_unit \
-	virgule_pkg
+	virgule_pkg \
+	virgule
 
 TESTS=\
 	decoder_tb \

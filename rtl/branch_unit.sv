@@ -17,13 +17,13 @@ module branch_unit #(
     input  word_t        xs1,
     input  word_t        xs2,
     input  word_t        address,
-    input  word_t        pc_next,
-    output word_t        pc
+    input  word_t        pc_incr,
+    output word_t        pc_next
 );
 
     bit cmp_taken;
 
-    comparator cmp_inst (
+    comparator cmp (
         .instr(instr),
         .a(xs1),
         .b(xs2),
@@ -35,11 +35,11 @@ module branch_unit #(
     word_t pc_target =
         instr.is_mret                                   ? mepc                  :
         instr.is_jump || (instr.is_branch && cmp_taken) ? {address[31:2], 2'b0} :
-                                                          pc_next;
+                                                          pc_incr;
 
     bit irq_state;
 
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
         if (reset) begin
             irq_state <= 0;
         end
@@ -55,7 +55,7 @@ module branch_unit #(
 
     bit accept_irq = irq && !irq_state;
 
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
         if (reset) begin
             mepc <= 0;
         end
@@ -64,5 +64,5 @@ module branch_unit #(
         end
     end
 
-    assign pc = accept_irq ? irq_address : pc_target;
+    assign pc_next = accept_irq ? irq_address : pc_target;
 endmodule

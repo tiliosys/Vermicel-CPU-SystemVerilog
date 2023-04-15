@@ -8,12 +8,12 @@ import opcodes_pkg::*;
 
 module decoder_tb;
 
-    word_t        decoder_data;
-    instruction_t decoder_instr;
+    word_t        dec_data;
+    instruction_t dec_instr;
 
-    decoder decoder_inst (
-        .data(decoder_data),
-        .instr(decoder_instr)
+    decoder dec (
+        .data(dec_data),
+        .instr(dec_instr)
     );
 
     typedef bit[4:0] field_ignore_t;
@@ -24,31 +24,31 @@ module decoder_tb;
     localparam field_ignore_t ignore_funct3 = 'b00001;
 
     task check(string label, word_t data, instruction_t instr, field_ignore_t ignore);
-        decoder_data = data;
+        dec_data = data;
 
         #1;
 
         if (|(ignore & ignore_rd)) begin
-            instr.rd = decoder_instr.rd;
+            instr.rd = dec_instr.rd;
         end
         if (|(ignore & ignore_rs1)) begin
-            instr.rs1 = decoder_instr.rs1;
+            instr.rs1 = dec_instr.rs1;
         end
         if (|(ignore & ignore_rs2)) begin
-            instr.rs2 = decoder_instr.rs2;
+            instr.rs2 = dec_instr.rs2;
         end
         if (|(ignore & ignore_imm)) begin
-            instr.imm = decoder_instr.imm;
+            instr.imm = dec_instr.imm;
         end
         if (|(ignore & ignore_funct3)) begin
-            instr.funct3 = decoder_instr.funct3;
+            instr.funct3 = dec_instr.funct3;
         end
 
-        if (decoder_instr == instr) begin
+        if (dec_instr == instr) begin
             $display("[PASS] %s", label);
         end
         else begin
-            $display("[FAIL] %s : result=%08h expected=%08h", label, decoder_instr, instr);
+            $display("[FAIL] %s : result=%08h expected=%08h", label, dec_instr, instr);
         end
     endtask
 
