@@ -15,9 +15,9 @@ module ArithLogicUnit
     output word_t        r
 );
 
-    bit[5:0] sh; // Shift amount for SLL, SRL, SRA instructions.
+    bit[4:0] sh; // Shift amount for SLL, SRL, SRA instructions.
 
-    assign sh = b[5:0];
+    assign sh = b[4:0];
 
     always_comb begin
         case (instr.alu_fn)
