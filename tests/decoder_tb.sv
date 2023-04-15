@@ -3,7 +3,7 @@ import opcodes_pkg::*;
 
 module decoder_tb;
 
-    word_t decoder_data;
+    word_t        decoder_data;
     instruction_t decoder_instr;
 
     decoder decoder_inst (
@@ -49,7 +49,6 @@ module decoder_tb;
 
     initial begin
         $display("[TEST] decoder_tb");
-
         //                                                           rd  rs1 rs2 imm         funct3          alu_fn    use_pc use_imm has_rd is_load is_store is_jump is_branch is_mret
         // Test rd, rs1, rs2 for R-type instruction.
         check("ADD x0,  x0,  x0",       asm_add(0,  0,  0),        '{0,  0,  0,  0,          funct3_add_sub, alu_add,  0,     0,      0,     0,      0,       0,      0,        0}, ignore_imm);

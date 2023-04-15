@@ -61,34 +61,34 @@ package opcodes_pkg;
         register_index_t rd;
         register_index_t rs1;
         register_index_t rs2;
-        signed_word_t imm;
-        funct3_t funct3;
-        alu_fn_t alu_fn;
-        bit use_pc;
-        bit use_imm;
-        bit has_rd;
-        bit is_load;
-        bit is_store;
-        bit is_jump;
-        bit is_branch;
-        bit is_mret;
+        signed_word_t    imm;
+        funct3_t         funct3;
+        alu_fn_t         alu_fn;
+        bit              use_pc;
+        bit              use_imm;
+        bit              has_rd;
+        bit              is_load;
+        bit              is_store;
+        bit              is_jump;
+        bit              is_branch;
+        bit              is_mret;
     } instruction_t;
 
     const instruction_t instr_nop = '{
-        rd : 0,
-        rs1 : 0,
-        rs2 : 0,
-        imm : 0,
-        funct3 : funct3_add_sub,
-        alu_fn : alu_nop,
-        use_pc : 0,
-        use_imm : 0,
-        has_rd : 0,
-        is_load : 0,
-        is_store : 0,
-        is_jump : 0,
+        rd        : 0,
+        rs1       : 0,
+        rs2       : 0,
+        imm       : 0,
+        funct3    : funct3_add_sub,
+        alu_fn    : alu_nop,
+        use_pc    : 0,
+        use_imm   : 0,
+        has_rd    : 0,
+        is_load   : 0,
+        is_store  : 0,
+        is_jump   : 0,
         is_branch : 0,
-        is_mret : 0
+        is_mret   : 0
     };
 
     function static word_t encode(
@@ -100,13 +100,14 @@ package opcodes_pkg;
             imm = signed_word_t'({funct7, imm[4:0]});
         end
         case (opcode)
-            opcode_op     : return {funct7, rs2, rs1, funct3, rd, opcode};                            // R
-            opcode_store  : return {imm[11:5], rs2, rs1, funct3, imm[4:0], opcode};                   // S
-            opcode_branch : return {imm[12], imm[10:5], rs2, rs1, funct3, imm[4:1], imm[11], opcode}; // B
+            //                      31        | 30       | 24 | 20     | 19 | 14    | 11               | 6    0
+            opcode_op     : return {funct7               , rs2         , rs1, funct3, rd               , opcode}; // R
+            opcode_store  : return {imm[11:5]            , rs2         , rs1, funct3, imm[4:0]         , opcode}; // S
+            opcode_branch : return {imm[12]   , imm[10:5], rs2         , rs1, funct3, imm[4:1], imm[11], opcode}; // B
             opcode_lui,
-            opcode_auipc  : return {imm[31:12], rd, opcode};                                          // U
-            opcode_jal    : return {imm[20], imm[10:1], imm[11], imm[19:12], rd, opcode};             // J
-            default       : return {imm[11:0], rs1, funct3, rd, opcode};                              // I
+            opcode_auipc  : return {imm[31:12]                                      , rd               , opcode}; // U
+            opcode_jal    : return {imm[20]   , imm[10:1]     , imm[11], imm[19:12] , rd               , opcode}; // J
+            default       : return {imm[11:0]                          , rs1, funct3, rd               , opcode}; // I
         endcase
     endfunction
 

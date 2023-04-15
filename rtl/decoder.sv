@@ -3,16 +3,16 @@ import virgule_pkg::*;
 import opcodes_pkg::*;
 
 module decoder (
-    input word_t data,
+    input  word_t        data,
     output instruction_t instr
 );
 
-    funct7_t funct7      = data[31:25];
-    register_index_t rs2 = data[24:20];
-    register_index_t rs1 = data[19:15];
-    funct3_t funct3      = data[14:12];
-    register_index_t rd  = data[11: 7];
-    base_opcode_t opcode = data[ 6: 0];
+    funct7_t         funct7 = data[31:25];
+    register_index_t rs2    = data[24:20];
+    register_index_t rs1    = data[19:15];
+    funct3_t         funct3 = data[14:12];
+    register_index_t rd     = data[11: 7];
+    base_opcode_t    opcode = data[ 6: 0];
 
     signed_word_t imm;
     always_comb begin
