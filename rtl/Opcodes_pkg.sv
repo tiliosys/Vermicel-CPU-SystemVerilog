@@ -42,8 +42,7 @@ package Opcodes_pkg;
     localparam funct3_t FUNCT3_AND     = 'b111;
     localparam funct3_t FUNCT3_SLL     = 'b001;
     localparam funct3_t FUNCT3_SRL_SRA = 'b101;
-    localparam funct3_t FUNCT3_MRET    = 'b000;
-    localparam funct3_t FUNCT3_NONE    = 'b000;
+    localparam funct3_t FUNCT3_DEFAULT = 'b000;
 
     // funct7 opcodes.
     typedef bit[6:0] funct7_t;
@@ -51,7 +50,9 @@ package Opcodes_pkg;
     localparam funct7_t FUNCT7_SUB_SRA = 'b0100000;
 
     // Immediate_encoded opcodes.
-    localparam signed_word_t IMM_MRET = 'b001100000010;
+    localparam signed_word_t IMM_MRET   = 'b001100000010;
+    localparam signed_word_t IMM_ECALL  = 'b000000000000;
+    localparam signed_word_t IMM_EBREAK = 'b000000000001;
 
     // Post-decoding instruction representation.
     typedef bit[4:0] register_index_t;
@@ -75,6 +76,7 @@ package Opcodes_pkg;
         bit              is_store;
         bit              is_jump;
         bit              is_branch;
+        bit              is_trap;
         bit              is_mret;
     } instruction_t;
 
@@ -92,6 +94,7 @@ package Opcodes_pkg;
         is_store  : 0,
         is_jump   : 0,
         is_branch : 0,
+        is_trap   : 0,
         is_mret   : 0
     };
 
@@ -116,15 +119,15 @@ package Opcodes_pkg;
     endfunction
 
     function static word_t asm_lui(register_index_t rd, word_t imm);
-         return encode(OPCODE_LUI, FUNCT3_NONE, rd, 0, 0, imm, FUNCT7_DEFAULT);
+         return encode(OPCODE_LUI, FUNCT3_DEFAULT, rd, 0, 0, imm, FUNCT7_DEFAULT);
     endfunction
 
     function static word_t asm_auipc(register_index_t rd, word_t imm);
-         return encode(OPCODE_AUIPC, FUNCT3_NONE, rd, 0, 0, imm, FUNCT7_DEFAULT);
+         return encode(OPCODE_AUIPC, FUNCT3_DEFAULT, rd, 0, 0, imm, FUNCT7_DEFAULT);
     endfunction
 
     function static word_t asm_jal(register_index_t rd, word_t offset);
-         return encode(OPCODE_JAL, FUNCT3_NONE, rd, 0, 0, offset, FUNCT7_DEFAULT);
+         return encode(OPCODE_JAL, FUNCT3_DEFAULT, rd, 0, 0, offset, FUNCT7_DEFAULT);
     endfunction
 
     function static word_t asm_jalr(register_index_t rd, register_index_t rs1, word_t offset);
@@ -264,6 +267,6 @@ package Opcodes_pkg;
     endfunction
 
     function static word_t asm_mret();
-         return encode(OPCODE_SYSTEM, FUNCT3_MRET, 0, 0, 0, IMM_MRET, FUNCT7_DEFAULT);
+         return encode(OPCODE_SYSTEM, FUNCT3_DEFAULT, 0, 0, 0, IMM_MRET, FUNCT7_DEFAULT);
     endfunction
 endpackage

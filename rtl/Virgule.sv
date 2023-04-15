@@ -126,7 +126,8 @@ module Virgule
     assign pc_incr = pc_reg + 4;
 
     BranchUnit #(
-        .IRQ_ADDRESS(IRQ_ADDRESS)
+        .IRQ_ADDRESS(IRQ_ADDRESS),
+        .TRAP_ADDRESS(TRAP_ADDRESS)
     ) branch (
         .clk(clk),
         .reset(reset),

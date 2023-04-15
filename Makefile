@@ -14,25 +14,30 @@ RTL=\
 	BranchUnit \
 	LoadStoreUnit \
 	Virgule_pkg \
-	Virgule
+	Virgule \
+	SinglePortRAM
 
 TESTS?=\
 	Decoder_tb \
 	ArithLogicUnit_tb \
 	Comparator_tb \
 	RegisterUnit_tb \
-	Virgule_tb
+	Virgule_tb \
+	rv32ui_tb
 
 RTL_SRC=$(addprefix rtl/,$(addsuffix .sv,$(RTL)))
 TESTS_SRC=$(addprefix tests/,$(addsuffix .sv,$(TESTS)))
 TESTS_BIN=$(addprefix obj_dir/,$(TESTS))
 
-run: $(TESTS_BIN)
+run: tests/rv32ui/tests.txt $(TESTS_BIN)
 	for f in $^; do $$f; done | tee tests.log
 	@echo "--"
 	@echo "Total PASS: " $$(grep PASS tests.log | wc -l)
 	@echo "Total FAIL: " $$(grep FAIL tests.log | wc -l)
 	@echo "--"
+
+tests/rv32ui/tests.txt:
+	$(MAKE) -C $(@D) $(@F)
 
 obj_dir/%: $(RTL_SRC) tests/%.sv
 	verilator -sv --binary --timing -Wno-lint --top-module $* -o $* $^
@@ -43,3 +48,5 @@ lint: $(RTL_SRC)
 clean:
 	rm -rf obj_dir
 	rm -f tests.log
+	$(MAKE) -C tests/rv32ui clean
+

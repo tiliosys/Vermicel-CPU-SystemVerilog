@@ -7,7 +7,8 @@ module BranchUnit
     import Types_pkg::*,
            Opcodes_pkg::*;
 #(
-    parameter word_t IRQ_ADDRESS
+    parameter word_t IRQ_ADDRESS,
+    parameter word_t TRAP_ADDRESS
 )
 (
     input  bit           clk,
@@ -22,11 +23,12 @@ module BranchUnit
     output word_t        pc_next
 );
 
-    bit    taken;         // Is the branch taken?
-    word_t pc_target;     // Target program counter in normal execution flow.
-    bit    irq_state_reg; // Are we processing an IRQ?
-    bit    accept_irq;    // Are we switching to IRQ mode?
-    word_t mepc_reg;      // Saved program counter when switching to IRQ mode.
+    bit    taken;            // Is the branch taken?
+    bit    is_trap;          // Is the instruction a system call?
+    word_t pc_target;        // Target program counter in normal execution flow.
+    bit    except_state_reg; // Are we processing an IRQ?
+    bit    accept_irq;       // Are we switching to IRQ mode?
+    word_t mepc_reg;         // Saved program counter when switching to IRQ mode.
 
     Comparator cmp (
         .instr(instr),
@@ -42,28 +44,31 @@ module BranchUnit
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            irq_state_reg <= 0;
+            except_state_reg <= 0;
         end
         else if (enable) begin
             if (instr.is_mret) begin
-                irq_state_reg <= 0;
+                except_state_reg <= 0;
             end
             else if (irq) begin
-                irq_state_reg <= 1;
+                except_state_reg <= 1;
             end
         end
     end
 
-    assign accept_irq = irq && !irq_state_reg;
+    assign accept_irq = irq && !except_state_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin
             mepc_reg <= 0;
         end
-        else if (enable && accept_irq) begin
+        else if (enable && (accept_irq || instr.is_trap)) begin
             mepc_reg <= pc_target;
         end
     end
 
-    assign pc_next = accept_irq ? IRQ_ADDRESS : pc_target;
+    assign pc_next =
+        accept_irq    ? IRQ_ADDRESS  :
+        instr.is_trap ? TRAP_ADDRESS :
+                        pc_target;
 endmodule
