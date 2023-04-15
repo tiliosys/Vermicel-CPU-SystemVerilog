@@ -71,12 +71,20 @@ module register_unit_tb;
 
     initial begin
         $display("[TEST] register_unit_tb");
+
+        reg_enable = 0;
+        reg_reset  = 1;
+        @(posedge reg_clk);
+        reg_reset  = 0;
+
         for (int n = 0; n < reg_size; n ++) begin
             write(n);
         end
+
         for (int n = 0; n < reg_size; n += 2) begin
             check_read(n, n + 1);
         end
+
         $display("[DONE] register_unit_tb");
         $finish;
     end
