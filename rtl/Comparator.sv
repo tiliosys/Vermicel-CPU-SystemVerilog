@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
-
-module comparator (
+module Comparator
+    import Types_pkg::*,
+           Opcodes_pkg::*;
+(
     input  instruction_t instr,
     input  word_t        a,
     input  word_t        b,

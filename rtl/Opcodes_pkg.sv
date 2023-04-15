@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
+package Opcodes_pkg;
 
-package opcodes_pkg;
+    import Types_pkg::*;
 
     // Base opcodes.
     typedef bit[6:0] base_opcode_t;

@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
-
-module register_unit #(
-    parameter int unsigned size
-) (
+module RegisterUnit
+    import Types_pkg::*,
+           Opcodes_pkg::*;
+#(
+    parameter int unsigned SIZE
+)
+(
     input  bit           clk,
     input  bit           reset, 
     input  bit           enable, 
@@ -19,11 +20,11 @@ module register_unit #(
     output word_t        xs2
 );
 
-    word_t x_reg[0:size-1];
+    word_t x_reg[0:SIZE-1];
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            x_reg <= '{size{0}};
+            x_reg <= '{SIZE{0}};
         end
         else if (enable && dest_instr.has_rd) begin
             x_reg[dest_instr.rd] <= xd;

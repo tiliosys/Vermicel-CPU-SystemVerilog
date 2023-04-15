@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
+module ArithLogicUnit_tb;
 
-module arith_logic_unit_tb;
+    import Types_pkg::*;
+    import Opcodes_pkg::*;
 
     instruction_t instr;
     word_t        alu_a, alu_b, alu_r;
 
-    arith_logic_unit alu (
+    ArithLogicUnit alu (
         .instr(instr),
         .a(alu_a),
         .b(alu_b),

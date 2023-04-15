@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
-
-module branch_unit #(
-    parameter word_t irq_address
-) (
+module BranchUnit
+    import Types_pkg::*,
+           Opcodes_pkg::*;
+#(
+    parameter word_t IRQ_ADDRESS
+)
+(
     input  bit           clk,
     input  bit           reset,
     input  bit           enable,
@@ -23,7 +24,7 @@ module branch_unit #(
 
     bit cmp_taken;
 
-    comparator cmp (
+    Comparator cmp (
         .instr(instr),
         .a(xs1),
         .b(xs2),
@@ -64,5 +65,5 @@ module branch_unit #(
         end
     end
 
-    assign pc_next = accept_irq ? irq_address : pc_target;
+    assign pc_next = accept_irq ? IRQ_ADDRESS : pc_target;
 endmodule

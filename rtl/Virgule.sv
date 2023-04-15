@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
-import virgule_pkg::*;
-
-module virgule (
+module Virgule
+    import Types_pkg::*,
+           Opcodes_pkg::*,
+           Virgule_pkg::*;
+(
     input bit clk,
     input bit reset,
-    bus_if.m  bus
+    Bus.m     bus
 );
 
     //
@@ -55,7 +55,7 @@ module virgule (
 
     word_t rdata_reg; // From memory access stage
 
-    decoder dec (
+    Decoder dec (
         .data(rdata_reg),
         .instr(instr)
     );
@@ -65,8 +65,8 @@ module virgule (
     word_t        xs1;
     word_t        xs2;
 
-    register_unit #(
-        .size(register_unit_size)
+    RegisterUnit #(
+        .SIZE(REGISTER_UNIT_SIZE)
     ) regs (
         .clk(clk),
         .reset(reset),
@@ -109,7 +109,7 @@ module virgule (
 
     word_t alu_r;
 
-    arith_logic_unit alu (
+    ArithLogicUnit alu (
         .instr(instr_reg),
         .a(alu_a_reg),
         .b(alu_b_reg),
@@ -119,8 +119,8 @@ module virgule (
     word_t pc_next;
     word_t pc_incr = pc_reg + 4;
 
-    branch_unit #(
-        .irq_address(irq_address)
+    BranchUnit #(
+        .IRQ_ADDRESS(IRQ_ADDRESS)
     ) branch (
         .clk(clk),
         .reset(reset),
@@ -166,7 +166,7 @@ module virgule (
 
     word_t load_data;
 
-    load_store_unit ld_st (
+    LoadStoreUnit ld_st (
         .instr(instr_reg),
         .address(alu_r_reg),
         .store_enable(store_en),

@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
+module Decoder_tb;
 
-module decoder_tb;
+    import Types_pkg::*;
+    import Opcodes_pkg::*;
 
     word_t        dec_data;
     instruction_t dec_instr;
 
-    decoder dec (
+    Decoder dec (
         .data(dec_data),
         .instr(dec_instr)
     );

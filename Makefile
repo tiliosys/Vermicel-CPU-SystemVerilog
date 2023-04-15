@@ -4,23 +4,23 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 RTL=\
-	types_pkg \
-	opcodes_pkg \
-	bus \
-	decoder \
-	arith_logic_unit \
-	comparator \
-	register_unit \
-	branch_unit \
-	load_store_unit \
-	virgule_pkg \
-	virgule
+	Types_pkg \
+	Opcodes_pkg \
+	Bus \
+	Decoder \
+	ArithLogicUnit \
+	Comparator \
+	RegisterUnit \
+	BranchUnit \
+	LoadStoreUnit \
+	Virgule_pkg \
+	Virgule
 
 TESTS=\
-	decoder_tb \
-	arith_logic_unit_tb \
-	comparator_tb \
-	register_unit_tb \
+	Decoder_tb \
+	ArithLogicUnit_tb \
+	Comparator_tb \
+	RegisterUnit_tb \
 
 RTL_SRC=$(addprefix rtl/,$(addsuffix .sv,$(RTL)))
 TESTS_SRC=$(addprefix tests/,$(addsuffix .sv,$(TESTS)))
@@ -33,7 +33,7 @@ obj_dir/%: $(RTL_SRC) tests/%.sv
 	verilator -sv --binary --timing -Wno-lint --top-module $* -o $* $^
 
 lint: $(RTL_SRC)
-	verilator -sv --lint-only --timing -Wall $^
+	verilator -sv --lint-only --timing -Wall --top-module $(lastword $(RTL)) $^
 
 clean:
 	rm -rf obj_dir

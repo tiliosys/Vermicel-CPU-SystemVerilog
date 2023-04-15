@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
+module Comparator_tb;
 
-module comparator_tb;
+    import Types_pkg::*;
+    import Opcodes_pkg::*;
 
     instruction_t cmp_instr;
     word_t        cmp_a, cmp_b;
     bit           cmp_taken;
 
-    comparator cmp (
+    Comparator cmp (
         .instr(cmp_instr),
         .a(cmp_a),
         .b(cmp_b),

@@ -3,19 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
-import opcodes_pkg::*;
+module RegisterUnit_tb;
 
-module register_unit_tb;
+    import Types_pkg::*;
+    import Opcodes_pkg::*;
 
-    localparam int regs_size = 32;
+    localparam int REGS_SIZE = 32;
 
     bit           regs_clk, regs_reset, regs_enable;
     instruction_t regs_src_instr, regs_dest_instr;
     word_t        regs_xd, regs_xs1, regs_xs2;
     
-    register_unit #(
-        .size(regs_size)
+    RegisterUnit #(
+        .SIZE(REGS_SIZE)
     ) regs (
         .clk(regs_clk),
         .reset(regs_reset),
@@ -77,11 +77,11 @@ module register_unit_tb;
         @(posedge regs_clk);
         regs_reset  = 0;
 
-        for (int n = 0; n < regs_size; n ++) begin
+        for (int n = 0; n < REGS_SIZE; n ++) begin
             write(n);
         end
 
-        for (int n = 0; n < regs_size; n += 2) begin
+        for (int n = 0; n < REGS_SIZE; n += 2) begin
             check_read(n, n + 1);
         end
 

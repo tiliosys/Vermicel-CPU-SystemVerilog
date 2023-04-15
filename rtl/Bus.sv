@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import types_pkg::*;
+interface Bus;
 
-interface bus_if;
+    import Types_pkg::*;
 
     bit       valid;
     bit       ready;
