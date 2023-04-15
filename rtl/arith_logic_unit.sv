@@ -7,16 +7,16 @@ import virgule_pkg::*;
 import opcodes_pkg::*;
 
 module arith_logic_unit (
-    input  alu_fn_t fn,
-    input  word_t   a,
-    input  word_t   b,
-    output word_t   r
+    input  instruction_t instr,
+    input  word_t        a,
+    input  word_t        b,
+    output word_t        r
 );
 
     bit[5:0] sh = b[5:0];
 
     always_comb begin
-        case (fn)
+        case (instr.alu_fn)
             alu_nop  : r = b;
             alu_add  : r = a + b;
             alu_sub  : r = a - b;

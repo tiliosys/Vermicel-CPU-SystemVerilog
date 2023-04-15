@@ -7,20 +7,21 @@ import opcodes_pkg::*;
 
 module arith_logic_unit_tb;
 
-    alu_fn_t alu_fn;
-    word_t   alu_a, alu_b, alu_r;
+    instruction_t alu_instr;
+    word_t        alu_a, alu_b, alu_r;
 
     arith_logic_unit alu_inst (
-        .fn(alu_fn),
+        .instr(alu_instr),
         .a(alu_a),
         .b(alu_b),
         .r(alu_r)
     );
 
     task check(string label, alu_fn_t fn, word_t a, word_t b, word_t r);
-        alu_fn = fn;
-        alu_a  = a;
-        alu_b  = b;
+        alu_instr        = instr_nop;
+        alu_instr.alu_fn = fn;
+        alu_a            = a;
+        alu_b            = b;
 
         #1;
 

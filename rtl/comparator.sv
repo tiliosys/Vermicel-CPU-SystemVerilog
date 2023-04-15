@@ -7,14 +7,14 @@ import virgule_pkg::*;
 import opcodes_pkg::*;
 
 module comparator (
-    input  funct3_t funct3,
-    input  word_t   a,
-    input  word_t   b,
-    output bit      taken
+    input  instruction_t instr,
+    input  word_t        a,
+    input  word_t        b,
+    output bit           taken
 );
 
     always_comb begin
-        case (funct3)
+        case (instr.funct3)
             funct3_beq  : taken = a == b;
             funct3_bne  : taken = a != b;
             funct3_blt  : taken = signed'(a) <  signed'(b);

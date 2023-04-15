@@ -5,21 +5,22 @@
 
 module comparator_tb;
 
-    funct3_t cmp_funct3;
-    word_t   cmp_a, cmp_b;
-    bit      cmp_taken;
+    instruction_t cmp_instr;
+    word_t        cmp_a, cmp_b;
+    bit           cmp_taken;
 
     comparator cmp_inst (
-        .funct3(cmp_funct3),
+        .instr(cmp_instr),
         .a(cmp_a),
         .b(cmp_b),
         .taken(cmp_taken)
     );
 
     task check(string label, funct3_t funct3, word_t a, word_t b, bit taken);
-        cmp_funct3 = funct3;
-        cmp_a      = a;
-        cmp_b      = b;
+        cmp_instr        = instr_nop;
+        cmp_instr.funct3 = funct3;
+        cmp_a            = a;
+        cmp_b            = b;
 
         #1;
 
