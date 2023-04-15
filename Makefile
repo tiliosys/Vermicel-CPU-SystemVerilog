@@ -54,7 +54,6 @@ lint: $(RTL_SRC)
 	verilator -sv --lint-only --timing -Wall --top-module $(TOP) lint.vlt $^
 
 clean:
-	rm -rf obj_dir
-	rm -f tests.log
+	rm -rf obj_dir tests.log *.vcd vivado*
 	$(MAKE) -C tests/rv32ui clean
 

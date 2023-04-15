@@ -2,6 +2,7 @@
 obj_dir
 *.log
 *.mem
+*.vcd
 build
 .Xil
 vivado*
