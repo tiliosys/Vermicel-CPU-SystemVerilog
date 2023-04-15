@@ -9,11 +9,13 @@ RTL=$(addprefix rtl/,\
 	bus.sv \
 	decoder.sv \
 	arith_logic_unit.sv \
+	comparator.sv \
 )
 
 TESTS=$(addprefix obj_dir/,\
 	decoder_tb \
 	arith_logic_unit_tb \
+	comparator_tb \
 )
 
 run: $(TESTS)
