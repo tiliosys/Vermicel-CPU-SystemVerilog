@@ -17,10 +17,10 @@ package Timer_pkg;
     localparam LOCAL_ADDRESS_WIDTH = $clog2(LOCAL_ADDRESS_NUM);
 
     typedef struct packed {
-        bit irq_flag;      // IRQ pending flag (RW, autoset)
-        bit irq_enable;    // Enable IRQs      (RW)
-        bit refill_enable; // Refill command   (RW, autoclear)
-        bit count_enable;  // Enable counting  (RW)
+        bit event_flag;   // Timer rollover indicator (RW, autoset)
+        bit irq_enable;   // Enable IRQs              (RW)
+        bit cyclic_mode;  // Enable cyclic mode       (RW)
+        bit count_enable; // Enable counting          (RW, autoclear)
     } control_reg_t;
 
 endpackage

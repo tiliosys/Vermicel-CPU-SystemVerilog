@@ -24,40 +24,31 @@ module Timer (Bus.s bus);
         if (bus.reset) begin
             control_reg <= 0;
         end
-        else if (bus.valid && local_address == CONTROL_ADDRESS && bus.wstrobe != 0) begin
+        else if (bus.write_enabled() && local_address == CONTROL_ADDRESS) begin
             control_reg <= control_reg_t'(bus.write_into(control_reg_as_word));
         end
-        else begin
-            control_reg.refill_enable <= 0;
-            if (control_reg.count_enable && control_reg.irq_enable && count_reg == 0) begin
-                control_reg.irq_flag <= 1;
-            end 
+        else if (control_reg.count_enable && count_reg == 0) begin
+            control_reg.event_flag <= 1;
+            if (!control_reg.cyclic_mode) begin
+                control_reg.count_enable <= 0;
+            end
         end
     end
 
     always_ff @(posedge bus.clk) begin
         if (bus.reset) begin
             refill_reg <= 0;
+            count_reg  <= 0;
         end
-        else if (bus.valid && local_address == REFILL_ADDRESS) begin
+        else if (bus.write_enabled() && local_address == REFILL_ADDRESS) begin
             refill_reg <= bus.write_into(refill_reg);
+            count_reg  <= bus.write_into(count_reg);
         end 
-    end
-
-    always_ff @(posedge bus.clk) begin
-        if (bus.reset) begin
-            count_reg <= 0;
+        else if (control_reg.count_enable && count_reg != 0) begin
+            count_reg <= count_reg - 1;
         end
-        else if (control_reg.refill_enable) begin
+        else begin
             count_reg <= refill_reg;
-        end
-        else if (control_reg.count_enable) begin
-            if (count_reg == 0) begin
-                count_reg <= refill_reg;
-            end
-            else begin
-                count_reg <= count_reg + 1;
-            end
         end
     end
 
@@ -70,6 +61,6 @@ module Timer (Bus.s bus);
     end
 
     assign bus.ready = bus.valid;
-    assign bus.irq   = control_reg.irq_flag;
+    assign bus.irq   = control_reg.event_flag && control_reg.irq_enable;
 
 endmodule
