@@ -6,23 +6,23 @@
 RTL = \
 	common/Types_pkg \
 	common/Bus \
-	cpu/Opcodes_pkg \
-	cpu/Decoder \
-	cpu/ArithLogicUnit \
-	cpu/Comparator \
-	cpu/RegisterUnit \
-	cpu/BranchUnit \
-	cpu/LoadStoreUnit \
-	cpu/Vermicel_pkg \
-	cpu/Vermicel \
+	core/Opcodes_pkg \
+	core/Decoder \
+	core/ArithLogicUnit \
+	core/Comparator \
+	core/RegisterUnit \
+	core/BranchUnit \
+	core/LoadStoreUnit \
+	core/Vermicel_pkg \
+	core/Vermicel \
 	devices/SinglePortRAM \
 	devices/Timer_pkg \
 	devices/Timer \
 	devices/UART_pkg \
 	devices/UART \
-	simple-soc/SimpleSoC
+	example/VermicelDemo
 
-TOP = SimpleSoC
+TOP = VermicelDemo
 
 TESTS ?= \
 	Decoder_tb \
@@ -33,7 +33,7 @@ TESTS ?= \
 	rv32ui_tb \
 	UART_tb
 
-RTL_SRC   = $(addprefix rtl/,$(addsuffix .sv,$(RTL)))
+RTL_SRC   = $(addsuffix .sv,$(RTL))
 TESTS_SRC = $(addprefix tests/,$(addsuffix .sv,$(TESTS)))
 TESTS_BIN = $(addprefix obj_dir/,$(TESTS))
 

@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module SimpleSoC #(
-    parameter RAM_SIZE_WORDS,
-    parameter RAM_INIT_FILENAME
+module VermicelDemo #(
+    parameter RAM_SIZE_WORDS = 128,
+    parameter RAM_INIT_FILENAME = "Hello.mem"
 )
 (
     input  bit clk,

@@ -80,7 +80,7 @@ module UART (
             tx_data_reg <= 0;
         end
         else if (bus.write_enabled() && local_address == TX_DATA_ADDRESS) begin
-            tx_data_reg <= bus.write_into(tx_data_reg_as_word);
+            tx_data_reg <= byte_t'(bus.write_into(tx_data_reg_as_word));
         end 
     end
 
