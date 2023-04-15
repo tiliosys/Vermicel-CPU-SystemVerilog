@@ -6,22 +6,22 @@
 `verilator_config
 
 // In instance Virgule
-lint_off -rule UNDRIVEN     -file "rtl/Bus.sv"            -match "Signal is not driven: 'ready'"
-lint_off -rule UNDRIVEN     -file "rtl/Bus.sv"            -match "Signal is not driven: 'irq'"
-lint_off -rule UNDRIVEN     -file "rtl/Bus.sv"            -match "Signal is not driven: 'rdata'"
-lint_off -rule UNUSEDSIGNAL -file "rtl/Bus.sv"            -match "Signal is not used: 'wstrobe'"
-lint_off -rule UNUSEDSIGNAL -file "rtl/Bus.sv"            -match "Signal is not used: 'wdata'"
-lint_off -rule UNUSEDSIGNAL -file "rtl/Bus.sv"            -match "Signal is not used: 'address'"
+lint_off -rule UNDRIVEN     -file "rtl/common/Bus.sv"         -match "Signal is not driven: 'ready'"
+lint_off -rule UNDRIVEN     -file "rtl/common/Bus.sv"         -match "Signal is not driven: 'irq'"
+lint_off -rule UNDRIVEN     -file "rtl/common/Bus.sv"         -match "Signal is not driven: 'rdata'"
+lint_off -rule UNUSEDSIGNAL -file "rtl/common/Bus.sv"         -match "Signal is not used: 'wstrobe'"
+lint_off -rule UNUSEDSIGNAL -file "rtl/common/Bus.sv"         -match "Signal is not used: 'wdata'"
+lint_off -rule UNUSEDSIGNAL -file "rtl/common/Bus.sv"         -match "Signal is not used: 'address'"
 
-lint_off -rule UNUSEDSIGNAL -file "rtl/ArithLogicUnit.sv" -match "Bits of signal are not used: 'instr'[89:40,7:0]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/ArithLogicUnit.sv" -match "Bits of signal are not used: 'instr'[90:41,8:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "rtl/LoadStoreUnit.sv"  -match "Bits of signal are not used: 'instr'[89:43,39:0]"
-lint_off -rule UNUSEDSIGNAL -file "rtl/LoadStoreUnit.sv"  -match "Bits of signal are not used: 'address'[31:2]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/LoadStoreUnit.sv"  -match "Bits of signal are not used: 'instr'[90:44,40:0]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/LoadStoreUnit.sv"  -match "Bits of signal are not used: 'address'[31:2]"
 
-lint_off -rule UNUSEDSIGNAL -file "rtl/RegisterUnit.sv"   -match "Bits of signal are not used: 'src_instr'[89:85,74:0]"
-lint_off -rule UNUSEDSIGNAL -file "rtl/RegisterUnit.sv"   -match "Bits of signal are not used: 'dest_instr'[84:6,4:0]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/RegisterUnit.sv"   -match "Bits of signal are not used: 'src_instr'[90:86,75:0]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/RegisterUnit.sv"   -match "Bits of signal are not used: 'dest_instr'[85:7,5:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "rtl/BranchUnit.sv"     -match "Bits of signal are not used: 'address'[1:0]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/BranchUnit.sv"     -match "Bits of signal are not used: 'address'[1:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "rtl/Comparator.sv"     -match "Bits of signal are not used: 'instr'[89:43,39:0]"
+lint_off -rule UNUSEDSIGNAL -file "rtl/cpu/Comparator.sv"     -match "Bits of signal are not used: 'instr'[90:44,40:0]"
 

@@ -26,7 +26,6 @@ module BranchUnit
 );
 
     bit    taken;            // Is the branch taken?
-    bit    is_trap;          // Is the instruction a system call?
     word_t pc_target;        // Target program counter in normal execution flow.
     bit    except_state_reg; // Are we processing an IRQ?
     bit    accept_irq;       // Are we switching to IRQ mode?
