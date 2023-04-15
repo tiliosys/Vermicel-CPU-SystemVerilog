@@ -12,11 +12,11 @@ module decoder_tb;
     );
 
     typedef bit[4:0] field_ignore_t;
-    localparam field_ignore_t ignore_rd     = 5'b10000;
-    localparam field_ignore_t ignore_rs1    = 5'b01000;
-    localparam field_ignore_t ignore_rs2    = 5'b00100;
-    localparam field_ignore_t ignore_imm    = 5'b00010;
-    localparam field_ignore_t ignore_funct3 = 5'b00001;
+    localparam field_ignore_t ignore_rd     = 'b10000;
+    localparam field_ignore_t ignore_rs1    = 'b01000;
+    localparam field_ignore_t ignore_rs2    = 'b00100;
+    localparam field_ignore_t ignore_imm    = 'b00010;
+    localparam field_ignore_t ignore_funct3 = 'b00001;
 
     task check(string label, word_t data, instruction_t instr, field_ignore_t ignore);
         decoder_data = data;
