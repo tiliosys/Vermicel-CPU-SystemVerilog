@@ -28,10 +28,10 @@ TESTS_SRC=$(addprefix tests/,$(addsuffix .sv,$(TESTS)))
 TESTS_BIN=$(addprefix obj_dir/,$(TESTS))
 
 run: $(TESTS_BIN)
-	for f in $^; do $$f; done | tee test.log
+	for f in $^; do $$f; done | tee tests.log
 	@echo "--"
-	@echo "Total PASS: " $$(grep PASS test.log | wc -l)
-	@echo "Total FAIL: " $$(grep FAIL test.log | wc -l)
+	@echo "Total PASS: " $$(grep PASS tests.log | wc -l)
+	@echo "Total FAIL: " $$(grep FAIL tests.log | wc -l)
 	@echo "--"
 
 obj_dir/%: $(RTL_SRC) tests/%.sv
@@ -42,3 +42,4 @@ lint: $(RTL_SRC)
 
 clean:
 	rm -rf obj_dir
+	rm -f tests.log
