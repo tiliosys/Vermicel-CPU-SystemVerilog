@@ -19,7 +19,7 @@ module UART_tb;
 
     bit clk, reset, uart_rx, uart_tx;
     bit ref_rx, ref_tx;
-    bit tx_data_error, tx_flag_error, tx_done;
+    bit tx_data_error, tx_flag_error, tx_irq_error, tx_done;
 
     Bus uart_bus (clk, reset);
 
@@ -41,9 +41,11 @@ module UART_tb;
             @(posedge uart.control_reg.tx_enable)
 
             data = uart.tx_data_reg;
+
             tx_data_error = 0;
             tx_flag_error = 0;
-            tx_done = 0;
+            tx_irq_error  = 0;
+            tx_done       = 0;
 
             @(posedge clk)
 
@@ -61,6 +63,9 @@ module UART_tb;
                     if (uart.control_reg.tx_event_flag) begin
                         tx_flag_error = 1;
                     end
+                    if (uart_bus.irq) begin
+                        tx_irq_error = 1;
+                    end
                 end
             end
 
@@ -74,6 +79,10 @@ module UART_tb;
 
             if (!uart.control_reg.tx_event_flag) begin
                 tx_flag_error = 1;
+            end
+
+            if (uart_bus.irq != uart.control_reg.tx_irq_enable) begin
+                tx_irq_error = 1;
             end
 
             tx_done = 1;
@@ -130,6 +139,11 @@ module UART_tb;
 
         if (tx_flag_error) begin
             $display("[FAIL] %s: event flag error (check waveforms)", label);
+            return;
+        end
+
+        if (tx_irq_error) begin
+            $display("[FAIL] %s: IRQ error (check waveforms)", label);
             return;
         end
 
