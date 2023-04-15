@@ -1,6 +1,6 @@
 
 import virgule_pkg::*;
-import decoder_pkg::*;
+import opcodes_pkg::*;
 
 module decoder (
     input word_t data,
@@ -18,11 +18,11 @@ module decoder (
     always_comb begin
         case (opcode)
             opcode_op                : imm = 0;
-            opcode_store             : imm = {funct7, rd}; // TODO sign-extend
-            opcode_branch            : imm = {data[31], data[7], data[30:25], data[11:8], 1'b0}; // TODO sign-extend
-            opcode_lui, opcode_auipc : imm = {funct7, rs2, rs1, funct3, 12'b0};
-            opcode_jal               : imm = {data[31], rs1, funct3, data[20], data[30:21], 1'b0}; // TODO sign-extend
-            default                  : imm = {funct7, rs2}; // TODO sign-extend
+            opcode_store             : imm = signed_word_t'({funct7, rd});
+            opcode_branch            : imm = signed_word_t'({data[31], data[7], data[30:25], data[11:8], 1'b0});
+            opcode_lui, opcode_auipc : imm = signed_word_t'({funct7, rs2, rs1, funct3, 12'b0});
+            opcode_jal               : imm = signed_word_t'({data[31], rs1, funct3, data[20], data[30:21], 1'b0});
+            default                  : imm = signed_word_t'({funct7, rs2});
         endcase
     end
 
@@ -51,7 +51,7 @@ module decoder (
         endcase
     end
 
-    instruction_t instr = '{
+    assign instr = '{
         rd        : rd,
         rs1       : rs1,
         rs2       : rs2,
