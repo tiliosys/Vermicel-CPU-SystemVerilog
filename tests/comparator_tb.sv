@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import virgule_pkg::*;
+import opcodes_pkg::*;
+
 module comparator_tb;
 
     instruction_t cmp_instr;

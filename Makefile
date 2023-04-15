@@ -3,26 +3,33 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-RTL=$(addprefix rtl/,\
-	virgule_pkg.sv \
-	opcodes_pkg.sv \
-	bus.sv \
-	decoder.sv \
-	arith_logic_unit.sv \
-	comparator.sv \
-)
+RTL=\
+	virgule_pkg \
+	opcodes_pkg \
+	bus \
+	decoder \
+	arith_logic_unit \
+	comparator \
+	register_unit
 
-TESTS=$(addprefix obj_dir/,\
+TESTS=\
 	decoder_tb \
 	arith_logic_unit_tb \
 	comparator_tb \
-)
+	register_unit_tb \
 
-run: $(TESTS)
-	for f in $(TESTS); do $$f; done
+RTL_SRC=$(addprefix rtl/,$(addsuffix .sv,$(RTL)))
+TESTS_SRC=$(addprefix tests/,$(addsuffix .sv,$(TESTS)))
+TESTS_BIN=$(addprefix obj_dir/,$(TESTS))
 
-obj_dir/%: $(RTL) tests/%.sv
-	verilator -sv --binary --timing --top-module $* -o $* $^
+run: $(TESTS_BIN)
+	for f in $^; do $$f; done
+
+obj_dir/%: $(RTL_SRC) tests/%.sv
+	verilator -sv --binary --timing -Wno-lint --top-module $* -o $* $^
+
+lint: $(RTL_SRC)
+	verilator -sv --lint-only --timing -Wall $^
 
 clean:
 	rm -rf obj_dir
