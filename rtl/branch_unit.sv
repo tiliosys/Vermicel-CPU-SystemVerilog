@@ -30,37 +30,37 @@ module branch_unit #(
         .taken(cmp_taken)
     ); 
 
-    word_t mepc;
+    word_t mepc_reg;
 
     word_t pc_target =
-        instr.is_mret                                   ? mepc                  :
+        instr.is_mret                                   ? mepc_reg                  :
         instr.is_jump || (instr.is_branch && cmp_taken) ? {address[31:2], 2'b0} :
                                                           pc_incr;
 
-    bit irq_state;
+    bit irq_state_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            irq_state <= 0;
+            irq_state_reg <= 0;
         end
         else if (enable) begin
             if (instr.is_mret) begin
-                irq_state <= 0;
+                irq_state_reg <= 0;
             end
             else if (irq) begin
-                irq_state <= 1;
+                irq_state_reg <= 1;
             end
         end
     end
 
-    bit accept_irq = irq && !irq_state;
+    bit accept_irq = irq && !irq_state_reg;
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            mepc <= 0;
+            mepc_reg <= 0;
         end
         else if (enable && accept_irq) begin
-            mepc <= pc_target;
+            mepc_reg <= pc_target;
         end
     end
 

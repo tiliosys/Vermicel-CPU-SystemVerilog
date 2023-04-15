@@ -19,17 +19,17 @@ module register_unit #(
     output word_t        xs2
 );
 
-    word_t x[0:size-1];
+    word_t x_reg[0:size-1];
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            x <= '{size{0}};
+            x_reg <= '{size{0}};
         end
         else if (enable && dest_instr.has_rd) begin
-            x[dest_instr.rd] <= xd;
+            x_reg[dest_instr.rd] <= xd;
         end
     end
 
-    assign xs1 = x[src_instr.rs1];
-    assign xs2 = x[src_instr.rs2];
+    assign xs1 = x_reg[src_instr.rs1];
+    assign xs2 = x_reg[src_instr.rs2];
 endmodule
