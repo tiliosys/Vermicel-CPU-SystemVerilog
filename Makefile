@@ -8,17 +8,19 @@ RTL=$(addprefix rtl/,\
 	opcodes_pkg.sv \
 	bus.sv \
 	decoder.sv \
+	arith_logic_unit.sv \
 )
 
 TESTS=$(addprefix obj_dir/,\
 	decoder_tb \
+	arith_logic_unit_tb \
 )
 
 run: $(TESTS)
 	for f in $(TESTS); do $$f; done
 
 obj_dir/%: $(RTL) tests/%.sv
-	verilator -sv --binary --timing -o $* $^
+	verilator -sv --binary --timing --top-module $* -o $* $^
 
 clean:
 	rm -rf obj_dir
