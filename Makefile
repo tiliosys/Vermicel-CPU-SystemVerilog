@@ -18,6 +18,8 @@ RTL = \
 	devices/SinglePortRAM \
 	devices/Timer_pkg \
 	devices/Timer \
+	devices/UART_pkg \
+	devices/UART \
 	simple-soc/SimpleSoC
 
 TOP = SimpleSoC
@@ -28,14 +30,15 @@ TESTS ?= \
 	Comparator_tb \
 	RegisterUnit_tb \
 	Virgule_tb \
-	rv32ui_tb
+	rv32ui_tb \
+	UART_tb
 
 RTL_SRC   = $(addprefix rtl/,$(addsuffix .sv,$(RTL)))
 TESTS_SRC = $(addprefix tests/,$(addsuffix .sv,$(TESTS)))
 TESTS_BIN = $(addprefix obj_dir/,$(TESTS))
 
 run-tests: tests/rv32ui/tests.mem $(TESTS_BIN)
-	for f in $^; do $$f; done | tee tests.log
+	for f in $(TESTS_BIN); do $$f; done | tee tests.log
 	@echo "--"
 	@echo "Total PASS: " $$(egrep "PASS|OK"    tests.log | wc -l)
 	@echo "Total FAIL: " $$(egrep "FAIL|ERROR" tests.log | wc -l)
@@ -45,7 +48,7 @@ tests/rv32ui/tests.mem:
 	$(MAKE) -C $(@D) $(@F)
 
 obj_dir/%: $(RTL_SRC) tests/%.sv
-	verilator -sv --binary --timing -Wno-lint --top-module $* -o $* $^
+	verilator -sv --binary --timing --trace -Wno-lint --top-module $* -o $* $^
 
 lint: $(RTL_SRC)
 	verilator -sv --lint-only --timing -Wall --top-module $(TOP) lint.vlt $^

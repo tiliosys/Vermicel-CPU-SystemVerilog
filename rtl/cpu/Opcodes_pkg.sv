@@ -83,21 +83,9 @@ package Opcodes_pkg;
     } instruction_t;
 
     localparam instruction_t INSTR_NOP = '{
-        rd        : 0,
-        rs1       : 0,
-        rs2       : 0,
-        imm       : 0,
-        funct3    : FUNCT3_ADD_SUB,
-        alu_fn    : ALU_NOP,
-        use_pc    : 0,
-        use_imm   : 0,
-        has_rd    : 0,
-        is_load   : 0,
-        is_store  : 0,
-        is_jump   : 0,
-        is_branch : 0,
-        is_mret   : 0,
-        is_trap   : 0
+        funct3  : FUNCT3_ADD_SUB,
+        alu_fn  : ALU_NOP,
+        default : 0
     };
 
     function static word_t encode(
