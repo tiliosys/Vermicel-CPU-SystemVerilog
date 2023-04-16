@@ -36,3 +36,6 @@ unset runtime_optimize
 # Lower severity for message "[Common 17-55] 'set_property' expects at least one object."
 set_msg_config -id {Common 17-55} -new_severity {WARNING}
 
+launch_runs impl_1 -to_step write_bitstream -jobs 10
+wait_on_run impl_1
+

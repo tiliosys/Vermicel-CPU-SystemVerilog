@@ -21,3 +21,17 @@ make -C tests clean
 
 ```
 
+Synthesis
+---------
+
+This command will generate bitstreams for all target boards:
+
+```
+make -C example
+```
+
+Generate a bitstream for one or more specific boards:
+
+```
+BOARDS=Basys3 make -C example
+```

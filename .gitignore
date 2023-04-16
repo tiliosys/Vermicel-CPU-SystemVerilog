@@ -6,6 +6,7 @@ obj_dir
 build
 .Xil
 vivado
-vivado.*
+vivado.log
+vivado.jou
 vivado_*
 
