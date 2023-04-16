@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module VermicelDemo #(
-    parameter RAM_SIZE_WORDS = 128,
-    parameter RAM_INIT_FILENAME = "Hello.mem"
+module Vermichello #(
+    parameter RAM_SIZE_WORDS = 32768,
+    parameter RAM_INIT_FILENAME = "ram-init.mem"
 )
 (
     input  bit clk,

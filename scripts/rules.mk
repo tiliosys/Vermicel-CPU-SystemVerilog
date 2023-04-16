@@ -7,8 +7,7 @@
 #   C_DEPS: C source files to link with the main program
 #	C_FLAGS_USER: additional options for the compiler or the assembler
 #	LD_FLAGS_USER: additional options for the linker
-
-MEM_SIZE = 262144
+#   LD_SCRIPT: the linker script to use
 
 SCRIPTS_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 ASM_DIR     := $(SCRIPTS_DIR)/../asm
@@ -18,7 +17,6 @@ PLATFORM := riscv64-unknown-elf
 CC       := $(PLATFORM)-gcc
 OBJCOPY  := $(PLATFORM)-objcopy
 
-LD_SCRIPT := $(SCRIPTS_DIR)/Vermicel.ld
 C_FLAGS    = -march=rv32i -mabi=ilp32 -ffreestanding -I$(C_DIR) -I$(C_DIR)/LibC $(C_FLAGS_USER)
 LD_FLAGS   = -nostdlib -T $(LD_SCRIPT) $(LD_FLAGS_USER)
 

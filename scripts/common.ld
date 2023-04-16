@@ -7,10 +7,6 @@
 
 ENTRY(__reset)
 
-MEM_SIZE   = 256K;
-STACK_SIZE = 4K;
-BOOT_SIZE  = 4K;
-
 SECTIONS {
     . = 0x0;
 
@@ -32,13 +28,7 @@ SECTIONS {
         __bss_end = ALIGN(4);
     }
 
-    . = MEM_SIZE - STACK_SIZE - BOOT_SIZE;
-
-    .boot ALIGN(4) : {
-        __boot_start = .;
-        . += BOOT_SIZE;
-        __boot_end = ALIGN(4);
-    }
+    . = MEM_SIZE - STACK_SIZE;
 
     .stack ALIGN(4) : {
         __stack_start = .;
