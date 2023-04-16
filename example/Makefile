@@ -15,8 +15,8 @@ SRC = \
     $(TOP).sv
 
 BOARDS ?= \
-	Basys3
-#	ArtyA7
+	Basys3 \
+	ArtyA7
 
 BITSTREAMS = $(addsuffix .bit,$(addprefix vivado/$(TOP)-,$(BOARDS)))
 
@@ -24,7 +24,7 @@ all: $(BITSTREAMS)
 
 .PRECIOUS: $(TOP).mem
 
-vivado/$(TOP)-%.bit: $(SRC)
+vivado/$(TOP)-%.bit: $(SRC) %/$(TOP).xdc
 	vivado -mode batch -source $*/run-vivado.tcl
 	cp vivado/$(TOP)-$*/$(TOP)-$*.runs/impl_1/$(TOP).bit $@
 
