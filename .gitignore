@@ -5,5 +5,7 @@ obj_dir
 *.vcd
 build
 .Xil
-vivado*
+vivado
+vivado.*
+vivado_*
 
