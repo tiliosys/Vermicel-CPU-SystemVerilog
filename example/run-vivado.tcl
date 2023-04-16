@@ -6,6 +6,7 @@
 set this_dir [file dirname [file normalize [info script]]]
 set src_dir  "$this_dir/.."
 
+set board_name   [lindex $argv 0]
 set project_name "Vermichello-$board_name"
 set project_dir  "$this_dir/vivado/$project_name"
 
@@ -35,7 +36,12 @@ set generics "
     RAM_INIT_FILENAME=Vermichello.mem
 "
 
-set constraints "$this_dir/$board_name/Vermichello.xdc"
+set constraints "$this_dir/Vermichello-$board_name.xdc"
+
+set part_name [dict get {
+    Basys3 xc7a35tcpg236-1
+    ArtyA7 xc7a100tcsg324-1
+} $board_name]
 
 set runtime_optimize true
 

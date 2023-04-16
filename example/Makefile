@@ -24,8 +24,8 @@ all: $(BITSTREAMS)
 
 .PRECIOUS: $(TOP).mem
 
-vivado/$(TOP)-%.bit: $(SRC) %/$(TOP).xdc
-	vivado -mode batch -source $*/run-vivado.tcl
+vivado/$(TOP)-%.bit: $(SRC) $(TOP)-%.xdc
+	vivado -mode batch -source run-vivado.tcl -tclargs $*
 	cp vivado/$(TOP)-$*/$(TOP)-$*.runs/impl_1/$(TOP).bit $@
 
 LD_SCRIPT=$(TOP).ld
