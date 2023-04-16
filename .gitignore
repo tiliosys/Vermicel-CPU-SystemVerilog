@@ -1,7 +1,6 @@
 .nvim
 obj_dir
 *.log
-*.mem
 *.vcd
 build
 .Xil
@@ -9,4 +8,7 @@ vivado
 vivado.log
 vivado.jou
 vivado_*
-
+*.o
+*.hex
+*.elf
+*.mem

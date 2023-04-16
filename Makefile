@@ -12,6 +12,4 @@ lint: $(SRC)
 	verilator -sv --lint-only --timing -Wall --top-module $(TOP) scripts/lint.vlt $^
 
 clean:
-	find -name vivado*.log -delete
-	find -name vivado*.jou -delete
-	find -name vivado_* -delete
+	rm -rf example/.Xil example/vivado.* example/vivado_*
