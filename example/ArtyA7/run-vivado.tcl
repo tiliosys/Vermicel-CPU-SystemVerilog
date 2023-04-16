@@ -5,14 +5,8 @@
 
 set this_dir [file dirname [file normalize [info script]]]
 
-set project_name "Vermichello-ArtyA7"
-set project_dir "$this_dir/../vivado/$project_name"
-
-set part_name "xc7a100tcsg324-1"
-
-set constraints "
-    $this_dir/Vermichello.xdc
-"
+set board_name "ArtyA7"
+set part_name  "xc7a100tcsg324-1"
 
 source $this_dir/../vivado.inc.tcl
 

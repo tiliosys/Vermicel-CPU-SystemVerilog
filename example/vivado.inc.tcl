@@ -6,6 +6,9 @@
 set this_dir [file dirname [file normalize [info script]]]
 set src_dir  "$this_dir/.."
 
+set project_name "Vermichello-$board_name"
+set project_dir  "$this_dir/vivado/$project_name"
+
 set src "
     $src_dir/common/Types_pkg.sv
     $src_dir/common/Bus.sv
@@ -31,6 +34,8 @@ set generics "
     RAM_SIZE_WORDS=32768
     RAM_INIT_FILENAME=Vermichello.mem
 "
+
+set constraints "$this_dir/$board_name/Vermichello.xdc"
 
 set runtime_optimize true
 
