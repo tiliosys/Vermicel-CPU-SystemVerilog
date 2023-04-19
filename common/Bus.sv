@@ -33,6 +33,15 @@ interface Bus (
         return data;
     endfunction
 
+    function word_t clear_into(word_t data);
+        for (int i = 0; i < 4; i ++) begin
+            if (wstrobe[i]) begin
+                data[i*8+:8] &= ~wdata[i*8+:8];
+            end
+        end
+        return data;
+    endfunction
+
     modport m (
         input  clk, reset,
         output valid, address, wstrobe, wdata,
@@ -43,7 +52,7 @@ interface Bus (
         input  clk, reset,
         input  valid, address, wstrobe, wdata,
         output ready, rdata, irq,
-        import write_enabled, write_into
+        import write_enabled, write_into, clear_into
     );
 
 endinterface

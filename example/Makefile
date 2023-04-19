@@ -28,6 +28,7 @@ vivado/$(TOP)-%.bit: $(SRC) $(TOP)-%.xdc
 	vivado -mode batch -source run-vivado.tcl -tclargs $*
 	cp vivado/$(TOP)-$*/$(TOP)-$*.runs/impl_1/$(TOP).bit $@
 
+C_FLAGS_USER=-Os
 LD_SCRIPT=$(TOP).ld
 
 include $(VERMICEL)/scripts/rules.mk

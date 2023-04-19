@@ -8,22 +8,23 @@
 package UART_pkg;
 
     typedef enum {
-        CONTROL_ADDRESS,  // Control/status register  (RW)
+        CONTROL_ADDRESS,  // Control register         (RW)
+        STATUS_ADDRESS,   // Status register          (RW)
         DIVISION_ADDRESS, // Frequency divisor config (RW)
-        TX_DATA_ADDRESS,  // TX data                  (RW)
-        RX_DATA_ADDRESS,  // RX data                  (RO)
+        DATA_ADDRESS,     // TX/RX data               (WO/RO)
         LOCAL_ADDRESS_NUM // The number of supported local addresses
     } local_address_t;
 
     localparam LOCAL_ADDRESS_WIDTH = $clog2(LOCAL_ADDRESS_NUM);
 
     typedef struct packed {
-        bit tx_event_flag; // End of transmission indicator  (RW, autoset)
-        bit rx_event_flag; // End of reception indicator     (RW, autoset)
         bit tx_irq_enable; // Enable end-of-transmission IRQ (RW)
         bit rx_irq_enable; // Enable end-of-reception IRQ    (RW)
-        bit tx_enable;     // Transmission start command     (RW, autoclear)
     } control_reg_t;
 
+    typedef struct packed {
+        bit tx_event_flag; // End of transmission indicator  (RW, autoset)
+        bit rx_event_flag; // End of reception indicator     (RW, autoset)
+    } status_reg_t;
 endpackage
 

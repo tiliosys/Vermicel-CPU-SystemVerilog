@@ -18,7 +18,7 @@ module UART_tb;
     localparam TIMEOUT  = BIT_TIME * 10 + 2;
 
     bit clk, reset, uart_rx, uart_tx;
-    bit tx_ref, tx_data_error, tx_flag_error, tx_irq_error, tx_done;
+    bit tx_enable, tx_ref, tx_data_error, tx_flag_error, tx_irq_error, tx_done;
     bit rx_enable, rx_data_error, rx_flag_error, rx_irq_error, rx_done;
     byte_t rx_data;
 
@@ -38,16 +38,16 @@ module UART_tb;
 
     initial tx_ref = 1;
 
-    always @(posedge uart.control_reg.tx_enable)
+    assign tx_enable = uart_bus.valid && uart_bus.address == DATA_ADDRESS * 4 && uart_bus.wstrobe[0];
+
+    always @(posedge tx_enable)
     begin
-        automatic byte_t data = uart.tx_data_reg;
+        automatic byte_t data = uart_bus.wdata[7:0];
 
         tx_data_error = 0;
         tx_flag_error = 0;
         tx_irq_error  = 0;
         tx_done       = 0;
-
-        @(posedge clk)
 
         for (int n = 0; n < 10; n ++) begin
             case (n)
@@ -60,7 +60,7 @@ module UART_tb;
                 if (uart_tx != tx_ref) begin
                     tx_data_error = 1;
                 end
-                if (uart.control_reg.tx_event_flag) begin
+                if (uart.status_reg.tx_event_flag) begin
                     tx_flag_error = 1;
                 end
                 if (uart_bus.irq) begin
@@ -77,7 +77,7 @@ module UART_tb;
 
         @(posedge clk)
 
-        if (!uart.control_reg.tx_event_flag) begin
+        if (!uart.status_reg.tx_event_flag) begin
             tx_flag_error = 1;
         end
 
@@ -108,7 +108,7 @@ module UART_tb;
             endcase
             repeat(DIVISION + 1) begin
                 @(posedge clk)
-                if (uart.control_reg.rx_event_flag && n < 9) begin
+                if (uart.status_reg.rx_event_flag && n < 9) begin
                     rx_flag_error = 1;
                 end
                 if (uart_bus.irq && n < 9) begin
@@ -121,7 +121,7 @@ module UART_tb;
 
         rx_data_error = uart.rx_data_reg != rx_data;
 
-        if (!uart.control_reg.rx_event_flag) begin
+        if (!uart.status_reg.rx_event_flag) begin
             rx_flag_error = 1;
         end
 
@@ -145,7 +145,11 @@ module UART_tb;
     task test_tx(string label, byte_t data, bit irq_enable);
         automatic control_reg_t ctrl  = '{
             tx_irq_enable : irq_enable,
-            tx_enable     : 1,
+            default       : 0
+        };
+
+        automatic status_reg_t status = '{
+            tx_event_flag : 1,
             default       : 0
         };
 
@@ -156,13 +160,6 @@ module UART_tb;
             return;
         end
 
-        // Write and check the TX data register.
-        bus_write(TX_DATA_ADDRESS, data, 4'b0001);
-        if (uart.tx_data_reg != data) begin
-            $display("[FAIL] %s: tx_data_reg write failed (value %02h, expected %02h)", label, uart.tx_data_reg, data);
-            return;
-        end
-
         // Write and check the control register, start transmitting.
         bus_write(CONTROL_ADDRESS, ctrl, 4'b0001);
         if (uart.control_reg != ctrl) begin
@@ -170,11 +167,10 @@ module UART_tb;
             return;
         end
 
-        @(posedge clk);
-
-        ctrl.tx_enable = 0;
-        if (uart.control_reg != ctrl) begin
-            $display("[FAIL] %s: control_reg autoclear failed (value %02h, expected %02h)", label, uart.control_reg, ctrl);
+        // Write and check the TX data register.
+        bus_write(DATA_ADDRESS, data, 4'b0001);
+        if (uart.tx_buffer_reg != data) begin
+            $display("[FAIL] %s: tx_buffer_reg write failed (value %02h, expected %02h)", label, uart.tx_buffer_reg, data);
             return;
         end
 
@@ -195,12 +191,24 @@ module UART_tb;
             return;
         end
 
-        $display("[PASS] %s", label);
+        // Clear the status flag.
+        bus_write(STATUS_ADDRESS, status, 4'b0001);
+        if (uart.status_reg.tx_event_flag) begin
+            $display("[FAIL] %s: status_reg.tx_event_flag clear failed (value %02h, expected 00)", label, uart.status_reg);
+            return;
+        end
+
+         $display("[PASS] %s", label);
     endtask
 
     task test_rx(string label, byte_t data, bit irq_enable);
         automatic control_reg_t ctrl  = '{
             rx_irq_enable : irq_enable,
+            default       : 0
+        };
+
+        automatic status_reg_t status = '{
+            rx_event_flag : 1,
             default       : 0
         };
 
@@ -239,6 +247,13 @@ module UART_tb;
 
         if (rx_irq_error) begin
             $display("[FAIL] %s: IRQ error (check waveforms)", label);
+            return;
+        end
+
+        // Clear the status flag.
+        bus_write(STATUS_ADDRESS, status, 4'b0001);
+        if (uart.status_reg.rx_event_flag) begin
+            $display("[FAIL] %s: status_reg.rx_event_flag clear failed (value %02h, expected 00)", label, uart.status_reg);
             return;
         end
 
