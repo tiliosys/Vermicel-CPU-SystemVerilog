@@ -166,7 +166,7 @@ module Vermicel (Vermibus.m bus);
         end
     end
 
-    Vermilosto ld_st (
+    Vermidata ld_st (
         .instr(instr_reg),
         .address(alu_r_reg),
         .store_enable(store_en),

@@ -15,8 +15,8 @@ lint_off -rule UNUSEDSIGNAL -file "common/Vermibus.sv"  -match "Signal is not us
 
 lint_off -rule UNUSEDSIGNAL -file "core/Verithmetic.sv" -match "Bits of signal are not used: 'instr'[90:41,8:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "core/Vermilosto.sv"  -match "Bits of signal are not used: 'instr'[90:44,40:0]"
-lint_off -rule UNUSEDSIGNAL -file "core/Vermilosto.sv"  -match "Bits of signal are not used: 'address'[31:2]"
+lint_off -rule UNUSEDSIGNAL -file "core/Vermidata.sv"   -match "Bits of signal are not used: 'instr'[90:44,40:0]"
+lint_off -rule UNUSEDSIGNAL -file "core/Vermidata.sv"   -match "Bits of signal are not used: 'address'[31:2]"
 
 lint_off -rule UNUSEDSIGNAL -file "core/Vergister.sv"   -match "Bits of signal are not used: 'src_instr'[90:86,75:0]"
 lint_off -rule UNUSEDSIGNAL -file "core/Vergister.sv"   -match "Bits of signal are not used: 'dest_instr'[85:7,5:0]"
