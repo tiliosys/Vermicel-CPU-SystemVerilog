@@ -11,11 +11,13 @@ module Vermiperf #(
     localparam RAM_ADDRESS       = 8'h00;
     localparam RAM_SIZE_WORDS    = 32768;
     localparam OUT_ADDRESS       = 8'h10;
+    localparam TICK_ADDRESS      = 8'h20;
 
     bit clk, reset;
-    Vermibus cpu_bus (clk, reset);
-    Vermibus ram_bus (clk, reset);
-    Vermibus out_bus (clk, reset);
+    Vermibus cpu_bus  (clk, reset);
+    Vermibus ram_bus  (clk, reset);
+    Vermibus out_bus  (clk, reset);
+    Vermibus tick_bus (clk, reset);
     bit[7:0] dev_address;
 
     always #1 clk = ~clk;
@@ -43,6 +45,10 @@ module Vermiperf #(
             OUT_ADDRESS: begin
                 cpu_bus.rdata = out_bus.rdata;
                 cpu_bus.ready = out_bus.ready;
+            end
+            TICK_ADDRESS: begin
+                cpu_bus.rdata = tick_bus.rdata;
+                cpu_bus.ready = tick_bus.ready;
             end
             default: begin
                 cpu_bus.rdata = 0;
@@ -76,23 +82,41 @@ module Vermiperf #(
     assign out_bus.rdata   = 0;
     assign out_bus.ready   = cpu_bus.valid;
 
-    time start_time;
+    always_ff @(posedge clk) begin
+        if (out_bus.write_enabled()) begin
+            $display("Output = %0d", out_bus.wdata);
+        end
+    end
+
+    //
+    // Time measurement command.
+    //
+
+    assign tick_bus.valid   = cpu_bus.valid && dev_address == TICK_ADDRESS;
+    assign tick_bus.address = cpu_bus.address;
+    assign tick_bus.wstrobe = cpu_bus.wstrobe;
+    assign tick_bus.wdata   = cpu_bus.wdata;
+    assign tick_bus.rdata   = 0;
+    assign tick_bus.ready   = cpu_bus.valid;
+
+    int unsigned cycle_counter;
 
     initial begin
         $display("-- %s", RAM_INIT_FILENAME);
-        start_time = 0;
     end
 
     always_ff @(posedge clk) begin
-        if (out_bus.write_enabled()) begin
-            if (start_time == 0) begin
-                start_time = $time;
+        if (tick_bus.write_enabled()) begin
+            if (tick_bus.wdata != 0) begin
+                cycle_counter <= 0;
             end
             else begin
-                $display("Result         = %0d", out_bus.wdata);
-                $display("Execution time = %0d clock cycles", ($time - start_time) / 2);
+                $display("Execution time = %0d clock cycles", cycle_counter);
                 $finish;
             end
+        end
+        else begin
+            cycle_counter <= cycle_counter + 1;
         end
     end
 endmodule

@@ -15,15 +15,16 @@ Content of this repository
 
 The source tree contains the following elements:
 
-Folder    | Content
-----------|--------
-`asm`     | Base assembly code (startup module)
-`common`  | Common SystemVerilog code (data types, bus interface)
-`core`    | Vermicel, the CPU core itself
-`devices` | A minimal set of peripherals to create simple systems (RAM, timer, UART)
-`example` | Vermichello, a "Hello World" SoC built around Vermicel
-`scripts` | Various scripts for linting, simulation, synthesis, software compilation
-`tests`   | The test suite
+Folder       | Content
+-------------|--------
+`asm`        | Base assembly code (startup module)
+`benchmarks` | Performance measurement programs.
+`common`     | Common SystemVerilog code (data types, bus interface)
+`core`       | Vermicel, the CPU core itself
+`devices`    | A minimal set of peripherals to create simple systems (RAM, timer, UART)
+`example`    | Vermichello, a "Hello World" SoC built around Vermicel
+`scripts`    | Various scripts for linting, simulation, synthesis, software compilation
+`tests`      | The test suite
 
 Development software and hardware
 ---------------------------------
@@ -59,6 +60,28 @@ Clean the tests folder:
 
 ```
 make -C tests clean
+
+```
+
+Benchmarks
+----------
+
+Run all benchmarks:
+
+```
+make -C benchmarks
+```
+
+Run one or more specific benchmarks:
+
+```
+BENCHMARKS="Verminacci" make -C benchmarks
+```
+
+Clean the benchmarks folder:
+
+```
+make -C benchmarks clean
 
 ```
 

@@ -1,11 +1,8 @@
 
 #include <stdint.h>
 
-volatile uint32_t *const out = (uint32_t*)0x10000000;
-
-void print(uint32_t n) {
-    *out = n;
-}
+volatile uint32_t *const out  = (uint32_t*)0x10000000;
+volatile uint32_t *const tick = (uint32_t*)0x20000000;
 
 uint32_t fibonacci(uint32_t n) {
     uint32_t a = 0;
@@ -21,6 +18,7 @@ uint32_t fibonacci(uint32_t n) {
 #define N 1000
 
 int main(void) {
-    print(N);
-    print(fibonacci(N));
+    *tick = 1;
+    *out  = fibonacci(N);
+    *tick = 0;
 }
