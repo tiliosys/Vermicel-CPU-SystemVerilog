@@ -5,12 +5,12 @@
 
 `default_nettype none
 
-module SinglePortRAM #(
+module Vermimory #(
     parameter int unsigned SIZE_WORDS,
     parameter INIT_FILENAME // Implicit string type, not supported by Xilinx Vivado 2019.1
-) (Bus.s bus);
+) (Vermibus.s bus);
 
-    import Types_pkg::*;
+    import Vermitypes_pkg::*;
 
     localparam LOCAL_ADDRESS_WIDTH = $clog2(SIZE_WORDS);
 

@@ -5,10 +5,10 @@
 
 `default_nettype none
 
-module RegisterUnit_tb;
+module Vergister_tb;
 
-    import Types_pkg::*;
-    import Opcodes_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicodes_pkg::*;
 
     localparam int REGS_SIZE = 32;
 
@@ -16,7 +16,7 @@ module RegisterUnit_tb;
     instruction_t regs_src_instr, regs_dest_instr;
     word_t        regs_xd, regs_xs1, regs_xs2;
     
-    RegisterUnit #(
+    Vergister #(
         .SIZE(REGS_SIZE)
     ) regs (
         .clk(regs_clk),
@@ -71,7 +71,7 @@ module RegisterUnit_tb;
     always #1 regs_clk = ~regs_clk;
 
     initial begin
-        $display("[TEST] RegisterUnit_tb");
+        $display("[TEST] Vergister_tb");
 
         regs_enable = 0;
         regs_reset  = 1;
@@ -86,7 +86,7 @@ module RegisterUnit_tb;
             check_read(n, n + 1);
         end
 
-        $display("[DONE] RegisterUnit_tb");
+        $display("[DONE] Vergister_tb");
         $finish;
     end
 endmodule

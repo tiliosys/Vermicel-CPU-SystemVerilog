@@ -20,13 +20,16 @@ OBJCOPY  := $(PLATFORM)-objcopy
 C_FLAGS    = -march=rv32i -mabi=ilp32 -ffreestanding -I$(C_DIR) -I$(C_DIR)/LibC $(C_FLAGS_USER)
 LD_FLAGS   = -nostdlib -T $(LD_SCRIPT) $(LD_FLAGS_USER)
 
-OBJ_STARTUP := $(ASM_DIR)/Startup.o
+OBJ_STARTUP := $(ASM_DIR)/Vermistart.o
 OBJ_DEPS     = $(C_DEPS:.c=.o) $(ASM_DEPS:.S=.o)
 
 %.elf: %.o $(OBJ_DEPS) $(OBJ_STARTUP) $(LD_SCRIPT)
 	$(CC) $(C_FLAGS) $(LD_FLAGS) -o $@ $(OBJ_STARTUP) $(OBJ_DEPS) $<
 
 %.o: %.c
+	$(CC) $(C_FLAGS) -c -o $@ $<
+
+%.o: %.s
 	$(CC) $(C_FLAGS) -c -o $@ $<
 
 %.o: %.S

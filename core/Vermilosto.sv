@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module LoadStoreUnit 
-    import Types_pkg::*,
-           Opcodes_pkg::*;
+module Vermilosto
+    import Vermitypes_pkg::*,
+           Vermicodes_pkg::*;
 (
     input  instruction_t instr,
     input  word_t        address,

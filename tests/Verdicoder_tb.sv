@@ -5,15 +5,15 @@
 
 `default_nettype none
 
-module Decoder_tb;
+module Verdicoder_tb;
 
-    import Types_pkg::*;
-    import Opcodes_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicodes_pkg::*;
 
     word_t        dec_data;
     instruction_t dec_instr;
 
-    Decoder dec (
+    Verdicoder dec (
         .data(dec_data),
         .instr(dec_instr)
     );
@@ -55,7 +55,7 @@ module Decoder_tb;
     endtask
 
     initial begin
-        $display("[TEST] Decoder_tb");
+        $display("[TEST] Verdicoder_tb");
         //                                                           rd  rs1 rs2 imm         funct3          alu_fn    use_pc use_imm has_rd is_load is_store is_jump is_branch is_mret is_trap
         // Test rd, rs1, rs2 for R-type instruction.
         check("ADD x0,  x0,  x0",       asm_add(0,  0,  0),        '{0,  0,  0,  0,          FUNCT3_ADD_SUB, ALU_ADD,  0,     0,      0,     0,      0,       0,      0,        0,      0}, ignore_imm);
@@ -154,6 +154,6 @@ module Decoder_tb;
         check("AND x0, x5, 10",         asm_and(0, 5, 10),         '{0,  0,  0, 0,           FUNCT3_AND,     ALU_AND,  0,     0,      0,     0,      0,       0,      0,        0,      0}, ignore_rd|ignore_rs1|ignore_rs2|ignore_imm);
         check("AND x31, x5, 10",        asm_and(31, 5, 10),        '{0,  0,  0, 0,           FUNCT3_AND,     ALU_AND,  0,     0,      1,     0,      0,       0,      0,        0,      0}, ignore_rd|ignore_rs1|ignore_rs2|ignore_imm);
         //                                                           rd  rs1 rs2 imm         funct3          alu_fn    use_pc use_imm has_rd is_load is_store is_jump is_branch is_mret
-        $display("[DONE] Decoder_tb");
+        $display("[DONE] Verdicoder_tb");
     end
 endmodule

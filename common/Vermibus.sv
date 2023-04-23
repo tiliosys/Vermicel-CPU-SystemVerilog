@@ -5,12 +5,12 @@
 
 `default_nettype none
 
-interface Bus (
+interface Vermibus (
     input bit clk,
     input bit reset
 );
 
-    import Types_pkg::*;
+    import Vermitypes_pkg::*;
 
     bit       valid;
     bit       ready;

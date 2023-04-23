@@ -4,20 +4,20 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 RTL = \
-	common/Types_pkg.sv \
-	common/Bus.sv \
-	core/Opcodes_pkg.sv \
-	core/Decoder.sv \
-	core/ArithLogicUnit.sv \
-	core/Comparator.sv \
-	core/RegisterUnit.sv \
-	core/BranchUnit.sv \
-	core/LoadStoreUnit.sv \
+	common/Vermitypes_pkg.sv \
+	common/Vermibus.sv \
+	core/Vermicodes_pkg.sv \
+	core/Verdicoder.sv \
+	core/Verithmetic.sv \
+	core/Vermipare.sv \
+	core/Vergister.sv \
+	core/Vermibranch.sv \
+	core/Vermilosto.sv \
 	core/Vermicel_pkg.sv \
 	core/Vermicel.sv \
-	devices/SinglePortRAM.sv \
-	devices/Timer_pkg.sv \
-	devices/Timer.sv \
-	devices/UART_pkg.sv \
-	devices/UART.sv
+	devices/Vermimory.sv \
+	devices/Vermitime_pkg.sv \
+	devices/Vermitime.sv \
+	devices/Vermicom_pkg.sv \
+	devices/Vermicom.sv
 

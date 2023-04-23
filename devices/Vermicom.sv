@@ -5,14 +5,14 @@
 
 `default_nettype none
 
-module UART (
-    Bus.s  bus,
+module Vermicom (
+    Vermibus.s  bus,
     input  bit rx,
     output bit tx
 );
 
-    import Types_pkg::*;
-    import UART_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicom_pkg::*;
 
     local_address_t local_address;
     control_reg_t   control_reg;

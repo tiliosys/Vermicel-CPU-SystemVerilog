@@ -21,10 +21,10 @@ module Vermichello #(
     localparam TIMER_ADDRESS = 8'h80;
     localparam UART_ADDRESS  = 8'h81;
 
-    Bus cpu_bus   (clk, reset);
-    Bus ram_bus   (clk, reset);
-    Bus timer_bus (clk, reset);
-    Bus uart_bus  (clk, reset);
+    Vermibus cpu_bus   (clk, reset);
+    Vermibus ram_bus   (clk, reset);
+    Vermibus timer_bus (clk, reset);
+    Vermibus uart_bus  (clk, reset);
 
     bit[7:0] dev_address;
 
@@ -67,7 +67,7 @@ module Vermichello #(
     // RAM instance
     //
 
-    SinglePortRAM #(
+    Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
     ) ram (ram_bus.s);
@@ -81,7 +81,7 @@ module Vermichello #(
     // Timer instance
     //
 
-    Timer timer (timer_bus.s);
+    Vermitime timer (timer_bus.s);
 
     assign timer_bus.valid   = cpu_bus.valid && dev_address == TIMER_ADDRESS;
     assign timer_bus.address = cpu_bus.address;
@@ -92,7 +92,7 @@ module Vermichello #(
     // UART instance
     //
 
-    UART uart (
+    Vermicom uart (
         .bus(uart_bus.s),
         .rx(uart_rx),
         .tx(uart_tx)

@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module BranchUnit
-    import Types_pkg::*,
-           Opcodes_pkg::*;
+module Vermibranch
+    import Vermitypes_pkg::*,
+           Vermicodes_pkg::*;
 #(
     parameter word_t IRQ_ADDRESS,
     parameter word_t TRAP_ADDRESS
@@ -31,7 +31,7 @@ module BranchUnit
     bit    accept_irq;       // Are we switching to IRQ mode?
     word_t mepc_reg;         // Saved program counter when switching to IRQ mode.
 
-    Comparator cmp (
+    Vermipare cmp (
         .instr(instr),
         .a(xs1),
         .b(xs2),

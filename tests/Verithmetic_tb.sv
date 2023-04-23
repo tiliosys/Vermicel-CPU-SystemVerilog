@@ -5,15 +5,15 @@
 
 `default_nettype none
 
-module ArithLogicUnit_tb;
+module Verithmetic_tb;
 
-    import Types_pkg::*;
-    import Opcodes_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicodes_pkg::*;
 
     instruction_t instr;
     word_t        alu_a, alu_b, alu_r;
 
-    ArithLogicUnit alu (
+    Verithmetic alu (
         .instr(instr),
         .a(alu_a),
         .b(alu_b),
@@ -37,7 +37,7 @@ module ArithLogicUnit_tb;
     endtask
 
     initial begin
-        $display("[TEST] ArithLogicUnit_tb");
+        $display("[TEST] Verithmetic_tb");
         check("NOP",  ALU_NOP,         10,     20,         20);
         check("ADD",  ALU_ADD,         10,     20,         30);
         check("ADD",  ALU_ADD,        -10,    -20,        -30);
@@ -63,7 +63,7 @@ module ArithLogicUnit_tb;
         check("SRA",  ALU_SRA, 'hF0005432,     12, 'hFFFF0005);
         check("SRL",  ALU_SRL,    'h12345,     12,       'h12);
         check("SRL",  ALU_SRL, 'hF0005432,     12, 'h000F0005);
-        $display("[DONE] ArithLogicUnit_tb");
+        $display("[DONE] Verithmetic_tb");
     end
 endmodule
 

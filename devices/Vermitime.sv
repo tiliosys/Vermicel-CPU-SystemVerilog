@@ -5,10 +5,10 @@
 
 `default_nettype none
 
-module Timer (Bus.s bus);
+module Vermitime (Vermibus.s bus);
 
-    import Types_pkg::*;
-    import Timer_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermitime_pkg::*;
 
     local_address_t local_address;
     control_reg_t   control_reg;

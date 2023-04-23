@@ -5,10 +5,10 @@
 
 `default_nettype none
 
-module UART_tb;
+module Vermicom_tb;
 
-    import Types_pkg::*;
-    import UART_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicom_pkg::*;
 
     localparam DIVISION = 867;
     localparam DATA1    = 8'b01010011;
@@ -22,9 +22,9 @@ module UART_tb;
     bit rx_enable, rx_data_error, rx_flag_error, rx_irq_error, rx_done;
     byte_t rx_data;
 
-    Bus uart_bus (clk, reset);
+    Vermibus uart_bus (clk, reset);
 
-    UART uart (
+    Vermicom uart (
         .bus(uart_bus),
         .rx(uart_rx),
         .tx(uart_tx)
@@ -261,10 +261,10 @@ module UART_tb;
     endtask
 
     initial begin
-        $dumpfile("UART_tb.vcd");
-        $dumpvars(0, UART_tb);
+        $dumpfile("Vermicom_tb.vcd");
+        $dumpvars(0, Vermicom_tb);
 
-        $display("[TEST] UART_tb");
+        $display("[TEST] Vermicom_tb");
 
         reset = 1;
         @(negedge clk);
@@ -288,7 +288,7 @@ module UART_tb;
         test_rx("RX+IRQ (DATA1)", DATA1, 1);
         test_rx("RX+IRQ (DATA2)", DATA2, 1);
 
-        $display("[DONE] UART_tb");
+        $display("[DONE] Vermicom_tb");
         $finish;
     end
 endmodule

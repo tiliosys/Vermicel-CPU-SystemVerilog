@@ -5,10 +5,10 @@
 
 `default_nettype none
 
-module Vermicel (Bus.m bus);
+module Vermicel (Vermibus.m bus);
 
-    import Types_pkg::*;
-    import Opcodes_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicodes_pkg::*;
     import Vermicel_pkg::*;
 
     typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
@@ -73,12 +73,12 @@ module Vermicel (Bus.m bus);
     //  decode, read registers, select ALU operands.
     // 
 
-    Decoder dec (
+    Verdicoder dec (
         .data(rdata_reg),
         .instr(instr)
     );
 
-    RegisterUnit #(
+    Vergister #(
         .SIZE(REGISTER_UNIT_SIZE)
     ) regs (
         .clk(bus.clk),
@@ -114,7 +114,7 @@ module Vermicel (Bus.m bus);
     // update program counter.
     //
 
-    ArithLogicUnit alu (
+    Verithmetic alu (
         .instr(instr_reg),
         .a(alu_a_reg),
         .b(alu_b_reg),
@@ -123,7 +123,7 @@ module Vermicel (Bus.m bus);
 
     assign pc_incr = pc_reg + 4;
 
-    BranchUnit #(
+    Vermibranch #(
         .IRQ_ADDRESS(IRQ_ADDRESS),
         .TRAP_ADDRESS(TRAP_ADDRESS)
     ) branch (
@@ -166,7 +166,7 @@ module Vermicel (Bus.m bus);
         end
     end
 
-    LoadStoreUnit ld_st (
+    Vermilosto ld_st (
         .instr(instr_reg),
         .address(alu_r_reg),
         .store_enable(store_en),

@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-package Types_pkg;
+package Vermitypes_pkg;
 
     typedef int unsigned  word_t;
     typedef int signed    signed_word_t;

@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module RegisterUnit
-    import Types_pkg::*,
-           Opcodes_pkg::*;
+module Vergister
+    import Vermitypes_pkg::*,
+           Vermicodes_pkg::*;
 #(
     parameter int unsigned SIZE
 )

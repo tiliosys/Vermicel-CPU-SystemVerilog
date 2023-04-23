@@ -5,16 +5,16 @@
 
 `default_nettype none
 
-module Comparator_tb;
+module Vermipare_tb;
 
-    import Types_pkg::*;
-    import Opcodes_pkg::*;
+    import Vermitypes_pkg::*;
+    import Vermicodes_pkg::*;
 
     instruction_t cmp_instr;
     word_t        cmp_a, cmp_b;
     bit           cmp_taken;
 
-    Comparator cmp (
+    Vermipare cmp (
         .instr(cmp_instr),
         .a(cmp_a),
         .b(cmp_b),
@@ -38,7 +38,7 @@ module Comparator_tb;
     endtask
 
     initial begin
-        $display("[TEST] Comparator_tb");
+        $display("[TEST] Vermipare_tb");
         check("BEQ",  FUNCT3_BEQ,   10,  20, 0);
         check("BEQ",  FUNCT3_BEQ,   10,  10, 1);
         check("BEQ",  FUNCT3_BEQ,  -10, -20, 0);
@@ -71,7 +71,7 @@ module Comparator_tb;
         check("BGEU", FUNCT3_BGEU,  10,  10, 1);
         check("BGEU", FUNCT3_BGEU, -10, -10, 1);
         check("BGEU", FUNCT3_BGEU, -10, -20, 1);
-        $display("[DONE] Comparator_tb");
+        $display("[DONE] Vermipare_tb");
     end
 endmodule
 

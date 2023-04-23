@@ -11,22 +11,22 @@ set project_name "Vermichello-$board_name"
 set project_dir  "$this_dir/vivado/$project_name"
 
 set src "
-    $src_dir/common/Types_pkg.sv
-    $src_dir/common/Bus.sv
-    $src_dir/core/Opcodes_pkg.sv
-    $src_dir/core/ArithLogicUnit.sv
-    $src_dir/core/BranchUnit.sv
-    $src_dir/core/Comparator.sv
-    $src_dir/core/Decoder.sv
-    $src_dir/core/LoadStoreUnit.sv
-    $src_dir/core/RegisterUnit.sv
+    $src_dir/common/Vermitypes_pkg.sv
+    $src_dir/common/Vermibus.sv
+    $src_dir/core/Vermicodes_pkg.sv
+    $src_dir/core/Verithmetic.sv
+    $src_dir/core/Vermibranch.sv
+    $src_dir/core/Vermipare.sv
+    $src_dir/core/Verdicoder.sv
+    $src_dir/core/Vermilosto.sv
+    $src_dir/core/Vergister.sv
     $src_dir/core/Vermicel_pkg.sv
     $src_dir/core/Vermicel.sv
-    $src_dir/devices/SinglePortRAM.sv
-    $src_dir/devices/Timer_pkg.sv
-    $src_dir/devices/Timer.sv
-    $src_dir/devices/UART_pkg.sv
-    $src_dir/devices/UART.sv
+    $src_dir/devices/Vermimory.sv
+    $src_dir/devices/Vermitime_pkg.sv
+    $src_dir/devices/Vermitime.sv
+    $src_dir/devices/Vermicom_pkg.sv
+    $src_dir/devices/Vermicom.sv
     $this_dir/Vermichello.mem
     $this_dir/Vermichello.sv
 "

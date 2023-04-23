@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module Decoder
-    import Types_pkg::*,
-           Opcodes_pkg::*;
+module Verdicoder
+    import Vermitypes_pkg::*,
+           Vermicodes_pkg::*;
 (
     input  word_t        data,
     output instruction_t instr

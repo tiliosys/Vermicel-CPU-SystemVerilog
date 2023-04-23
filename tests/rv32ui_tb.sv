@@ -13,9 +13,9 @@ module rv32ui_tb;
     localparam OUT_ADDRESS       = 8'h10;
 
     bit clk, reset;
-    Bus cpu_bus (clk, reset);
-    Bus ram_bus (clk, reset);
-    Bus out_bus (clk, reset);
+    Vermibus cpu_bus (clk, reset);
+    Vermibus ram_bus (clk, reset);
+    Vermibus out_bus (clk, reset);
     bit[7:0] dev_address;
 
     always #10 clk = ~clk;
@@ -55,7 +55,7 @@ module rv32ui_tb;
     // RAM instance
     //
 
-    SinglePortRAM #(
+    Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
     ) ram (ram_bus.s);
