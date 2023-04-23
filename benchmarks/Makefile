@@ -3,18 +3,26 @@ VERMICEL=..
 
 include $(VERMICEL)/sources.mk
 
+TOP = Vermiperf
+
 SRC = $(addprefix $(VERMICEL)/,$(RTL))
-TOP = Verminacci
+SRC += $(TOP).sv
 
-all: obj_dir/$(TOP)
-	$^
+BENCHMARKS ?= $(basename $(wildcard *.c))
+BENCHMARKS_BIN = $(addprefix obj_dir/,$(BENCHMARKS))
+BENCHMARKS_MEM = $(addsuffix .mem,$(BENCHMARKS))
 
-obj_dir/%: $(SRC) %.sv
-	verilator -sv --binary --timing --trace -Wno-lint --top-module $* -o $* $^
+.PRECIOUS: $(BENCHMARKS_MEM)
 
-obj_dir/$(TOP): | $(TOP).mem
+all: $(BENCHMARKS_BIN)
+	for f in $(BENCHMARKS_BIN); do $$f; done | tee benchmarks.log
+
+obj_dir/%: $(SRC) %.mem
+	verilator -sv --binary --timing --trace -Wno-lint --top-module $(TOP) -GRAM_INIT_FILENAME='"$*.mem"' -o $* $(SRC)
 
 LD_SCRIPT = $(TOP).ld
 
 include ../scripts/rules.mk
 
+clean:
+	rm -rf obj_dir *.mem *.log

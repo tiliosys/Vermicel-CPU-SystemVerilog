@@ -5,11 +5,11 @@
 
 `default_nettype none
 
-module Verminacci;
-
+module Vermiperf #(
+    parameter RAM_INIT_FILENAME // Implicit string type. Verilator fails to load file if type specified.
+);
     localparam RAM_ADDRESS       = 8'h00;
     localparam RAM_SIZE_WORDS    = 32768;
-    localparam RAM_INIT_FILENAME = "Verminacci.mem";
     localparam OUT_ADDRESS       = 8'h10;
 
     bit clk, reset;
@@ -78,16 +78,18 @@ module Verminacci;
 
     time start_time;
 
-    initial start_time = 0;
+    initial begin
+        $display("-- %s", RAM_INIT_FILENAME);
+        start_time = 0;
+    end
 
     always_ff @(posedge clk) begin
         if (out_bus.write_enabled()) begin
             if (start_time == 0) begin
-                $display("N              = %0d", out_bus.wdata);
                 start_time = $time;
             end
             else begin
-                $display("fibonacci(N)   = %0d", out_bus.wdata);
+                $display("Result         = %0d", out_bus.wdata);
                 $display("Execution time = %0d clock cycles", ($time - start_time) / 2);
                 $finish;
             end
