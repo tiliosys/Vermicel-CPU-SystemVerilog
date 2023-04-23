@@ -5,11 +5,11 @@
 
 `default_nettype none
 
-module rv32ui_tb;
+module Verminacci;
 
     localparam RAM_ADDRESS       = 8'h00;
-    localparam RAM_SIZE_WORDS    = 65536;
-    localparam RAM_INIT_FILENAME = "rv32ui/tests.mem";
+    localparam RAM_SIZE_WORDS    = 32768;
+    localparam RAM_INIT_FILENAME = "Verminacci.mem";
     localparam OUT_ADDRESS       = 8'h10;
 
     bit clk, reset;
@@ -76,28 +76,22 @@ module rv32ui_tb;
     assign out_bus.rdata   = 0;
     assign out_bus.ready   = cpu_bus.valid;
 
+    time start_time;
+
+    initial start_time = 0;
+
     always_ff @(posedge clk) begin
-        if (out_bus.valid && out_bus.wstrobe[0]) begin
-            $write("%s", out_bus.wdata[7:0]);
+        if (out_bus.write_enabled()) begin
+            if (start_time == 0) begin
+                $display("N              = %0d", out_bus.wdata);
+                start_time = $time;
+            end
+            else begin
+                $display("fibonacci(N)   = %0d", out_bus.wdata);
+                $display("Execution time = %0d clock cycles", ($time - start_time) / 2);
+                $finish;
+            end
         end
-    end
-
-    //
-    // Simulation control
-    //
-
-    initial begin
-        $display("[TEST] rv32ui_tb");
-
-        reset = 1;
-        @(posedge clk);
-        reset = 0;
-        @(posedge clk);
-
-        #60us
-
-        $display("[DONE] rv32ui_tb");
-        $finish;
     end
 endmodule
 
