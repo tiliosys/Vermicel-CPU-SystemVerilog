@@ -16,9 +16,20 @@ SECTIONS {
         __text_end = .;
     }
 
-    .sdata  : { *(.sdata*) }
-    .data   : { *(.data*) }
-    .rodata : { *(.rodata*) }
+    .sdata  : {
+        *(.sdata*)
+        . = ALIGN(4);
+    }
+
+    .data   : {
+        *(.data*) 
+        . = ALIGN(4);
+    }
+
+    .rodata : {
+        *(.rodata*) 
+        . = ALIGN(4);
+    }
 
     __global_pointer = ALIGN(4);
 
