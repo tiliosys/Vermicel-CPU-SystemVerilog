@@ -12,7 +12,7 @@ RTL = \
 	core/Vermipare.sv \
 	core/Vergister.sv \
 	core/Vermibranch.sv \
-	core/Vermidata.sv \
+	core/Verdata.sv \
 	core/Vermicel_pkg.sv \
 	core/Vermicel.sv \
 	devices/Vermimory.sv \

@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermidata
+module Verdata
     import Vermitypes_pkg::*,
            Vermicodes_pkg::*;
 (
