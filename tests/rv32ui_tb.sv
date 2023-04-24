@@ -24,7 +24,7 @@ module rv32ui_tb;
     // CPU instance
     //
 
-    Vermicel cpu (cpu_bus.m);
+    Vermicel cpu (cpu_bus.read_write_request);
 
     //
     // Device control
@@ -58,7 +58,7 @@ module rv32ui_tb;
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
-    ) ram (ram_bus.s);
+    ) ram (ram_bus.read_write_response);
 
     assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
     assign ram_bus.address = cpu_bus.address;

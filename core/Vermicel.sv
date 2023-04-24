@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermicel (Vermibus.m bus);
+module Vermicel (Vermibus.read_write_request bus);
 
     import Vermitypes_pkg::*;
     import Vermicodes_pkg::*;

@@ -8,7 +8,7 @@
 module Vermimory #(
     parameter int unsigned SIZE_WORDS,
     parameter INIT_FILENAME // Implicit string type, not supported by Xilinx Vivado 2019.1
-) (Vermibus.s bus);
+) (Vermibus.read_write_response bus);
 
     import Vermitypes_pkg::*;
 

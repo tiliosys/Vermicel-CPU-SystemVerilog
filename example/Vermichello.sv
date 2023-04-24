@@ -32,7 +32,7 @@ module Vermichello #(
     // CPU instance
     //
 
-    Vermicel cpu (cpu_bus.m);
+    Vermicel cpu (cpu_bus.read_write_request);
 
     //
     // Device control
@@ -70,7 +70,7 @@ module Vermichello #(
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
-    ) ram (ram_bus.s);
+    ) ram (ram_bus.read_write_response);
 
     assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
     assign ram_bus.address = cpu_bus.address;
@@ -81,7 +81,7 @@ module Vermichello #(
     // Timer instance
     //
 
-    Vermitime timer (timer_bus.s);
+    Vermitime timer (timer_bus.read_write_response);
 
     assign timer_bus.valid   = cpu_bus.valid && dev_address == TIMER_ADDRESS;
     assign timer_bus.address = cpu_bus.address;
@@ -93,7 +93,7 @@ module Vermichello #(
     //
 
     Vermicom uart (
-        .bus(uart_bus.s),
+        .bus(uart_bus.read_write_response),
         .rx(uart_rx),
         .tx(uart_tx)
     );

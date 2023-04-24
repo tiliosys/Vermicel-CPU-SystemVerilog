@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermitime (Vermibus.s bus);
+module Vermitime (Vermibus.read_write_response bus);
 
     import Vermitypes_pkg::*;
     import Vermitime_pkg::*;

@@ -14,7 +14,7 @@ module Vermicel_tb;
 
     Vermibus cpu_bus (clk, reset);
 
-    Vermicel cpu (cpu_bus.m);
+    Vermicel cpu (cpu_bus.read_write_request);
 
     typedef bit[2:0] field_ignore_t;
     localparam field_ignore_t ignore_none    = 'b000;

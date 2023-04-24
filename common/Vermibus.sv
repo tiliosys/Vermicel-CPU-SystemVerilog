@@ -14,6 +14,7 @@ interface Vermibus (
 
     bit       valid;
     bit       ready;
+    word_t    lookahead;
     word_t    address;
     wstrobe_t wstrobe;
     word_t    wdata;
@@ -42,13 +43,25 @@ interface Vermibus (
         return data;
     endfunction
 
-    modport m (
+    modport read_only_request (
+        input  clk, reset,
+        output valid, address,
+        input  ready, rdata
+    );
+
+    modport read_only_response (
+        input  clk, reset,
+        input  valid, address,
+        output ready, rdata
+    );
+
+    modport read_write_request (
         input  clk, reset,
         output valid, address, wstrobe, wdata,
         input  ready, rdata, irq
     );
 
-    modport s (
+    modport read_write_response (
         input  clk, reset,
         input  valid, address, wstrobe, wdata,
         output ready, rdata, irq,
