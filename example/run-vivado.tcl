@@ -17,7 +17,7 @@ set src "
     $src_dir/core/Verithmetic.sv
     $src_dir/core/Vermibranch.sv
     $src_dir/core/Vermipare.sv
-    $src_dir/core/Verdicoder.sv
+    $src_dir/core/Verdicode.sv
     $src_dir/core/Verdata.sv
     $src_dir/core/Vergister.sv
     $src_dir/core/Vermicel_pkg.sv

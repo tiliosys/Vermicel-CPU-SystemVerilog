@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Verdicoder
+module Verdicode
     import Vermitypes_pkg::*,
            Vermicodes_pkg::*;
 (

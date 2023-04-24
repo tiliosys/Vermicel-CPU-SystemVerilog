@@ -7,7 +7,7 @@ RTL = \
 	common/Vermitypes_pkg.sv \
 	common/Vermibus.sv \
 	core/Vermicodes_pkg.sv \
-	core/Verdicoder.sv \
+	core/Verdicode.sv \
 	core/Verithmetic.sv \
 	core/Vermipare.sv \
 	core/Vergister.sv \

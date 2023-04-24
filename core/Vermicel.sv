@@ -73,7 +73,7 @@ module Vermicel (Vermibus.m bus);
     //  decode, read registers, select ALU operands.
     // 
 
-    Verdicoder dec (
+    Verdicode dec (
         .data(rdata_reg),
         .instr(instr)
     );
