@@ -13,9 +13,10 @@ module rv32ui_tb;
     localparam OUT_ADDRESS       = 8'h10;
 
     bit clk, reset;
-    Vermibus cpu_bus (clk, reset);
-    Vermibus ram_bus (clk, reset);
-    Vermibus out_bus (clk, reset);
+    Vermibus cpu_ibus (clk, reset);
+    Vermibus cpu_dbus (clk, reset);
+    Vermibus ram_dbus (clk, reset);
+    Vermibus out_bus  (clk, reset);
     bit[7:0] dev_address;
 
     always #1 clk = ~clk;
@@ -24,29 +25,32 @@ module rv32ui_tb;
     // CPU instance
     //
 
-    Vermicel cpu (cpu_bus.read_write_request);
+    Vermicel cpu (
+        .ibus(cpu_ibus.read_only_request),
+        .dbus(cpu_dbus.read_write_request)
+    );
 
     //
     // Device control
     //
 
-    assign dev_address = cpu_bus.address[24+:8];
+    assign dev_address = cpu_dbus.address[24+:8];
 
-    assign cpu_bus.irq = 0;
+    assign cpu_dbus.irq = 0;
 
     always_comb begin
         case (dev_address)
             RAM_ADDRESS: begin
-                cpu_bus.rdata = ram_bus.rdata;
-                cpu_bus.ready = ram_bus.ready;
+                cpu_dbus.rdata = ram_dbus.rdata;
+                cpu_dbus.ready = ram_dbus.ready;
             end
             OUT_ADDRESS: begin
-                cpu_bus.rdata = out_bus.rdata;
-                cpu_bus.ready = out_bus.ready;
+                cpu_dbus.rdata = out_bus.rdata;
+                cpu_dbus.ready = out_bus.ready;
             end
             default: begin
-                cpu_bus.rdata = 0;
-                cpu_bus.ready = cpu_bus.valid;
+                cpu_dbus.rdata = 0;
+                cpu_dbus.ready = 1;
             end
         endcase
     end
@@ -58,23 +62,26 @@ module rv32ui_tb;
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
-    ) ram (ram_bus.read_write_response);
+    ) ram (
+        .ibus(cpu_ibus.read_only_response),
+        .dbus(ram_dbus.read_write_response)
+    );
 
-    assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
-    assign ram_bus.address = cpu_bus.address;
-    assign ram_bus.wstrobe = cpu_bus.wstrobe;
-    assign ram_bus.wdata   = cpu_bus.wdata;
+    assign ram_dbus.valid   = cpu_dbus.valid && dev_address == RAM_ADDRESS;
+    assign ram_dbus.address = cpu_dbus.address;
+    assign ram_dbus.wstrobe = cpu_dbus.wstrobe;
+    assign ram_dbus.wdata   = cpu_dbus.wdata;
 
     //
     // Text output
     //
 
-    assign out_bus.valid   = cpu_bus.valid && dev_address == OUT_ADDRESS;
-    assign out_bus.address = cpu_bus.address;
-    assign out_bus.wstrobe = cpu_bus.wstrobe;
-    assign out_bus.wdata   = cpu_bus.wdata;
+    assign out_bus.valid   = cpu_dbus.valid && dev_address == OUT_ADDRESS;
+    assign out_bus.address = cpu_dbus.address;
+    assign out_bus.wstrobe = cpu_dbus.wstrobe;
+    assign out_bus.wdata   = cpu_dbus.wdata;
     assign out_bus.rdata   = 0;
-    assign out_bus.ready   = cpu_bus.valid;
+    assign out_bus.ready   = cpu_dbus.valid;
 
     always_ff @(posedge clk) begin
         if (out_bus.valid && out_bus.wstrobe[0]) begin

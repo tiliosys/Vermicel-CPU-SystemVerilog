@@ -5,7 +5,10 @@
 
 `default_nettype none
 
-module Vermicel (Vermibus.read_write_request bus);
+module Vermicel (
+    Vermibus.read_only_request  ibus,
+    Vermibus.read_write_request dbus
+);
 
     import Vermitypes_pkg::*;
     import Vermicodes_pkg::*;
@@ -20,6 +23,7 @@ module Vermicel (Vermibus.read_write_request bus);
     bit           load_en;      // Are we loading data from memory?
     bit           store_en;     // Are we storing data to memory?
     bit           writeback_en; // Are we writing results to a register?
+    word_t        idata_reg;    // Read instruction bus register.
     instruction_t instr;        // The decoded instruction.
     instruction_t instr_reg;    // Decoded instruction register.
     word_t        rdata_reg;    // Read data bus register.
@@ -42,20 +46,20 @@ module Vermicel (Vermibus.read_write_request bus);
     // Sequencer
     //
 
-    always_ff @(posedge bus.clk) begin
-        if (bus.reset) begin
+    always_ff @(posedge ibus.clk) begin
+        if (ibus.reset) begin
             state_reg <= FETCH;
         end
         else begin
             case (state_reg)
-                FETCH     : if (bus.ready)      state_reg <= DECODE;
+                FETCH     : if (ibus.ready)     state_reg <= DECODE;
                 DECODE    :                     state_reg <= EXECUTE;
                 EXECUTE   : if (instr.is_load)  state_reg <= LOAD;
                        else if (instr.is_store) state_reg <= STORE;
                        else if (instr.has_rd)   state_reg <= WRITEBACK;
                        else                     state_reg <= FETCH;
-                LOAD      : if (bus.ready)      state_reg <= WRITEBACK;
-                STORE     : if (bus.ready)      state_reg <= FETCH;
+                LOAD      : if (dbus.ready)     state_reg <= WRITEBACK;
+                STORE     : if (dbus.ready)     state_reg <= FETCH;
                 default   :                     state_reg <= FETCH;
             endcase
         end
@@ -68,21 +72,37 @@ module Vermicel (Vermibus.read_write_request bus);
     assign store_en     = state_reg == STORE;
     assign writeback_en = state_reg == WRITEBACK;
 
-    // 
+    //
+    // Instruction fetch.
+    //
+
+    assign ibus.valid   = fetch_en;
+    assign ibus.address = pc_reg;
+
+    always_ff @(posedge ibus.clk) begin
+        if (ibus.reset) begin
+            idata_reg <= 0;
+        end
+        else if (ibus.valid && ibus.ready) begin
+            idata_reg <= ibus.rdata;
+        end
+    end
+
+    //
     //  Instruction decoding:
     //  decode, read registers, select ALU operands.
     // 
 
     Verdicode dec (
-        .data(rdata_reg),
+        .data(idata_reg),
         .instr(instr)
     );
 
     Vergister #(
         .SIZE(REGISTER_UNIT_SIZE)
     ) regs (
-        .clk(bus.clk),
-        .reset(bus.reset),
+        .clk(ibus.clk),
+        .reset(ibus.reset),
         .enable(writeback_en),
         .src_instr(instr),
         .dest_instr(instr_reg),
@@ -91,8 +111,8 @@ module Vermicel (Vermibus.read_write_request bus);
         .xs2(xs2)
     );
 
-    always_ff @(posedge bus.clk) begin
-        if (bus.reset) begin
+    always_ff @(posedge ibus.clk) begin
+        if (ibus.reset) begin
             instr_reg <= INSTR_NOP;
             xs1_reg   <= 0;
             xs2_reg   <= 0;
@@ -127,10 +147,10 @@ module Vermicel (Vermibus.read_write_request bus);
         .IRQ_ADDRESS(IRQ_ADDRESS),
         .TRAP_ADDRESS(TRAP_ADDRESS)
     ) branch (
-        .clk(bus.clk),
-        .reset(bus.reset),
+        .clk(ibus.clk),
+        .reset(ibus.reset),
         .enable(execute_en),
-        .irq(bus.irq),
+        .irq(dbus.irq),
         .instr(instr_reg),
         .xs1(xs1_reg),
         .xs2(xs2_reg),
@@ -139,8 +159,8 @@ module Vermicel (Vermibus.read_write_request bus);
         .pc_next(pc_next)
     );
 
-    always_ff @(posedge bus.clk) begin
-        if (bus.reset) begin
+    always_ff @(posedge ibus.clk) begin
+        if (ibus.reset) begin
             alu_r_reg   <= 0;
             pc_reg      <= 0;
             pc_incr_reg <= 0;
@@ -157,12 +177,12 @@ module Vermicel (Vermibus.read_write_request bus);
     // align data to/from memory, drive control outputs.
     //
 
-    always_ff @(posedge bus.clk) begin
-        if (bus.reset) begin
+    always_ff @(posedge dbus.clk) begin
+        if (dbus.reset) begin
             rdata_reg <= 0;
         end
-        else if (bus.valid && bus.ready) begin
-            rdata_reg <= bus.rdata;
+        else if (dbus.valid && dbus.ready) begin
+            rdata_reg <= dbus.rdata;
         end
     end
 
@@ -173,12 +193,12 @@ module Vermicel (Vermibus.read_write_request bus);
         .store_data(xs2_reg),
         .load_data(load_data),
         .rdata(rdata_reg),
-        .wstrobe(bus.wstrobe),
-        .wdata(bus.wdata)
+        .wstrobe(dbus.wstrobe),
+        .wdata(dbus.wdata)
     );
 
-    assign bus.valid   = fetch_en || load_en || store_en;
-    assign bus.address = fetch_en ? pc_reg : alu_r_reg;
+    assign dbus.valid   = load_en || store_en;
+    assign dbus.address = alu_r_reg;
 
     //
     // Write back

@@ -6,7 +6,7 @@
 `default_nettype none
 
 module Vermichello #(
-    parameter RAM_SIZE_WORDS = 32768,
+    parameter RAM_SIZE_WORDS    = 32768,
     parameter RAM_INIT_FILENAME = "ram-init.mem"
 )
 (
@@ -21,8 +21,9 @@ module Vermichello #(
     localparam TIMER_ADDRESS = 8'h80;
     localparam UART_ADDRESS  = 8'h81;
 
-    Vermibus cpu_bus   (clk, reset);
-    Vermibus ram_bus   (clk, reset);
+    Vermibus cpu_ibus  (clk, reset);
+    Vermibus cpu_dbus  (clk, reset);
+    Vermibus ram_dbus  (clk, reset);
     Vermibus timer_bus (clk, reset);
     Vermibus uart_bus  (clk, reset);
 
@@ -32,33 +33,36 @@ module Vermichello #(
     // CPU instance
     //
 
-    Vermicel cpu (cpu_bus.read_write_request);
+    Vermicel cpu (
+        .ibus(cpu_ibus.read_only_request),
+        .dbus(cpu_dbus.read_write_request)
+    );
 
     //
     // Device control
     //
 
-    assign dev_address = cpu_bus.address[24+:8];
+    assign dev_address = cpu_dbus.address[24+:8];
 
-    assign cpu_bus.irq = timer_bus.irq;
+    assign cpu_dbus.irq = timer_bus.irq;
 
     always_comb begin
         case (dev_address)
             RAM_ADDRESS: begin
-                cpu_bus.rdata = ram_bus.rdata;
-                cpu_bus.ready = ram_bus.ready;
+                cpu_dbus.rdata = ram_dbus.rdata;
+                cpu_dbus.ready = ram_dbus.ready;
             end
             TIMER_ADDRESS: begin
-                cpu_bus.rdata = timer_bus.rdata;
-                cpu_bus.ready = timer_bus.ready;
+                cpu_dbus.rdata = timer_bus.rdata;
+                cpu_dbus.ready = timer_bus.ready;
             end
             UART_ADDRESS: begin
-                cpu_bus.rdata = uart_bus.rdata;
-                cpu_bus.ready = uart_bus.ready;
+                cpu_dbus.rdata = uart_bus.rdata;
+                cpu_dbus.ready = uart_bus.ready;
             end
             default: begin
-                cpu_bus.rdata = 0;
-                cpu_bus.ready = cpu_bus.valid;
+                cpu_dbus.rdata = 0;
+                cpu_dbus.ready = cpu_dbus.valid;
             end
         endcase
     end
@@ -70,12 +74,15 @@ module Vermichello #(
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME)
-    ) ram (ram_bus.read_write_response);
+    ) ram (
+        .ibus(cpu_ibus.read_only_response),
+        .dbus(ram_dbus.read_write_response)
+    );
 
-    assign ram_bus.valid   = cpu_bus.valid && dev_address == RAM_ADDRESS;
-    assign ram_bus.address = cpu_bus.address;
-    assign ram_bus.wstrobe = cpu_bus.wstrobe;
-    assign ram_bus.wdata   = cpu_bus.wdata;
+    assign ram_dbus.valid   = cpu_dbus.valid && dev_address == RAM_ADDRESS;
+    assign ram_dbus.address = cpu_dbus.address;
+    assign ram_dbus.wstrobe = cpu_dbus.wstrobe;
+    assign ram_dbus.wdata   = cpu_dbus.wdata;
 
     //
     // Timer instance
@@ -83,10 +90,10 @@ module Vermichello #(
 
     Vermitime timer (timer_bus.read_write_response);
 
-    assign timer_bus.valid   = cpu_bus.valid && dev_address == TIMER_ADDRESS;
-    assign timer_bus.address = cpu_bus.address;
-    assign timer_bus.wstrobe = cpu_bus.wstrobe;
-    assign timer_bus.wdata   = cpu_bus.wdata;
+    assign timer_bus.valid   = cpu_dbus.valid && dev_address == TIMER_ADDRESS;
+    assign timer_bus.address = cpu_dbus.address;
+    assign timer_bus.wstrobe = cpu_dbus.wstrobe;
+    assign timer_bus.wdata   = cpu_dbus.wdata;
 
     //
     // UART instance
@@ -98,10 +105,10 @@ module Vermichello #(
         .tx(uart_tx)
     );
 
-    assign uart_bus.valid   = cpu_bus.valid && dev_address == UART_ADDRESS;
-    assign uart_bus.address = cpu_bus.address;
-    assign uart_bus.wstrobe = cpu_bus.wstrobe;
-    assign uart_bus.wdata   = cpu_bus.wdata;
+    assign uart_bus.valid   = cpu_dbus.valid && dev_address == UART_ADDRESS;
+    assign uart_bus.address = cpu_dbus.address;
+    assign uart_bus.wstrobe = cpu_dbus.wstrobe;
+    assign uart_bus.wdata   = cpu_dbus.wdata;
 
 endmodule
 

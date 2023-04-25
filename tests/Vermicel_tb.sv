@@ -12,9 +12,27 @@ module Vermicel_tb;
 
     bit clk, reset;
 
-    Vermibus cpu_bus (clk, reset);
+    Vermibus cpu_ibus (clk, reset);
+    Vermibus cpu_dbus (clk, reset);
+    Vermibus tb_bus   (clk, reset);
 
-    Vermicel cpu (cpu_bus.read_write_request);
+    Vermicel cpu (
+        .ibus(cpu_ibus.read_only_request),
+        .dbus(cpu_dbus.read_write_request)
+    );
+
+    // Combine instruction and data busses, assuming a non-pipelined CPU core.
+    // TODO: support the pipelined version
+    assign tb_bus.valid   = cpu_ibus.valid || cpu_dbus.valid;
+    assign tb_bus.address = cpu_ibus.valid ? cpu_ibus.address : cpu_dbus.address;
+    assign tb_bus.wstrobe = cpu_dbus.wstrobe;
+    assign tb_bus.wdata   = cpu_dbus.wdata;
+    assign cpu_ibus.rdata = tb_bus.rdata;
+    assign cpu_ibus.ready = tb_bus.ready;
+    assign cpu_dbus.rdata = tb_bus.rdata;
+    assign cpu_dbus.ready = tb_bus.ready;
+    assign cpu_dbus.irq   = tb_bus.irq;
+    
 
     typedef bit[2:0] field_ignore_t;
     localparam field_ignore_t ignore_none    = 'b000;
@@ -23,29 +41,29 @@ module Vermicel_tb;
     localparam field_ignore_t ignore_wdata   = 'b001;
 
     task check(string label, word_t rdata, bit ready, bit irq, bit valid, word_t address, wstrobe_t wstrobe, word_t wdata, field_ignore_t ignore);
-        cpu_bus.rdata = rdata;
-        cpu_bus.ready = ready;
-        cpu_bus.irq   = irq;
+        tb_bus.rdata = rdata;
+        tb_bus.ready = ready;
+        tb_bus.irq   = irq;
 
         if (|(ignore & ignore_address)) begin
-            address = cpu_bus.address;
+            address = tb_bus.address;
         end
         if (|(ignore & ignore_wstrobe)) begin
-            wstrobe = cpu_bus.wstrobe;
+            wstrobe = tb_bus.wstrobe;
         end
         if (|(ignore & ignore_wdata)) begin
-            wdata = cpu_bus.wdata;
+            wdata = tb_bus.wdata;
         end
 
-        if (cpu_bus.valid == valid && cpu_bus.wstrobe == wstrobe && cpu_bus.wdata == wdata) begin
+        if (tb_bus.valid == valid && tb_bus.wstrobe == wstrobe && tb_bus.wdata == wdata) begin
             $display("[PASS] %s", label);
         end
         else begin
             $display("[FAIL] %s: valid=%b, expected=%b ; wstrobe=%04b, expected=%04b ; wdata=%08x, expected=%08x",
                 label,
-                cpu_bus.valid, valid,
-                cpu_bus.wstrobe, wstrobe,
-                cpu_bus.wdata, wdata);
+                tb_bus.valid, valid,
+                tb_bus.wstrobe, wstrobe,
+                tb_bus.wdata, wdata);
         end
         @(posedge clk);
     endtask
