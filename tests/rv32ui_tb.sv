@@ -11,6 +11,7 @@ module rv32ui_tb;
     localparam RAM_SIZE_WORDS    = 65536;
     localparam RAM_INIT_FILENAME = "rv32ui/tests.mem";
     localparam OUT_ADDRESS       = 8'h10;
+    localparam USE_LOOKAHEAD     = 1;
 
     bit clk, reset;
     Vermibus cpu_ibus (clk, reset);
@@ -61,7 +62,8 @@ module rv32ui_tb;
 
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
-        .INIT_FILENAME(RAM_INIT_FILENAME)
+        .INIT_FILENAME(RAM_INIT_FILENAME),
+        .USE_LOOKAHEAD(USE_LOOKAHEAD)
     ) ram (
         .ibus(cpu_ibus.read_only_response),
         .dbus(ram_dbus.read_write_response)

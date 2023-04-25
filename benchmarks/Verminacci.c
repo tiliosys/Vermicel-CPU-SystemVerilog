@@ -15,10 +15,12 @@ uint32_t fibonacci(uint32_t n) {
     return a;
 }
 
-#define N 1000
+#define N 30
 
 int main(void) {
     *tick = 1;
-    *out  = fibonacci(N);
+    for (uint32_t n = 0; n < N; n ++) {
+        *out = fibonacci(n);
+    }
     *tick = 0;
 }

@@ -76,8 +76,9 @@ module Vermicel (
     // Instruction fetch.
     //
 
-    assign ibus.valid   = fetch_en;
-    assign ibus.address = pc_reg;
+    assign ibus.valid     = fetch_en;
+    assign ibus.address   = pc_reg;
+    assign ibus.lookahead = pc_next;
 
     always_ff @(posedge ibus.clk) begin
         if (ibus.reset) begin

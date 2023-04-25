@@ -6,7 +6,8 @@
 `default_nettype none
 
 module Vermiperf #(
-    parameter RAM_INIT_FILENAME // Implicit string type. Verilator fails to load file if type specified.
+    parameter RAM_INIT_FILENAME, // Implicit string type. Verilator fails to load file if type specified.
+    parameter bit USE_LOOKAHEAD
 );
     localparam RAM_ADDRESS       = 8'h00;
     localparam RAM_SIZE_WORDS    = 32768;
@@ -67,7 +68,8 @@ module Vermiperf #(
 
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
-        .INIT_FILENAME(RAM_INIT_FILENAME)
+        .INIT_FILENAME(RAM_INIT_FILENAME),
+        .USE_LOOKAHEAD(USE_LOOKAHEAD)
     ) ram (
         .ibus(cpu_ibus.read_only_response),
         .dbus(ram_dbus.read_write_response)

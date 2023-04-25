@@ -7,7 +7,8 @@
 
 module Vermichello #(
     parameter RAM_SIZE_WORDS    = 32768,
-    parameter RAM_INIT_FILENAME = "ram-init.mem"
+    parameter RAM_INIT_FILENAME = "ram-init.mem",
+    parameter bit USE_LOOKAHEAD = 0
 )
 (
     input  bit clk,
@@ -73,7 +74,8 @@ module Vermichello #(
 
     Vermimory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
-        .INIT_FILENAME(RAM_INIT_FILENAME)
+        .INIT_FILENAME(RAM_INIT_FILENAME),
+        .USE_LOOKAHEAD(USE_LOOKAHEAD)
     ) ram (
         .ibus(cpu_ibus.read_only_response),
         .dbus(ram_dbus.read_write_response)

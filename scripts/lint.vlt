@@ -25,3 +25,4 @@ lint_off -rule UNUSEDSIGNAL -file "core/Vermibranch.sv" -match "Bits of signal a
 
 lint_off -rule UNUSEDSIGNAL -file "core/Vermipare.sv"   -match "Bits of signal are not used: 'instr'[90:44,40:0]"
 
+lint_off -rule UNUSEDSIGNAL -file "common/Vermibus.sv"  -match "Bits of signal are not used: 'lookahead'[31:17,1:0]"

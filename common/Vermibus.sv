@@ -49,13 +49,13 @@ interface Vermibus (
 
     modport read_only_request (
         input  clk, reset,
-        output valid, address,
+        output valid, address, lookahead,
         input  ready, rdata
     );
 
     modport read_only_response (
         input  clk, reset,
-        input  valid, address,
+        input  valid, address, lookahead,
         output ready, rdata
     );
 

@@ -34,6 +34,7 @@ set src "
 set generics "
     RAM_SIZE_WORDS=32768
     RAM_INIT_FILENAME=Vermichello.mem
+    USE_LOOKAHEAD=1
 "
 
 set constraints "$this_dir/Vermichello-$board_name.xdc"

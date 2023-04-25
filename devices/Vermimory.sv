@@ -7,7 +7,8 @@
 
 module Vermimory #(
     parameter int unsigned SIZE_WORDS,
-    parameter INIT_FILENAME // Implicit string type, not supported by Xilinx Vivado 2019.1
+    parameter INIT_FILENAME, // Implicit string type, not supported by Xilinx Vivado 2019.1
+    parameter bit USE_LOOKAHEAD
 ) (
     Vermibus.read_only_response  ibus,
     Vermibus.read_write_response dbus
@@ -29,11 +30,13 @@ module Vermimory #(
     //
 
     local_address_t ibus_local_address;
+    local_address_t ibus_local_address_sel;
+    local_address_t ibus_local_address_reg;
     word_t          ibus_rdata;
-    bit             ibus_valid_reg;
 
-    assign ibus_local_address = ibus.address[2+:LOCAL_ADDRESS_WIDTH];
-    assign ibus_rdata         = data_reg[ibus_local_address];
+    assign ibus_local_address     = ibus.address[2+:LOCAL_ADDRESS_WIDTH];
+    assign ibus_local_address_sel = USE_LOOKAHEAD && ibus.ready ? ibus.lookahead[2+:LOCAL_ADDRESS_WIDTH] : ibus_local_address;
+    assign ibus_rdata             = data_reg[ibus_local_address_sel];
 
     always_ff @(posedge ibus.clk) begin
         if (ibus.valid) begin
@@ -43,14 +46,14 @@ module Vermimory #(
 
     always_ff @(posedge ibus.clk) begin
         if (ibus.reset) begin
-            ibus_valid_reg <= 0;
+            ibus_local_address_reg <= {LOCAL_ADDRESS_WIDTH{1'b1}};
         end
-        else begin
-            ibus_valid_reg <= ibus.valid;
+        else if (ibus.valid) begin
+            ibus_local_address_reg <= ibus_local_address_sel;
         end
     end
 
-    assign ibus.ready = ibus_valid_reg || !ibus.valid;
+    assign ibus.ready = !ibus.valid || ibus_local_address == ibus_local_address_reg;
 
     //
     // Data bus.
@@ -79,7 +82,7 @@ module Vermimory #(
         end
     end
 
-    assign dbus.ready = dbus.wstrobe != 0 || dbus_valid_reg || !dbus.valid;
+    assign dbus.ready = dbus.wstrobe != 0 || !dbus.valid || dbus_valid_reg;
     assign dbus.irq   = 0;
 
 endmodule
