@@ -16,6 +16,7 @@ module Vermimory #(
     import Vermitypes_pkg::*;
 
     localparam LOCAL_ADDRESS_WIDTH = $clog2(SIZE_WORDS);
+    typedef bit[LOCAL_ADDRESS_WIDTH-1:0] local_address_t;
 
     word_t data_reg[0:SIZE_WORDS-1];
 
@@ -27,9 +28,9 @@ module Vermimory #(
     // Instruction bus.
     //
 
-    bit[LOCAL_ADDRESS_WIDTH-1:0] ibus_local_address;
-    word_t                       ibus_rdata;
-    bit                          ibus_valid_reg;
+    local_address_t ibus_local_address;
+    word_t          ibus_rdata;
+    bit             ibus_valid_reg;
 
     assign ibus_local_address = ibus.address[2+:LOCAL_ADDRESS_WIDTH];
     assign ibus_rdata         = data_reg[ibus_local_address];
@@ -55,9 +56,9 @@ module Vermimory #(
     // Data bus.
     //
 
-    bit[LOCAL_ADDRESS_WIDTH-1:0] dbus_local_address;
-    word_t                       dbus_rdata;
-    bit                          dbus_valid_reg;
+    local_address_t dbus_local_address;
+    word_t          dbus_rdata;
+    bit             dbus_valid_reg;
 
     assign dbus_local_address = dbus.address[2+:LOCAL_ADDRESS_WIDTH];
     assign dbus_rdata         = data_reg[dbus_local_address];

@@ -25,6 +25,10 @@ interface Vermibus (
         return valid && wstrobe != 0;
     endfunction
 
+    function bit read_enabled();
+        return valid && wstrobe == 0;
+    endfunction
+
     function word_t write_into(word_t data);
         for (int i = 0; i < 4; i ++) begin
             if (wstrobe[i]) begin
@@ -65,7 +69,7 @@ interface Vermibus (
         input  clk, reset,
         input  valid, address, wstrobe, wdata,
         output ready, rdata, irq,
-        import write_enabled, write_into, clear_into
+        import read_enabled, write_enabled, write_into, clear_into
     );
 
 endinterface

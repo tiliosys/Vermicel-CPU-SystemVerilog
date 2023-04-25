@@ -20,6 +20,7 @@ all: $(BENCHMARKS_BIN)
 obj_dir/%: $(SRC) %.mem
 	verilator -sv --binary --timing --trace -Wno-lint --top-module $(TOP) -GRAM_INIT_FILENAME='"$*.mem"' -o $* $(SRC)
 
+C_FLAGS_USER=-O2
 LD_SCRIPT = $(TOP).ld
 
 include ../scripts/rules.mk
