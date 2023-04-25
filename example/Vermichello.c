@@ -1,5 +1,6 @@
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define BYTE_REG(address) *(volatile uint8_t*)(address)
 #define WORD_REG(address) *(volatile uint32_t*)(address)
@@ -40,9 +41,6 @@
 // UART Baud rate configuration value (115200 bits/sec).
 #define UART_DIVISION_VALUE        867
 
-// A nice greeting message to display.
-const char *const greeter = "Hello! What's your name?\n> ";
-
 // ----------------------------------------------------------------------------
 // UART 
 // ----------------------------------------------------------------------------
@@ -70,12 +68,35 @@ void UART_puts(const char *str) {
   }
 }
 
+void UART_gets(char *dest, size_t limit) {
+  while (limit > 0) {
+      char c = UART_getc();
+      if (c == '\r') {
+          break;
+      }
+      if (c >= ' ' && c <= '~') {
+        UART_putc(c);
+        *dest = c;
+        dest ++;
+        limit --;
+      }
+  }
+  *dest = 0;
+}
+
 // ----------------------------------------------------------------------------
 // Main program 
 // ----------------------------------------------------------------------------
 
+#define LIMIT 32
+
 int main(void) {
   UART_set_division(UART_DIVISION_VALUE);
-  UART_puts(greeter);
+  UART_puts("Hello! What's your name?\n> ");
+  char name[LIMIT+1];
+  UART_gets(name, LIMIT);
+  UART_puts("\nBye, ");
+  UART_puts(name);
+  UART_puts("!\n");
   return 0;
 }
