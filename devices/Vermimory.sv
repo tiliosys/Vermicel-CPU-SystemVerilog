@@ -29,7 +29,7 @@ module Vermimory #(
 
     bit[LOCAL_ADDRESS_WIDTH-1:0] ibus_local_address;
     word_t                       ibus_rdata;
-    bit                          ibus_ready_reg;
+    bit                          ibus_valid_reg;
 
     assign ibus_local_address = ibus.address[2+:LOCAL_ADDRESS_WIDTH];
     assign ibus_rdata         = data_reg[ibus_local_address];
@@ -42,14 +42,14 @@ module Vermimory #(
 
     always_ff @(posedge ibus.clk) begin
         if (ibus.reset) begin
-            ibus_ready_reg <= 0;
+            ibus_valid_reg <= 0;
         end
-        else if (ibus.valid) begin
-            ibus_ready_reg <= !ibus_ready_reg;
+        else begin
+            ibus_valid_reg <= ibus.valid;
         end
     end
 
-    assign ibus.ready = ibus_ready_reg;
+    assign ibus.ready = ibus_valid_reg || !ibus.valid;
 
     //
     // Data bus.
@@ -57,7 +57,7 @@ module Vermimory #(
 
     bit[LOCAL_ADDRESS_WIDTH-1:0] dbus_local_address;
     word_t                       dbus_rdata;
-    bit                          dbus_ready_reg;
+    bit                          dbus_valid_reg;
 
     assign dbus_local_address = dbus.address[2+:LOCAL_ADDRESS_WIDTH];
     assign dbus_rdata         = data_reg[dbus_local_address];
@@ -71,14 +71,14 @@ module Vermimory #(
 
     always_ff @(posedge dbus.clk) begin
         if (dbus.reset) begin
-            dbus_ready_reg <= 0;
+            dbus_valid_reg <= 0;
         end
-        else if (dbus.valid && dbus.wstrobe == 0) begin
-            dbus_ready_reg <= !dbus_ready_reg;
+        else begin
+            dbus_valid_reg <= dbus.valid;
         end
     end
 
-    assign dbus.ready = dbus.wstrobe == 0 ? dbus_ready_reg : dbus.valid;
+    assign dbus.ready = dbus.wstrobe != 0 || dbus_valid_reg || !dbus.valid;
     assign dbus.irq   = 0;
 
 endmodule

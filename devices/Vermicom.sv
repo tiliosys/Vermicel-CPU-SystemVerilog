@@ -170,7 +170,7 @@ module Vermicom (
         endcase
     end
 
-    assign bus.ready = bus.valid;
+    assign bus.ready = 1;
     assign bus.irq   = control_reg.tx_irq_enable && status_reg.tx_event_flag ||
                        control_reg.rx_irq_enable && status_reg.rx_event_flag;
 endmodule

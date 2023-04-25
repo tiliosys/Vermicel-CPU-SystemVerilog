@@ -81,7 +81,7 @@ module rv32ui_tb;
     assign out_bus.wstrobe = cpu_dbus.wstrobe;
     assign out_bus.wdata   = cpu_dbus.wdata;
     assign out_bus.rdata   = 0;
-    assign out_bus.ready   = cpu_dbus.valid;
+    assign out_bus.ready   = 1;
 
     always_ff @(posedge clk) begin
         if (out_bus.valid && out_bus.wstrobe[0]) begin

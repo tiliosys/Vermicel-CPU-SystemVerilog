@@ -73,7 +73,7 @@ module Vermitime (Vermibus.read_write_response bus);
         endcase
     end
 
-    assign bus.ready = bus.valid;
+    assign bus.ready = 1;
     assign bus.irq   = status_reg.event_flag && control_reg.irq_enable;
 
 endmodule

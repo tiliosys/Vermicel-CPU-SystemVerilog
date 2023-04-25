@@ -56,7 +56,7 @@ module Vermiperf #(
             end
             default: begin
                 cpu_dbus.rdata = 0;
-                cpu_dbus.ready = cpu_dbus.valid;
+                cpu_dbus.ready = 1;
             end
         endcase
     end
@@ -87,7 +87,7 @@ module Vermiperf #(
     assign out_bus.wstrobe = cpu_dbus.wstrobe;
     assign out_bus.wdata   = cpu_dbus.wdata;
     assign out_bus.rdata   = 0;
-    assign out_bus.ready   = cpu_dbus.valid;
+    assign out_bus.ready   = 1;
 
     always_ff @(posedge clk) begin
         if (out_bus.write_enabled()) begin
@@ -104,7 +104,7 @@ module Vermiperf #(
     assign tick_bus.wstrobe = cpu_dbus.wstrobe;
     assign tick_bus.wdata   = cpu_dbus.wdata;
     assign tick_bus.rdata   = 0;
-    assign tick_bus.ready   = cpu_dbus.valid;
+    assign tick_bus.ready   = 1;
 
     int unsigned cycle_counter;
 

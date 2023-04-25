@@ -62,7 +62,7 @@ module Vermichello #(
             end
             default: begin
                 cpu_dbus.rdata = 0;
-                cpu_dbus.ready = cpu_dbus.valid;
+                cpu_dbus.ready = 1;
             end
         endcase
     end
