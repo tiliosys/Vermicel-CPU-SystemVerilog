@@ -14,6 +14,10 @@ License
 This project is licensed under the terms of the CERN Open Hardware Licence Version 2 - Weakly Reciprocal (CERN-OHL-W).
 For details please see the [LICENSE](./LICENSE) file or https://ohwr.org/project/cernohl/wikis/Documents/CERN-OHL-version-2
 
+The test suite in folder `tests/rv32ui` comes from [the riscv-tests project](https://github.com/riscv-software-src/riscv-tests),
+with modifications from the [the picorv32 project](https://github.com/YosysHQ/picorv32).
+The license of this test suite can be found in [tests/rv32ui/LICENSE](./tests/rv32ui/LICENSE).
+
 Content of this repository
 --------------------------
 
