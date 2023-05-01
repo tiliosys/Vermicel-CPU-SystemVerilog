@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+# SPDX-FileCopyrightText: 2023 Guillaume Savaton <guillaume.savaton@tiliosys.fr>
+#
 
 if [ ! -x /usr/bin/ascii-xfr ]; then
     echo "WARNING: To send ASCII files through picocom, please install ascii-xfr (included in package minicom)."

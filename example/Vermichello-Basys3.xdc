@@ -1,7 +1,7 @@
-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+# SPDX-FileCopyrightText: 2023 Guillaume Savaton <guillaume.savaton@tiliosys.fr>
+#
 
 set_property PACKAGE_PIN W5      [get_ports clk]
 set_property IOSTANDARD LVCMOS33 [get_ports clk]

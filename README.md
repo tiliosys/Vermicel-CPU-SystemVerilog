@@ -8,7 +8,11 @@ Vermicel is in a very early stage of development, and it is unlikely to ever bec
 Full compliance to the RISC-V specification is not guaranteed either.
 So, if you are looking for a RISC-V core to use in your product, there are a lot of other implementations available.
 
-Vermicel is distributed under the terms of the Mozilla Public License 2.0.
+License
+-------
+
+This project is licensed under the terms of the CERN Open Hardware Licence Version 2 - Weakly Reciprocal (CERN-OHL-W).
+For details please see the [LICENSE](./LICENSE) file or https://ohwr.org/project/cernohl/wikis/Documents/CERN-OHL-version-2
 
 Content of this repository
 --------------------------

@@ -1,3 +1,7 @@
+//
+// SPDX-License-Identifier: CERN-OHL-W-2.0
+// SPDX-FileCopyrightText: 2023 Guillaume Savaton <guillaume.savaton@tiliosys.fr>
+//
 
 #include <stdint.h>
 
