@@ -66,7 +66,7 @@ Vermicel comes with a minimal set of devices:
 ### Examples and benchmarks
 
 * [Vermichello](./example): a synthesizable "Hello world" SoC.
-* [Vermiperf](./benchmarks): a simulation environment to measure execution time with various programs:
+* [Vermiperf](./benchmarks/Vermiperf.sv): a simulation environment to measure execution time with various programs:
   * [Verminacci](./benchmarks/Verminacci.c): computes the Fibonacci series.
   * [Vermicopy](./benchmarks/Vermicopy.c): performs string copy operations.
 
