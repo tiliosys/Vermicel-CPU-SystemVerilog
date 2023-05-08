@@ -34,6 +34,42 @@ Folder       | Content
 `scripts`    | Various scripts for linting, simulation, synthesis, software compilation
 `tests`      | The test suite
 
+Meet the Vermicel family
+------------------------
+
+### Core members
+
+These are the modules that compose [Vermicel](./core/Vermicel.sv), our CPU core:
+
+* [Verdicode](./core/Verdicode.sv): the instruction decoder.
+* [Verithmetic](./core/Verithmetic.sv): the Arithemetic and Logic Unit (ALU).
+* [Vermipare](./core/Vermipare.sv): the comparator, a close collaborator of [Vermibranch](./core/Vermibranch.sv).
+* [Vermibranch](./core/Vermibranch.sv): the branch calculation unit.
+* [Vergister](./core/Vergister.sv): the general-purpose register bank.
+* [Verdata](./core/Verdata.sv): responsible for formatting the values on the data bus.
+
+They are assisted by:
+
+* [Vermibus](./common/Vermibus.sv): the bus interface.
+* [Vermitypes_pkg](./common/Vermitypes_pkg.sv): a package with common data types.
+* [Vermicodes_pkg](./core/Vermicodes_pkg.sv): a package with the main RISC-V opcodes.
+* [Vermicel_pkg](./core/Vermicel_pkg.sv): a package with constant declarations.
+
+### Peripherals
+
+Vermicel comes with a minimal set of devices:
+
+* [Vermimory](./devices/Vermimory.sv): a dual-port SRAM block.
+* [Vermicom](./devices/Vermicom.sv): a serial communication controller (UART).
+* [Vermitime](./devices/Vermitime.sv): a timer.
+
+### Examples and benchmarks
+
+* [Vermichello](./example): a synthesizable "Hello world" SoC.
+* [Vermiperf](./benchmarks): a simulation environment to measure execution time with various programs:
+  * [Verminacci](./benchmarks/Verminacci.c): computes the Fibonacci series.
+  * [Vermicopy](./benchmarks/Vermicopy.c): performs string copy operations.
+
 Development software and hardware
 ---------------------------------
 
