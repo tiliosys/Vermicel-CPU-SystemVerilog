@@ -6,7 +6,7 @@
 `default_nettype none
 
 module Vermicom (
-    Vermibus.read_write_response  bus,
+    Vermibus.read_write_response bus,
     input  bit rx,
     output bit tx
 );
