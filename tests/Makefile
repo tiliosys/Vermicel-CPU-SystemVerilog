@@ -17,8 +17,8 @@ DEPS = rv32ui/tests.mem
 all: $(TESTS_BIN)
 	for f in $(TESTS_BIN); do $$f; done | tee tests.log
 	@echo "--"
-	@echo "Total PASS: " $$(egrep "PASS|OK"    tests.log | wc -l)
-	@echo "Total FAIL: " $$(egrep "FAIL|ERROR" tests.log | wc -l)
+	@echo "Total PASS: " $$(grep -E "PASS|OK"    tests.log | wc -l)
+	@echo "Total FAIL: " $$(grep -E "FAIL|ERROR" tests.log | wc -l)
 	@echo "--"
 
 obj_dir/%: $(SRC) %.sv
