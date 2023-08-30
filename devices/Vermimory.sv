@@ -60,8 +60,8 @@ module Vermimory #(
     //
 
     local_address_t dbus_local_address;
+    local_address_t dbus_local_address_reg;
     word_t          dbus_rdata;
-    bit             dbus_valid_reg;
 
     assign dbus_local_address = dbus.address[2+:LOCAL_ADDRESS_WIDTH];
     assign dbus_rdata         = data_reg[dbus_local_address];
@@ -75,14 +75,14 @@ module Vermimory #(
 
     always_ff @(posedge dbus.clk) begin
         if (dbus.reset) begin
-            dbus_valid_reg <= 0;
+            dbus_local_address_reg <= {LOCAL_ADDRESS_WIDTH{1'b1}};
         end
-        else begin
-            dbus_valid_reg <= dbus.valid;
+        else if (dbus.valid) begin
+            dbus_local_address_reg <= dbus_local_address;
         end
     end
 
-    assign dbus.ready = dbus.wstrobe != 0 || !dbus.valid || dbus_valid_reg;
+    assign dbus.ready = !dbus.valid || dbus.wstrobe != 0 || dbus_local_address == dbus_local_address_reg;
     assign dbus.irq   = 0;
 
 endmodule

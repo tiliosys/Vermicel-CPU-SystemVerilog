@@ -14,6 +14,7 @@ RTL = \
 	core/Vermibranch.sv \
 	core/Verdata.sv \
 	core/Vermicel_pkg.sv \
+	core/Vermisnail.sv \
 	core/Vermicel.sv \
 	devices/Vermimory.sv \
 	devices/Vermitime_pkg.sv \
