@@ -35,7 +35,9 @@ module Vermichello #(
     // CPU instance
     //
 
-    Vermicel cpu (
+    Vermicel #(
+        .PIPELINE(PIPELINE)
+    ) cpu (
         .ibus(cpu_ibus.read_only_request),
         .dbus(cpu_dbus.read_write_request)
     );

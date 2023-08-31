@@ -57,7 +57,7 @@ module Vermipipe (
     instruction_t memory_instr_reg;
     word_t        memory_xs2_reg;
     word_t        memory_alu_r_reg;
-    word_t        memory_xd_reg;
+    word_t        memory_xd_partial_reg;
 
     // Memory stage.
     word_t        memory_rdata_reg;
@@ -230,10 +230,10 @@ module Vermipipe (
             memory_instr_reg <= INSTR_NOP;
         end
         else if (tick) begin
-            memory_instr_reg <= execute_instr_reg;
-            memory_xs2_reg   <= execute_xs2_reg;
-            memory_alu_r_reg <= execute_alu_r;
-            memory_xd_reg    <= execute_xd;
+            memory_instr_reg      <= execute_instr_reg;
+            memory_xs2_reg        <= execute_xs2_reg;
+            memory_alu_r_reg      <= execute_alu_r;
+            memory_xd_partial_reg <= execute_xd;
         end
     end
 
@@ -270,7 +270,7 @@ module Vermipipe (
     assign dbus.valid   = (memory_instr_reg.is_load || memory_instr_reg.is_store) && !memory_pending_reg;
     assign dbus.address = memory_alu_r_reg;
 
-    assign memory_xd = memory_instr_reg.is_load ? memory_load_data : memory_xd_reg;
+    assign memory_xd = memory_instr_reg.is_load ? memory_load_data : memory_xd_partial_reg;
 
     // Memory -> Write-back registers.
     always_ff @(posedge ibus.clk) begin
