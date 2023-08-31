@@ -21,7 +21,7 @@ set src "
     $src_dir/core/Verdata.sv
     $src_dir/core/Vergister.sv
     $src_dir/core/Vermicel_pkg.sv
-    $src_dir/core/Vermisnail.sv
+    $src_dir/core/Versiquential.sv
     $src_dir/core/Vermipipe.sv
     $src_dir/core/Vermicel.sv
     $src_dir/devices/Vermimory.sv

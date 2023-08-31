@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermisnail (
+module Versiquential (
     Vermibus.read_write_request bus
 );
 

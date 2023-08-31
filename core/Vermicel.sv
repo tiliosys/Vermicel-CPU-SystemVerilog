@@ -24,7 +24,7 @@ module Vermicel #(
             assign ibus.address   = 0;
             assign ibus.lookahead = 0;
 
-            Vermisnail core (
+            Versiquential core (
                 .bus(dbus)
             );
         end
