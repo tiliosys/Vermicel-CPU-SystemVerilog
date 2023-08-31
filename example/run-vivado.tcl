@@ -47,7 +47,9 @@ set part_name [dict get {
     ArtyA7 xc7a100tcsg324-1
 } $board_name]
 
-set runtime_optimize true
+# Set to true to reduce the synthesis and implementation time.
+# This can affect the timing closure, especially if PIPELINE=1.
+set runtime_optimize false
 
 source "$src_dir/scripts/vivado.inc.tcl"
 

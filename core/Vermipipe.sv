@@ -218,11 +218,11 @@ module Vermipipe (
         .xs2(execute_xs2_reg),
         .address(execute_alu_r),
         .pc_incr(execute_pc_incr_reg),
-        .pc_next(execute_pc_next)
+        .pc_next(execute_pc_next),
+        .will_jump(execute_will_jump)
     );
 
-    assign execute_will_jump = execute_pc_next != execute_pc_incr_reg;
-    assign execute_xd        = execute_instr_reg.is_jump ? execute_pc_incr_reg : execute_alu_r;
+    assign execute_xd = execute_instr_reg.is_jump ? execute_pc_incr_reg : execute_alu_r;
 
     // Execute -> Memory registers.
     always_ff @(posedge ibus.clk) begin

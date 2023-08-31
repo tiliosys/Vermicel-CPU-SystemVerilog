@@ -22,13 +22,14 @@ module Vermibranch
     input  word_t        xs2,
     input  word_t        address,
     input  word_t        pc_incr,
-    output word_t        pc_next
+    output word_t        pc_next,
+    output bit           will_jump
 );
 
-    bit    taken;            // Is the branch taken?
-    word_t pc_target;        // Target program counter in normal execution flow.
-    bit    except_state_reg; // Are we processing an IRQ?
-    bit    accept_irq;       // Are we switching to IRQ mode?
+    bit    taken;                // Is the branch taken?
+    word_t pc_target;            // Target program counter in normal execution flow.
+    bit    except_state_reg;     // Are we processing an IRQ?
+    bit    accept_irq;           // Are we switching to IRQ mode?
     word_t mepc_reg;         // Saved program counter when switching to IRQ mode.
 
     Vermipare cmp (
@@ -38,9 +39,9 @@ module Vermibranch
         .taken(taken)
     ); 
 
-    assign pc_target = instr.is_mret                               ? mepc_reg                  
-                     : instr.is_jump || (instr.is_branch && taken) ? {address[31:2], 2'b0}
-                     :                                               pc_incr;
+    assign pc_target = instr.is_mret          ? mepc_reg                  
+                     : instr.is_jump || taken ? {address[31:2], 2'b0}
+                     :                          pc_incr;
 
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -70,4 +71,13 @@ module Vermibranch
     assign pc_next = accept_irq    ? IRQ_ADDRESS
                    : instr.is_trap ? TRAP_ADDRESS
                    :                 pc_target;
+
+    // We could detect a jump using this simple comparison
+    // but it creates longer combinational paths and can lead
+    // to timing violations.
+    //
+    // assign will_jump = pc_next != pc_incr;
+
+    assign will_jump = instr.is_mret || instr.is_jump || taken
+                    || accept_irq || instr.is_trap;
 endmodule

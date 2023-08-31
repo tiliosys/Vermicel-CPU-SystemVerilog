@@ -16,15 +16,20 @@ module Vermipare
 );
 
     always_comb begin
-        case (instr.funct3)
-            FUNCT3_BEQ  : taken = a == b;
-            FUNCT3_BNE  : taken = a != b;
-            FUNCT3_BLT  : taken = signed'(a) <  signed'(b);
-            FUNCT3_BGE  : taken = signed'(a) >= signed'(b);
-            FUNCT3_BLTU : taken = a <  b;
-            FUNCT3_BGEU : taken = a >= b;
-            default     : taken = 0;
-        endcase
+        if (!instr.is_branch) begin
+            taken = 0;
+        end
+        else begin
+            case (instr.funct3)
+                FUNCT3_BEQ  : taken = a == b;
+                FUNCT3_BNE  : taken = a != b;
+                FUNCT3_BLT  : taken = signed'(a) <  signed'(b);
+                FUNCT3_BGE  : taken = signed'(a) >= signed'(b);
+                FUNCT3_BLTU : taken = a <  b;
+                FUNCT3_BGEU : taken = a >= b;
+                default     : taken = 0;
+            endcase
+        end
     end
 endmodule
 

@@ -42,4 +42,4 @@ OBJ_DEPS     = $(C_DEPS:.c=.o) $(ASM_DEPS:.S=.o)
 	$(OBJCOPY) --reverse-bytes=4 -O verilog --verilog-data-width=4 $< $@
 
 clean::
-	rm -f *.o *.hex *.mem *.elf
+	rm -f $(OBJ_STARTUP) *.o *.hex *.mem *.elf
