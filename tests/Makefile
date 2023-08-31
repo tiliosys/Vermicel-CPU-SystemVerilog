@@ -31,7 +31,7 @@ rv32ui/tests.mem:
 
 include ../scripts/rules.mk
 
-clean:
-	rm -rf obj_dir
+clean::
+	rm -rf obj_dir *.log *.vcd
 	$(MAKE) -C rv32ui clean
 

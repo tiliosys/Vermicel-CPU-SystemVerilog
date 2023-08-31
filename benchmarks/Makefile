@@ -33,5 +33,5 @@ LD_SCRIPT = $(TOP).ld
 
 include ../scripts/rules.mk
 
-clean:
+clean::
 	rm -rf obj_dir *.mem *.log

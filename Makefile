@@ -13,3 +13,8 @@ lint: $(SRC)
 
 clean:
 	rm -rf example/.Xil example/vivado.* example/vivado_*
+
+clean_all: clean
+	make -C tests clean
+	make -C example clean
+	make -C benchmarks clean
