@@ -12,6 +12,7 @@ module rv32ui_tb;
     localparam RAM_INIT_FILENAME = "rv32ui/tests.mem";
     localparam OUT_ADDRESS       = 8'h10;
     localparam USE_LOOKAHEAD     = 1;
+    localparam PIPELINE          = 0;
 
     bit clk, reset;
     Vermibus cpu_ibus (clk, reset);
@@ -26,7 +27,9 @@ module rv32ui_tb;
     // CPU instance
     //
 
-    Vermicel cpu (
+    Vermicel #(
+        .PIPELINE(PIPELINE)
+    ) cpu (
         .ibus(cpu_ibus.read_only_request),
         .dbus(cpu_dbus.read_write_request)
     );

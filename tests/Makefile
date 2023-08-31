@@ -24,7 +24,7 @@ all: $(TESTS_BIN)
 obj_dir/%: $(SRC) %.sv
 	verilator -sv --binary --timing --trace -Wno-lint --top-module $* -o $* $^
 
-obj_dir/Vermicel_tb: | rv32ui/tests.mem
+obj_dir/rv32ui_tb: | rv32ui/tests.mem
 
 rv32ui/tests.mem:
 	$(MAKE) -C rv32ui $(notdir $@)

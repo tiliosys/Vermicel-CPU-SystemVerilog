@@ -5,18 +5,30 @@
 
 `default_nettype none
 
-module Vermicel (
+module Vermicel #(
+    parameter bit PIPELINE = 1
+) (
     Vermibus.read_only_request  ibus,
     Vermibus.read_write_request dbus
 );
 
-    assign ibus.valid     = 0;
-    assign ibus.address   = 0;
-    assign ibus.lookahead = 0;
+    generate
+        if (PIPELINE) begin : p
+            Vermipipe core (
+                .ibus(ibus),
+                .dbus(dbus)
+            );
+        end
+        else begin :  s
+            assign ibus.valid     = 0;
+            assign ibus.address   = 0;
+            assign ibus.lookahead = 0;
 
-    Vermisnail core (
-        .bus(dbus)
-    );
+            Vermisnail core (
+                .bus(dbus)
+            );
+        end
+    endgenerate
 
 endmodule
 
