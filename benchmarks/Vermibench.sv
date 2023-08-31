@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermiperf #(
+module Vermibench #(
     parameter RAM_INIT_FILENAME, // Implicit string type. Verilator fails to load file if type specified.
     parameter bit USE_LOOKAHEAD,
     parameter bit PIPELINE

@@ -7,7 +7,7 @@ VERMICEL=..
 
 include $(VERMICEL)/sources.mk
 
-TOP = Vermiperf
+TOP = Vermibench
 
 SRC = $(addprefix $(VERMICEL)/,$(RTL))
 SRC += $(TOP).sv
