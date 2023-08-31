@@ -7,7 +7,8 @@
 
 module Vermiperf #(
     parameter RAM_INIT_FILENAME, // Implicit string type. Verilator fails to load file if type specified.
-    parameter bit USE_LOOKAHEAD
+    parameter bit USE_LOOKAHEAD,
+    parameter bit PIPELINE
 );
     localparam RAM_ADDRESS       = 8'h00;
     localparam RAM_SIZE_WORDS    = 32768;
@@ -28,7 +29,9 @@ module Vermiperf #(
     // CPU instance
     //
 
-    Vermicel cpu (
+    Vermicel #(
+        .PIPELINE(PIPELINE)
+    ) cpu (
         .ibus(cpu_ibus.read_only_request),
         .dbus(cpu_dbus.read_write_request)
     );

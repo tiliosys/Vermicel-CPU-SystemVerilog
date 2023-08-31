@@ -40,9 +40,9 @@ module Vermisnail (
     word_t        alu_r_reg;    // ALU result, registered
     word_t        load_data;    // Data from load operation, re-aligned.
 
-    //
-    // Sequencer
-    //
+    /* ------------------------------------------------------------------------- *
+     * Sequencer
+     * ------------------------------------------------------------------------- */
 
     always_ff @(posedge bus.clk) begin
         if (bus.reset) begin
@@ -70,10 +70,10 @@ module Vermisnail (
     assign store_en     = state_reg == STORE;
     assign writeback_en = state_reg == WRITEBACK;
 
-    //
-    //  Instruction decoding:
-    //  decode, read registers, select ALU operands.
-    // 
+    /* ------------------------------------------------------------------------- *
+     *  Instruction decoding:
+     *  decode, read registers, select ALU operands.
+     * ------------------------------------------------------------------------- */
 
     Verdicode dec (
         .data(rdata_reg),
@@ -85,12 +85,12 @@ module Vermisnail (
     ) regs (
         .clk(bus.clk),
         .reset(bus.reset),
-        .enable(writeback_en),
         .src_instr(instr),
-        .dest_instr(instr_reg),
-        .xd(xd),
         .xs1(xs1),
-        .xs2(xs2)
+        .xs2(xs2),
+        .enable(writeback_en),
+        .dest_instr(instr_reg),
+        .xd(xd)
     );
 
     always_ff @(posedge bus.clk) begin
@@ -110,11 +110,11 @@ module Vermisnail (
         end
     end
 
-    //
-    // Instruction execution:
-    // compute ALU and comparator results, compute branch address,
-    // update program counter.
-    //
+    /* ------------------------------------------------------------------------- *
+     * Instruction execution:
+     * compute ALU and comparator results, compute branch address,
+     * update program counter.
+     * ------------------------------------------------------------------------- */
 
     Verithmetic alu (
         .instr(instr_reg),
@@ -154,17 +154,17 @@ module Vermisnail (
         end
     end
 
-    //
-    // Memory access:
-    // align data to/from memory, drive control outputs.
-    //
+    /* ------------------------------------------------------------------------- *
+     * Memory access:
+     * align data to/from memory, drive control outputs.
+     * ------------------------------------------------------------------------- */
 
     assign bus.valid   = fetch_en || load_en || store_en;
     assign bus.address = fetch_en ? pc_reg : alu_r_reg;
 
     always_ff @(posedge bus.clk) begin
         if (bus.reset) begin
-            rdata_reg <= 0;
+            rdata_reg <= WORD_NOP;
         end
         else if (bus.valid && bus.ready) begin
             rdata_reg <= bus.rdata;
@@ -182,13 +182,13 @@ module Vermisnail (
         .wdata(bus.wdata)
     );
 
-    //
-    // Write back
-    //
+    /* ------------------------------------------------------------------------- *
+     * Write back
+     * ------------------------------------------------------------------------- */
 
-    assign xd = instr_reg.is_load ? load_data   :
-                instr_reg.is_jump ? pc_incr_reg :
-                                    alu_r_reg;
+    assign xd = instr_reg.is_load ? load_data
+              : instr_reg.is_jump ? pc_incr_reg
+              :                     alu_r_reg;
 endmodule
 
 

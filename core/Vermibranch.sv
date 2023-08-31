@@ -38,10 +38,9 @@ module Vermibranch
         .taken(taken)
     ); 
 
-    assign pc_target =
-        instr.is_mret                               ? mepc_reg                  :
-        instr.is_jump || (instr.is_branch && taken) ? {address[31:2], 2'b0} :
-                                                      pc_incr;
+    assign pc_target = instr.is_mret                               ? mepc_reg                  
+                     : instr.is_jump || (instr.is_branch && taken) ? {address[31:2], 2'b0}
+                     :                                               pc_incr;
 
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -68,8 +67,7 @@ module Vermibranch
         end
     end
 
-    assign pc_next =
-        accept_irq    ? IRQ_ADDRESS  :
-        instr.is_trap ? TRAP_ADDRESS :
-                        pc_target;
+    assign pc_next = accept_irq    ? IRQ_ADDRESS
+                   : instr.is_trap ? TRAP_ADDRESS
+                   :                 pc_target;
 endmodule

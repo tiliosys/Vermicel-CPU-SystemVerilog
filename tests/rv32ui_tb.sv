@@ -12,7 +12,7 @@ module rv32ui_tb;
     localparam RAM_INIT_FILENAME = "rv32ui/tests.mem";
     localparam OUT_ADDRESS       = 8'h10;
     localparam USE_LOOKAHEAD     = 1;
-    localparam PIPELINE          = 0;
+    localparam PIPELINE          = 1;
 
     bit clk, reset;
     Vermibus cpu_ibus (clk, reset);
@@ -91,6 +91,26 @@ module rv32ui_tb;
     always_ff @(posedge clk) begin
         if (out_bus.valid && out_bus.wstrobe[0]) begin
             $write("%s", out_bus.wdata[7:0]);
+        end
+    end
+
+    //
+    // Memory trace
+    //
+
+    int fd;
+
+    initial begin
+        fd = $fopen("rv32ui.log", "w");
+    end
+
+    always_ff @(posedge clk) begin
+        if (cpu_dbus.valid && cpu_dbus.ready) begin
+            $fdisplay(fd, "address=%08x rdata=%08x wstrobe=%04b wdata=%08x",
+                cpu_dbus.address,
+                cpu_dbus.rdata,
+                cpu_dbus.wstrobe,
+                cpu_dbus.wdata);
         end
     end
 

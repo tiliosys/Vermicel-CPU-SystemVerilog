@@ -56,6 +56,8 @@ package Vermicodes_pkg;
     localparam signed_word_t IMM_ECALL  = 'b000000000000;
     localparam signed_word_t IMM_EBREAK = 'b000000000001;
 
+    localparam word_t WORD_NOP = word_t'(OPCODE_OP_IMM);
+
     // Post-decoding instruction representation.
     typedef bit[4:0] register_index_t;
 

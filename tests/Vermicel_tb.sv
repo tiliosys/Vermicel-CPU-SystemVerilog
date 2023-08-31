@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermicel_s_tb;
+module Vermicel_tb;
 
     import Vermitypes_pkg::*;
     import Vermicodes_pkg::*;
@@ -68,7 +68,7 @@ module Vermicel_s_tb;
     always #1 clk = ~clk;
 
     initial begin
-        $display("[TEST] Vermicel_s_tb");
+        $display("[TEST] Vermicel_tb");
 
         reset = 1;
         @(posedge clk);
@@ -200,7 +200,7 @@ module Vermicel_s_tb;
 
         check_reg("LB x14, 0x103(x4)", 14, cpu.s.core.regs.x_reg[14], 32'hFFFFFF8C);
 
-        $display("[DONE] Vermicel_s_tb");
+        $display("[DONE] Vermicel_tb");
         $finish;
     end
 endmodule
