@@ -8,7 +8,8 @@
 module Vermichello #(
     parameter RAM_SIZE_WORDS    = 32768,
     parameter RAM_INIT_FILENAME = "ram-init.mem",
-    parameter bit USE_LOOKAHEAD = 0
+    parameter bit USE_LOOKAHEAD = 0,
+    parameter bit PIPELINE      = 0
 )
 (
     input  bit clk,

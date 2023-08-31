@@ -21,6 +21,8 @@ set src "
     $src_dir/core/Verdata.sv
     $src_dir/core/Vergister.sv
     $src_dir/core/Vermicel_pkg.sv
+    $src_dir/core/Vermisnail.sv
+    $src_dir/core/Vermipipe.sv
     $src_dir/core/Vermicel.sv
     $src_dir/devices/Vermimory.sv
     $src_dir/devices/Vermitime_pkg.sv
@@ -35,6 +37,7 @@ set generics "
     RAM_SIZE_WORDS=32768
     RAM_INIT_FILENAME=Vermichello.mem
     USE_LOOKAHEAD=1
+    PIPELINE=1
 "
 
 set constraints "$this_dir/Vermichello-$board_name.xdc"
