@@ -34,4 +34,5 @@ LD_SCRIPT=$(TOP).ld
 include $(VERMICEL)/scripts/rules.mk
 
 clean::
+	rm -rf .Xil vivado.* vivado_*
 	rm -rf vivado $(TOP).mem
