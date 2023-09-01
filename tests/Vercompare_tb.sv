@@ -5,16 +5,16 @@
 
 `default_nettype none
 
-module Vermipare_tb;
+module Vercompare_tb;
 
-    import Vermitypes_pkg::*;
-    import Vermicodes_pkg::*;
+    import Verdata_pkg::*;
+    import Veropcodes_pkg::*;
 
     instruction_t cmp_instr;
     word_t        cmp_a, cmp_b;
     bit           cmp_taken;
 
-    Vermipare cmp (
+    Vercompare cmp (
         .instr(cmp_instr),
         .a(cmp_a),
         .b(cmp_b),
@@ -22,10 +22,11 @@ module Vermipare_tb;
     );
 
     task check(string label, funct3_t funct3, word_t a, word_t b, bit taken);
-        cmp_instr        = INSTR_NOP;
-        cmp_instr.funct3 = funct3;
-        cmp_a            = a;
-        cmp_b            = b;
+        cmp_instr           = INSTR_NOP;
+        cmp_instr.is_branch = 1;
+        cmp_instr.funct3    = funct3;
+        cmp_a               = a;
+        cmp_b               = b;
 
         #1;
 
@@ -38,7 +39,7 @@ module Vermipare_tb;
     endtask
 
     initial begin
-        $display("[TEST] Vermipare_tb");
+        $display("[TEST] Vercompare_tb");
         check("BEQ",  FUNCT3_BEQ,   10,  20, 0);
         check("BEQ",  FUNCT3_BEQ,   10,  10, 1);
         check("BEQ",  FUNCT3_BEQ,  -10, -20, 0);
@@ -71,7 +72,7 @@ module Vermipare_tb;
         check("BGEU", FUNCT3_BGEU,  10,  10, 1);
         check("BGEU", FUNCT3_BGEU, -10, -10, 1);
         check("BGEU", FUNCT3_BGEU, -10, -20, 1);
-        $display("[DONE] Vermipare_tb");
+        $display("[DONE] Vercompare_tb");
     end
 endmodule
 

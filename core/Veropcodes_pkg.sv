@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-package Vermicodes_pkg;
+package Veropcodes_pkg;
 
-    import Vermitypes_pkg::*;
+    import Verdata_pkg::*;
 
     // Base opcodes.
     typedef bit[6:0] base_opcode_t;

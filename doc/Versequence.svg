@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1748"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   sodipodi:docname="Versiquential.svg"
+   sodipodi:docname="Versequence.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -1649,15 +1649,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="1013.3929"
-     inkscape:cy="571.96429"
+     inkscape:zoom="0.7"
+     inkscape:cx="1172.1429"
+     inkscape:cy="522.14286"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g5626"
      showgrid="true"
      inkscape:snap-text-baseline="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1043"
+     inkscape:window-height="1011"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -1925,13 +1925,13 @@
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          x="105"
-         y="43.999996"
+         y="43"
          id="text5612"><tspan
            sodipodi:role="line"
            id="tspan5610"
            x="105"
-           y="43.999996"
-           style="font-size:4.23333px;text-align:center;text-anchor:middle;stroke-width:0.264583px">Verdicode</tspan></text>
+           y="43"
+           style="font-size:4.23333px;text-align:center;text-anchor:middle;stroke-width:0.264583px">Verdecode</tspan></text>
     </g>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5630)"
@@ -2802,13 +2802,13 @@
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          x="110"
-         y="34.999996"
+         y="34"
          id="text52874"><tspan
            sodipodi:role="line"
            id="tspan52872"
            x="110"
-           y="34.999996"
-           style="font-size:4.23333px;text-align:center;text-anchor:middle;stroke-width:0.264583px">Vermibranch</tspan></text>
+           y="34"
+           style="font-size:4.23333px;text-align:center;text-anchor:middle;stroke-width:0.264583px">Vergoto</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -3183,15 +3183,15 @@
            style="font-size:3.52778px;text-align:end;text-anchor:end;stroke-width:0.264583px">load_data</tspan></text>
       <text
          id="text85487"
-         y="43.999996"
+         y="42.999996"
          x="111.88011"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-size:4.23333px;text-align:center;text-anchor:middle;stroke-width:0.264583px"
-           y="43.999996"
+           y="42.999996"
            x="111.88011"
            id="tspan85485"
-           sodipodi:role="line">Verdata</tspan></text>
+           sodipodi:role="line">Veralign</tspan></text>
       <text
          id="text85491"
          y="72.999992"
@@ -4135,6 +4135,6 @@
          id="tspan1"
          style="stroke-width:0.264584"
          x="252.56432"
-         y="191.25662"></tspan></text>
+         y="191.25662" /></text>
   </g>
 </svg>

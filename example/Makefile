@@ -5,7 +5,7 @@
 
 VERMICEL = ..
 
-TOP = Vermichello
+TOP = Verdemo
 
 include $(VERMICEL)/sources.mk
 

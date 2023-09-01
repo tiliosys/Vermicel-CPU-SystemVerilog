@@ -7,8 +7,8 @@
 
 module Vergister_tb;
 
-    import Vermitypes_pkg::*;
-    import Vermicodes_pkg::*;
+    import Verdata_pkg::*;
+    import Veropcodes_pkg::*;
 
     localparam int REGS_SIZE = 32;
 

@@ -4,22 +4,22 @@
 #
 
 RTL = \
-	common/Vermitypes_pkg.sv \
-	common/Vermibus.sv \
-	core/Vermicodes_pkg.sv \
-	core/Verdicode.sv \
+	common/Verdata_pkg.sv \
+	common/Verbus.sv \
+	core/Veropcodes_pkg.sv \
+	core/Verdecode.sv \
 	core/Verithmetic.sv \
-	core/Vermipare.sv \
+	core/Vercompare.sv \
 	core/Vergister.sv \
-	core/Vermibranch.sv \
-	core/Verdata.sv \
+	core/Vergoto.sv \
+	core/Veralign.sv \
 	core/Vermicel_pkg.sv \
-	core/Versiquential.sv \
-	core/Vermipipe.sv \
+	core/Versequence.sv \
+	core/Verpipeline.sv \
 	core/Vermicel.sv \
-	devices/Vermimory.sv \
-	devices/Vermitime_pkg.sv \
-	devices/Vermitime.sv \
-	devices/Vermicom_pkg.sv \
-	devices/Vermicom.sv
+	devices/Vermemory.sv \
+	devices/Vertimer_pkg.sv \
+	devices/Vertimer.sv \
+	devices/Verserial_pkg.sv \
+	devices/Verserial.sv
 

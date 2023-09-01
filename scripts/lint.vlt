@@ -5,24 +5,25 @@
 
 `verilator_config
 
-// In instance Vermicel
-lint_off -rule UNDRIVEN     -file "common/Vermibus.sv"  -match "Signal is not driven: 'ready'"
-lint_off -rule UNDRIVEN     -file "common/Vermibus.sv"  -match "Signal is not driven: 'irq'"
-lint_off -rule UNDRIVEN     -file "common/Vermibus.sv"  -match "Signal is not driven: 'rdata'"
-lint_off -rule UNUSEDSIGNAL -file "common/Vermibus.sv"  -match "Signal is not used: 'wstrobe'"
-lint_off -rule UNUSEDSIGNAL -file "common/Vermibus.sv"  -match "Signal is not used: 'wdata'"
-lint_off -rule UNUSEDSIGNAL -file "common/Vermibus.sv"  -match "Signal is not used: 'address'"
+lint_off -rule UNDRIVEN     -file "common/Verbus.sv"    -match "Signal is not driven: 'ready'"
+lint_off -rule UNDRIVEN     -file "common/Verbus.sv"    -match "Signal is not driven: 'irq'"
+lint_off -rule UNDRIVEN     -file "common/Verbus.sv"    -match "Signal is not driven: 'rdata'"
+lint_off -rule UNUSEDSIGNAL -file "common/Verbus.sv"    -match "Signal is not used: 'wstrobe'"
+lint_off -rule UNUSEDSIGNAL -file "common/Verbus.sv"    -match "Signal is not used: 'wdata'"
+lint_off -rule UNUSEDSIGNAL -file "common/Verbus.sv"    -match "Signal is not used: 'address'"
+lint_off -rule UNUSEDSIGNAL -file "common/Verbus.sv"    -match "Bits of signal are not used: 'lookahead'[31:17,1:0]"
 
 lint_off -rule UNUSEDSIGNAL -file "core/Verithmetic.sv" -match "Bits of signal are not used: 'instr'[90:41,8:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "core/Verdata.sv"     -match "Bits of signal are not used: 'instr'[90:44,40:0]"
-lint_off -rule UNUSEDSIGNAL -file "core/Verdata.sv"     -match "Bits of signal are not used: 'address'[31:2]"
+lint_off -rule UNUSEDSIGNAL -file "core/Veralign.sv"    -match "Bits of signal are not used: 'instr'[90:44,40:0]"
+lint_off -rule UNUSEDSIGNAL -file "core/Veralign.sv"    -match "Bits of signal are not used: 'address'[31:2]"
 
 lint_off -rule UNUSEDSIGNAL -file "core/Vergister.sv"   -match "Bits of signal are not used: 'src_instr'[90:86,75:0]"
 lint_off -rule UNUSEDSIGNAL -file "core/Vergister.sv"   -match "Bits of signal are not used: 'dest_instr'[85:7,5:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "core/Vermibranch.sv" -match "Bits of signal are not used: 'address'[1:0]"
+lint_off -rule UNUSEDSIGNAL -file "core/Vergoto.sv"     -match "Bits of signal are not used: 'address'[1:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "core/Vermipare.sv"   -match "Bits of signal are not used: 'instr'[90:44,40:0]"
+lint_off -rule UNUSEDSIGNAL -file "core/Vercompare.sv"  -match "Bits of signal are not used: 'instr'[90:44,40:3,1:0]"
 
-lint_off -rule UNUSEDSIGNAL -file "common/Vermibus.sv"  -match "Bits of signal are not used: 'lookahead'[31:17,1:0]"
+lint_off -rule PINMISSING   -file "core/Versequence.sv" -match "Cell has missing pin: 'will_jump'"
+

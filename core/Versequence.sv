@@ -5,12 +5,12 @@
 
 `default_nettype none
 
-module Versiquential (
-    Vermibus.read_write_request bus
+module Versequence (
+    Verbus.read_write_request bus
 );
 
-    import Vermitypes_pkg::*;
-    import Vermicodes_pkg::*;
+    import Verdata_pkg::*;
+    import Veropcodes_pkg::*;
     import Vermicel_pkg::*;
 
     typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
@@ -75,7 +75,7 @@ module Versiquential (
      *  decode, read registers, select ALU operands.
      * ------------------------------------------------------------------------- */
 
-    Verdicode dec (
+    Verdecode dec (
         .data(rdata_reg),
         .instr(instr)
     );
@@ -125,7 +125,7 @@ module Versiquential (
 
     assign pc_incr = pc_reg + 4;
 
-    Vermibranch #(
+    Vergoto #(
         .IRQ_ADDRESS(IRQ_ADDRESS),
         .TRAP_ADDRESS(TRAP_ADDRESS)
     ) branch (
@@ -171,7 +171,7 @@ module Versiquential (
         end
     end
 
-    Verdata ld_st (
+    Veralign ld_st (
         .instr(instr_reg),
         .address(alu_r_reg),
         .store_enable(store_en),

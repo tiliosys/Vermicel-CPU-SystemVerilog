@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermichello #(
+module Verdemo #(
     parameter RAM_SIZE_WORDS    = 32768,
     parameter RAM_INIT_FILENAME = "ram-init.mem",
     parameter bit USE_LOOKAHEAD = 0,
@@ -23,11 +23,11 @@ module Vermichello #(
     localparam TIMER_ADDRESS = 8'h80;
     localparam UART_ADDRESS  = 8'h81;
 
-    Vermibus cpu_ibus  (clk, reset);
-    Vermibus cpu_dbus  (clk, reset);
-    Vermibus ram_dbus  (clk, reset);
-    Vermibus timer_bus (clk, reset);
-    Vermibus uart_bus  (clk, reset);
+    Verbus cpu_ibus  (clk, reset);
+    Verbus cpu_dbus  (clk, reset);
+    Verbus ram_dbus  (clk, reset);
+    Verbus timer_bus (clk, reset);
+    Verbus uart_bus  (clk, reset);
 
     bit[7:0] dev_address;
 
@@ -75,7 +75,7 @@ module Vermichello #(
     // RAM instance
     //
 
-    Vermimory #(
+    Vermemory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME),
         .USE_LOOKAHEAD(USE_LOOKAHEAD)
@@ -93,7 +93,7 @@ module Vermichello #(
     // Timer instance
     //
 
-    Vermitime timer (timer_bus.read_write_response);
+    Vertimer timer (timer_bus.read_write_response);
 
     assign timer_bus.valid   = cpu_dbus.valid && dev_address == TIMER_ADDRESS;
     assign timer_bus.address = cpu_dbus.address;
@@ -104,7 +104,7 @@ module Vermichello #(
     // UART instance
     //
 
-    Vermicom uart (
+    Verserial uart (
         .bus(uart_bus.read_write_response),
         .rx(uart_rx),
         .tx(uart_tx)

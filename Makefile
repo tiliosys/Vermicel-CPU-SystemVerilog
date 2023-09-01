@@ -5,8 +5,8 @@
 
 include sources.mk
 
-SRC = $(RTL) example/Vermichello.sv
-TOP = Vermichello
+SRC = $(RTL) example/Verdemo.sv
+TOP = Verdemo
 
 lint: $(SRC)
 	verilator -sv --lint-only --timing -Wall --top-module $(TOP) scripts/lint.vlt $^

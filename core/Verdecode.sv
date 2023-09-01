@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module Verdicode
-    import Vermitypes_pkg::*,
-           Vermicodes_pkg::*;
+module Verdecode
+    import Verdata_pkg::*,
+           Veropcodes_pkg::*;
 (
     input  word_t        data,
     output instruction_t instr

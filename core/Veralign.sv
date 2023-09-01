@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module Verdata
-    import Vermitypes_pkg::*,
-           Vermicodes_pkg::*;
+module Veralign
+    import Verdata_pkg::*,
+           Veropcodes_pkg::*;
 (
     input  instruction_t instr,
     input  word_t        address,

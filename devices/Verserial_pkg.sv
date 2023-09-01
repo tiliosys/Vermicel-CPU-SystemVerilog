@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-package Vermicom_pkg;
+package Verserial_pkg;
 
     typedef enum {
         CONTROL_ADDRESS,  // Control register         (RW)

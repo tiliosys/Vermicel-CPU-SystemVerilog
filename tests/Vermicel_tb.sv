@@ -7,12 +7,12 @@
 
 module Vermicel_tb;
 
-    import Vermitypes_pkg::*;
-    import Vermicodes_pkg::*;
+    import Verdata_pkg::*;
+    import Veropcodes_pkg::*;
 
     bit clk, reset;
 
-    Vermibus tb_bus (clk, reset);
+    Verbus tb_bus (clk, reset);
 
     Vermicel #(
         .PIPELINE(0)

@@ -7,7 +7,7 @@
 
 package Vermicel_pkg;
 
-    import Vermitypes_pkg::*;
+    import Verdata_pkg::*;
 
     localparam word_t       IRQ_ADDRESS        = 4;
     localparam word_t       TRAP_ADDRESS       = 8;

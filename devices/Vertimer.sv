@@ -5,10 +5,10 @@
 
 `default_nettype none
 
-module Vermitime (Vermibus.read_write_response bus);
+module Vertimer (Verbus.read_write_response bus);
 
-    import Vermitypes_pkg::*;
-    import Vermitime_pkg::*;
+    import Verdata_pkg::*;
+    import Vertimer_pkg::*;
 
     local_address_t local_address;
     control_reg_t   control_reg;

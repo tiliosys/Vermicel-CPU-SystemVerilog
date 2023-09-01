@@ -5,14 +5,14 @@
 
 `default_nettype none
 
-module Vermicom (
-    Vermibus.read_write_response bus,
+module Verserial (
+    Verbus.read_write_response bus,
     input  bit rx,
     output bit tx
 );
 
-    import Vermitypes_pkg::*;
-    import Vermicom_pkg::*;
+    import Verdata_pkg::*;
+    import Verserial_pkg::*;
 
     local_address_t local_address;
     control_reg_t   control_reg;

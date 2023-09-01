@@ -6,8 +6,8 @@
 `default_nettype none
 
 module Vergister
-    import Vermitypes_pkg::*,
-           Vermicodes_pkg::*;
+    import Verdata_pkg::*,
+           Veropcodes_pkg::*;
 #(
     parameter int unsigned SIZE
 )

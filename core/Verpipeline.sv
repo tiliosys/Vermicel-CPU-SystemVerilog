@@ -5,13 +5,13 @@
 
 `default_nettype none
 
-module Vermipipe (
-    Vermibus.read_only_request ibus,
-    Vermibus.read_write_request dbus
+module Verpipeline (
+    Verbus.read_only_request ibus,
+    Verbus.read_write_request dbus
 );
 
-    import Vermitypes_pkg::*;
-    import Vermicodes_pkg::*;
+    import Verdata_pkg::*;
+    import Veropcodes_pkg::*;
     import Vermicel_pkg::*;
 
     bit           tick;
@@ -144,7 +144,7 @@ module Vermipipe (
      * Decode stage.
      * ------------------------------------------------------------------------- */
 
-    Verdicode dec (
+    Verdecode dec (
         .data(decode_rdata_reg),
         .instr(decode_instr)
     );
@@ -205,7 +205,7 @@ module Vermipipe (
         .r(execute_alu_r)
     );
 
-    Vermibranch #(
+    Vergoto #(
         .IRQ_ADDRESS(IRQ_ADDRESS),
         .TRAP_ADDRESS(TRAP_ADDRESS)
     ) branch (
@@ -256,7 +256,7 @@ module Vermipipe (
 
     assign memory_rdata = dbus_done ? dbus.rdata : memory_rdata_reg;
 
-    Verdata ld_st (
+    Veralign ld_st (
         .instr(memory_instr_reg),
         .address(memory_alu_r_reg),
         .store_enable(memory_instr_reg.is_store),

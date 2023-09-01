@@ -5,12 +5,12 @@
 
 `default_nettype none
 
-interface Vermibus (
+interface Verbus (
     input bit clk,
     input bit reset
 );
 
-    import Vermitypes_pkg::*;
+    import Verdata_pkg::*;
 
     bit       valid;
     bit       ready;

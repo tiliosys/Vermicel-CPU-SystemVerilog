@@ -5,16 +5,16 @@
 
 `default_nettype none
 
-module Vermimory #(
+module Vermemory #(
     parameter int unsigned SIZE_WORDS,
     parameter INIT_FILENAME, // Implicit string type, not supported by Xilinx Vivado 2019.1
     parameter bit USE_LOOKAHEAD
 ) (
-    Vermibus.read_only_response  ibus,
-    Vermibus.read_write_response dbus
+    Verbus.read_only_response  ibus,
+    Verbus.read_write_response dbus
 );
 
-    import Vermitypes_pkg::*;
+    import Verdata_pkg::*;
 
     localparam LOCAL_ADDRESS_WIDTH = $clog2(SIZE_WORDS);
     typedef bit[LOCAL_ADDRESS_WIDTH-1:0] local_address_t;

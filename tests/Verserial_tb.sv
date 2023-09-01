@@ -5,10 +5,10 @@
 
 `default_nettype none
 
-module Vermicom_tb;
+module Verserial_tb;
 
-    import Vermitypes_pkg::*;
-    import Vermicom_pkg::*;
+    import Verdata_pkg::*;
+    import Verserial_pkg::*;
 
     localparam DIVISION = 867;
     localparam DATA1    = 8'b01010011;
@@ -22,9 +22,9 @@ module Vermicom_tb;
     bit rx_enable, rx_data_error, rx_flag_error, rx_irq_error, rx_done;
     byte_t rx_data;
 
-    Vermibus uart_bus (clk, reset);
+    Verbus uart_bus (clk, reset);
 
-    Vermicom uart (
+    Verserial uart (
         .bus(uart_bus),
         .rx(uart_rx),
         .tx(uart_tx)
@@ -261,10 +261,10 @@ module Vermicom_tb;
     endtask
 
     initial begin
-        $dumpfile("Vermicom_tb.vcd");
-        $dumpvars(0, Vermicom_tb);
+        $dumpfile("Verserial_tb.vcd");
+        $dumpvars(0, Verserial_tb);
 
-        $display("[TEST] Vermicom_tb");
+        $display("[TEST] Verserial_tb");
 
         reset = 1;
         @(negedge clk);
@@ -288,7 +288,7 @@ module Vermicom_tb;
         test_rx("RX+IRQ (DATA1)", DATA1, 1);
         test_rx("RX+IRQ (DATA2)", DATA2, 1);
 
-        $display("[DONE] Vermicom_tb");
+        $display("[DONE] Verserial_tb");
         $finish;
     end
 endmodule

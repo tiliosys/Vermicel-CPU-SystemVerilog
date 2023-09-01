@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module Vermibench #(
+module Verbench #(
     parameter RAM_INIT_FILENAME, // Implicit string type. Verilator fails to load file if type specified.
     parameter bit USE_LOOKAHEAD,
     parameter bit PIPELINE
@@ -16,11 +16,11 @@ module Vermibench #(
     localparam TICK_ADDRESS      = 8'h20;
 
     bit clk, reset;
-    Vermibus cpu_ibus (clk, reset);
-    Vermibus cpu_dbus (clk, reset);
-    Vermibus ram_dbus (clk, reset);
-    Vermibus out_bus  (clk, reset);
-    Vermibus tick_bus (clk, reset);
+    Verbus cpu_ibus (clk, reset);
+    Verbus cpu_dbus (clk, reset);
+    Verbus ram_dbus (clk, reset);
+    Verbus out_bus  (clk, reset);
+    Verbus tick_bus (clk, reset);
     bit[7:0] dev_address;
 
     always #1 clk = ~clk;
@@ -69,7 +69,7 @@ module Vermibench #(
     // RAM instance
     //
 
-    Vermimory #(
+    Vermemory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME),
         .USE_LOOKAHEAD(USE_LOOKAHEAD)

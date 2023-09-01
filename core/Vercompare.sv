@@ -5,9 +5,9 @@
 
 `default_nettype none
 
-module Vermipare
-    import Vermitypes_pkg::*,
-           Vermicodes_pkg::*;
+module Vercompare
+    import Verdata_pkg::*,
+           Veropcodes_pkg::*;
 (
     input  instruction_t instr,
     input  word_t        a,

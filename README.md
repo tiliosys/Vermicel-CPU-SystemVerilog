@@ -30,7 +30,7 @@ Folder       | Content
 `common`     | Common SystemVerilog code (data types, bus interface)
 `core`       | Vermicel, the CPU core itself
 `devices`    | A minimal set of peripherals to create simple systems (RAM, timer, UART)
-`example`    | Vermichello, a "Hello World" SoC built around Vermicel
+`example`    | Verdemo, a "Hello World" SoC built around Vermicel
 `scripts`    | Various scripts for linting, simulation, synthesis, software compilation
 `tests`      | The test suite
 
@@ -39,36 +39,42 @@ Meet the Vermicel family
 
 ### Core members
 
-These are the modules that compose [Vermicel](./core/Vermicel.sv), our CPU core:
+[Vermicel](./core/Vermicel.sv), has two possible implementations that can be chosen
+using its `PIPELINE` parameter:
 
-* [Verdicode](./core/Verdicode.sv): the instruction decoder.
+* [Versequence](./core/Versequence.sv) (`PIPELINE=0`): a sequential architecture that uses a state machine.
+* [Verpipeline](./core/Verpipeline.sv) (`PIPELINE=1`): a 5-stage pipeline architecture.
+
+Both implementations are composed of the same modules:
+
+* [Verdecode](./core/Verdecode.sv): the instruction decoder.
 * [Verithmetic](./core/Verithmetic.sv): the Arithemetic and Logic Unit (ALU).
-* [Vermipare](./core/Vermipare.sv): the comparator, a close collaborator of [Vermibranch](./core/Vermibranch.sv).
-* [Vermibranch](./core/Vermibranch.sv): the branch calculation unit.
+* [Vercompare](./core/Vercompare.sv): the comparator, a close collaborator of [Vergoto](./core/Vergoto.sv).
+* [Vergoto](./core/Vergoto.sv): the branch calculation unit.
 * [Vergister](./core/Vergister.sv): the general-purpose register bank.
-* [Verdata](./core/Verdata.sv): responsible for formatting the values on the data bus.
+* [Veralign](./core/Veralign.sv): responsible for formatting the values on the data bus.
 
 They are assisted by:
 
-* [Vermibus](./common/Vermibus.sv): the bus interface.
-* [Vermitypes_pkg](./common/Vermitypes_pkg.sv): a package with common data types.
-* [Vermicodes_pkg](./core/Vermicodes_pkg.sv): a package with the main RISC-V opcodes.
+* [Verbus](./common/Verbus.sv): the bus interface.
+* [Verdata_pkg](./common/Verdata_pkg.sv): a package with common data types.
+* [Veropcodes_pkg](./core/Veropcodes_pkg.sv): a package with the main RISC-V opcodes.
 * [Vermicel_pkg](./core/Vermicel_pkg.sv): a package with constant declarations.
 
 ### Peripherals
 
 Vermicel comes with a minimal set of devices:
 
-* [Vermimory](./devices/Vermimory.sv): a dual-port SRAM block.
-* [Vermicom](./devices/Vermicom.sv): a serial communication controller (UART).
-* [Vermitime](./devices/Vermitime.sv): a timer.
+* [Vermemory](./devices/Vermemory.sv): a dual-port SRAM block.
+* [Verserial](./devices/Verserial.sv): a serial communication controller (UART).
+* [Vertimer](./devices/Vertimer.sv): a timer.
 
 ### Examples and benchmarks
 
-* [Vermichello](./example): a synthesizable "Hello world" SoC.
-* [Vermibench](./benchmarks/Vermibench.sv): a simulation environment to measure execution time with various programs:
-  * [Verminacci](./benchmarks/Verminacci.c): computes the Fibonacci series.
-  * [Vermicopy](./benchmarks/Vermicopy.c): performs string copy operations.
+* [Verdemo](./example): a synthesizable "Hello world" SoC.
+* [Verbench](./benchmarks/Verbench.sv): a simulation environment to measure execution time with various programs:
+  * [Verbonacci](./benchmarks/Verbonacci.c): computes the Fibonacci series.
+  * [Vercopy](./benchmarks/Vercopy.c): performs string copy operations.
 
 Development software and hardware
 ---------------------------------

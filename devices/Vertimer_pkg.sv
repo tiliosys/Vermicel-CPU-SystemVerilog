@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-package Vermitime_pkg;
+package Vertimer_pkg;
 
     typedef enum {
         CONTROL_ADDRESS,  // Control/status register (RW)

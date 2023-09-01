@@ -15,10 +15,10 @@ module rv32ui_tb;
     localparam PIPELINE          = 1;
 
     bit clk, reset;
-    Vermibus cpu_ibus (clk, reset);
-    Vermibus cpu_dbus (clk, reset);
-    Vermibus ram_dbus (clk, reset);
-    Vermibus out_bus  (clk, reset);
+    Verbus cpu_ibus (clk, reset);
+    Verbus cpu_dbus (clk, reset);
+    Verbus ram_dbus (clk, reset);
+    Verbus out_bus  (clk, reset);
     bit[7:0] dev_address;
 
     always #1 clk = ~clk;
@@ -63,7 +63,7 @@ module rv32ui_tb;
     // RAM instance
     //
 
-    Vermimory #(
+    Vermemory #(
         .SIZE_WORDS(RAM_SIZE_WORDS),
         .INIT_FILENAME(RAM_INIT_FILENAME),
         .USE_LOOKAHEAD(USE_LOOKAHEAD)

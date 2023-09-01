@@ -8,13 +8,13 @@
 module Vermicel #(
     parameter bit PIPELINE = 1
 ) (
-    Vermibus.read_only_request  ibus,
-    Vermibus.read_write_request dbus
+    Verbus.read_only_request  ibus,
+    Verbus.read_write_request dbus
 );
 
     generate
         if (PIPELINE) begin : p
-            Vermipipe core (
+            Verpipeline core (
                 .ibus(ibus),
                 .dbus(dbus)
             );
@@ -24,7 +24,7 @@ module Vermicel #(
             assign ibus.address   = 0;
             assign ibus.lookahead = 0;
 
-            Versiquential core (
+            Versequence core (
                 .bus(dbus)
             );
         end

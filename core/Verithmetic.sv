@@ -6,8 +6,8 @@
 `default_nettype none
 
 module Verithmetic
-    import Vermitypes_pkg::*,
-           Vermicodes_pkg::*;
+    import Verdata_pkg::*,
+           Veropcodes_pkg::*;
 (
     input  instruction_t instr,
     input  word_t        a,

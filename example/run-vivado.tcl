@@ -7,40 +7,40 @@ set this_dir [file dirname [file normalize [info script]]]
 set src_dir  "$this_dir/.."
 
 set board_name   [lindex $argv 0]
-set project_name "Vermichello-$board_name"
+set project_name "Verdemo-$board_name"
 set project_dir  "$this_dir/vivado/$project_name"
 
 set src "
-    $src_dir/common/Vermitypes_pkg.sv
-    $src_dir/common/Vermibus.sv
-    $src_dir/core/Vermicodes_pkg.sv
+    $src_dir/common/Verdata_pkg.sv
+    $src_dir/common/Verbus.sv
+    $src_dir/core/Veropcodes_pkg.sv
     $src_dir/core/Verithmetic.sv
-    $src_dir/core/Vermibranch.sv
-    $src_dir/core/Vermipare.sv
-    $src_dir/core/Verdicode.sv
-    $src_dir/core/Verdata.sv
+    $src_dir/core/Vergoto.sv
+    $src_dir/core/Vercompare.sv
+    $src_dir/core/Verdecode.sv
+    $src_dir/core/Veralign.sv
     $src_dir/core/Vergister.sv
     $src_dir/core/Vermicel_pkg.sv
-    $src_dir/core/Versiquential.sv
-    $src_dir/core/Vermipipe.sv
+    $src_dir/core/Versequence.sv
+    $src_dir/core/Verpipeline.sv
     $src_dir/core/Vermicel.sv
-    $src_dir/devices/Vermimory.sv
-    $src_dir/devices/Vermitime_pkg.sv
-    $src_dir/devices/Vermitime.sv
-    $src_dir/devices/Vermicom_pkg.sv
-    $src_dir/devices/Vermicom.sv
-    $this_dir/Vermichello.mem
-    $this_dir/Vermichello.sv
+    $src_dir/devices/Vermemory.sv
+    $src_dir/devices/Vertimer_pkg.sv
+    $src_dir/devices/Vertimer.sv
+    $src_dir/devices/Verserial_pkg.sv
+    $src_dir/devices/Verserial.sv
+    $this_dir/Verdemo.mem
+    $this_dir/Verdemo.sv
 "
 
 set generics "
     RAM_SIZE_WORDS=32768
-    RAM_INIT_FILENAME=Vermichello.mem
+    RAM_INIT_FILENAME=Verdemo.mem
     USE_LOOKAHEAD=1
     PIPELINE=1
 "
 
-set constraints "$this_dir/Vermichello-$board_name.xdc"
+set constraints "$this_dir/Verdemo-$board_name.xdc"
 
 set part_name [dict get {
     Basys3 xc7a35tcpg236-1
