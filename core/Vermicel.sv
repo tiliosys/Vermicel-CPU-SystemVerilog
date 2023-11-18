@@ -13,13 +13,13 @@ module Vermicel #(
 );
 
     generate
-        if (PIPELINE) begin : p
+        if (PIPELINE) begin : gen_pipeline
             Verpipeline core (
                 .ibus(ibus),
                 .dbus(dbus)
             );
         end
-        else begin :  s
+        else begin : gen_sequence
             assign ibus.valid     = 0;
             assign ibus.address   = 0;
             assign ibus.lookahead = 0;
