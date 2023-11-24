@@ -5,9 +5,13 @@
 
 `default_nettype none
 
+// Vermicel processor core.
+//
+// This module implements a processor core with a Harvard architecture
+// and a 5-stage pipeline.
 module Verpipeline (
-    Verbus.read_only_request ibus,
-    Verbus.read_write_request dbus
+    Verbus.read_only_request ibus,  // The instruction fetch bus.
+    Verbus.read_write_request dbus  // The data access bus.
 );
 
     import Verdata_pkg::*;
@@ -149,9 +153,7 @@ module Verpipeline (
         .instr(decode_instr)
     );
 
-    Vergister #(
-        .SIZE(REGISTER_UNIT_SIZE)
-    ) regs (
+    Vergister regs (
         .clk(ibus.clk),
         .reset(ibus.reset),
         .src_instr(decode_instr),
@@ -205,10 +207,7 @@ module Verpipeline (
         .r(execute_alu_r)
     );
 
-    Vergoto #(
-        .IRQ_ADDRESS(IRQ_ADDRESS),
-        .TRAP_ADDRESS(TRAP_ADDRESS)
-    ) branch (
+    Vergoto branch (
         .clk(ibus.clk),
         .reset(ibus.reset),
         .enable(tick),

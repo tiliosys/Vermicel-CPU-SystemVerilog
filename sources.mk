@@ -7,13 +7,13 @@ RTL = \
 	common/Verdata_pkg.sv \
 	common/Verbus.sv \
 	core/Veropcodes_pkg.sv \
+	core/Vermicel_pkg.sv \
 	core/Verdecode.sv \
 	core/Verithmetic.sv \
 	core/Vercompare.sv \
 	core/Vergister.sv \
 	core/Vergoto.sv \
 	core/Veralign.sv \
-	core/Vermicel_pkg.sv \
 	core/Versequence.sv \
 	core/Verpipeline.sv \
 	core/Vermicel.sv \

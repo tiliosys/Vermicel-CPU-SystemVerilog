@@ -5,32 +5,39 @@
 
 `default_nettype none
 
+// Vermicel branch unit.
+//
+// The main role of this module is to determine the next value of the program
+// counter. This value depends of the following elements:
+// - Whether the current instruction affects the program counter (jump, branch, mret or trap).
+// - The detection of an interrupt request.
+//
+// This module manages the exception state of the processor, including the
+// saved program counter register (MEPC).
+// It does not contain the program counter register itself.
 module Vergoto
     import Verdata_pkg::*,
-           Veropcodes_pkg::*;
-#(
-    parameter word_t IRQ_ADDRESS,
-    parameter word_t TRAP_ADDRESS
-)
+           Veropcodes_pkg::*,
+           Vermicel_pkg::*;
 (
-    input  bit           clk,
-    input  bit           reset,
-    input  bit           enable,
-    input  bit           irq,
-    input  instruction_t instr,
-    input  word_t        xs1,
-    input  word_t        xs2,
-    input  word_t        address,
-    input  word_t        pc_incr,
-    output word_t        pc_next,
-    output bit           will_jump
+    input  bit           clk,      // The clock signal.
+    input  bit           reset,    // The active-high reset signal.
+    input  bit           enable,   // Enables updating the state of this module.
+    input  bit           irq,      // The interrupt request signal.
+    input  instruction_t instr,    // The current decoded instruction fields.
+    input  word_t        xs1,      // The value of the first source register of the current instruction.
+    input  word_t        xs2,      // The value of the second source register of the current instruction.
+    input  word_t        address,  // The address where to jump, if applicable.
+    input  word_t        pc_incr,  // The instruction address after the current program counter.
+    output word_t        pc_next,  // The new value of the program counter.
+    output bit           will_jump // Indicates that the program counter will jump to a new location (different from pc_incr)
 );
 
-    bit    taken;                // Is the branch taken?
-    word_t pc_target;            // Target program counter in normal execution flow.
-    bit    except_state_reg;     // Are we processing an IRQ?
-    bit    accept_irq;           // Are we switching to IRQ mode?
-    word_t mepc_reg;         // Saved program counter when switching to IRQ mode.
+    bit    taken;                  // Is the current instruction a taken conditional branch?
+    word_t pc_target;              // The next program counter as a result of executing the current instruction (i.e. excluding exceptions).
+    bit    except_state_reg;       // Are we currently handling an exception?
+    bit    accept_irq;             // Are we switching to the exception state due to an IRQ?
+    word_t mepc_reg;               // The aaved program counter when switching to the exception state.
 
     Vercompare cmp (
         .instr(instr),
@@ -43,6 +50,8 @@ module Vergoto
                      : instr.is_jump || taken ? {address[31:2], 2'b0}
                      :                          pc_incr;
 
+    // Enter the exception state when detecting an IRQ or executing a trap instruction.
+    // Exit the exception state when executing the MRET instruction.
     always_ff @(posedge clk) begin
         if (reset) begin
             except_state_reg <= 0;
@@ -51,7 +60,7 @@ module Vergoto
             if (instr.is_mret) begin
                 except_state_reg <= 0;
             end
-            else if (irq) begin
+            else if (irq || instr.is_trap) begin
                 except_state_reg <= 1;
             end
         end
@@ -59,6 +68,7 @@ module Vergoto
 
     assign accept_irq = irq && !except_state_reg;
 
+    // Save the next program counter when switching to the exception state.
     always_ff @(posedge clk) begin
         if (reset) begin
             mepc_reg <= 0;
@@ -68,6 +78,7 @@ module Vergoto
         end
     end
 
+    // Compute the actual next program counter, taking exceptions into account.
     assign pc_next = accept_irq    ? IRQ_ADDRESS
                    : instr.is_trap ? TRAP_ADDRESS
                    :                 pc_target;
@@ -78,6 +89,9 @@ module Vergoto
     //
     // assign will_jump = pc_next != pc_incr;
 
+    // This is a simpler solution, but not equivalent.
+    // For instance, this ignores the situations where
+    // is_jump is true and pc_next == pc_incr.
     assign will_jump = instr.is_mret || instr.is_jump || taken
                     || accept_irq || instr.is_trap;
 endmodule

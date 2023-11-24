@@ -5,17 +5,22 @@
 
 `default_nettype none
 
+// Vermicel processor core.
+//
+// This module implements a processor core with a Von-Neumann architecture
+// and a state machine as the sequencer.
 module Versequence (
-    Verbus.read_write_request bus
+    Verbus.read_write_request bus // The common instruction and data bus.
 );
 
     import Verdata_pkg::*;
     import Veropcodes_pkg::*;
     import Vermicel_pkg::*;
 
+    // The states of the sequencer.
     typedef enum {FETCH, DECODE, EXECUTE, LOAD, STORE, WRITEBACK} state_t;
 
-    state_t       state_reg;    // The state of the sequencer
+    state_t       state_reg;    // The current state of the sequencer
     bit           fetch_en;     // Are we fetching an instruction?
     bit           decode_en;    // Are we decoding an instruction?
     bit           execute_en;   // Are we executing an instruction?
@@ -80,9 +85,7 @@ module Versequence (
         .instr(instr)
     );
 
-    Vergister #(
-        .SIZE(REGISTER_UNIT_SIZE)
-    ) regs (
+    Vergister regs (
         .clk(bus.clk),
         .reset(bus.reset),
         .src_instr(instr),
@@ -125,10 +128,7 @@ module Versequence (
 
     assign pc_incr = pc_reg + 4;
 
-    Vergoto #(
-        .IRQ_ADDRESS(IRQ_ADDRESS),
-        .TRAP_ADDRESS(TRAP_ADDRESS)
-    ) branch (
+    Vergoto branch (
         .clk(bus.clk),
         .reset(bus.reset),
         .enable(execute_en),
@@ -171,7 +171,7 @@ module Versequence (
         end
     end
 
-    Veralign ld_st (
+    Veralign align (
         .instr(instr_reg),
         .address(alu_r_reg),
         .store_enable(store_en),

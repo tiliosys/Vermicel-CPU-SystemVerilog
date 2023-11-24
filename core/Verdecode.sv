@@ -5,30 +5,29 @@
 
 `default_nettype none
 
+// Vermicel instruction decoder.
+//
+// This module extracts the fields of an instruction word.
+// It prepares the execution by determining which ALU operation to execute
+// and how the instruction will use the data path.
 module Verdecode
     import Verdata_pkg::*,
            Veropcodes_pkg::*;
 (
-    input  word_t        data,
-    output instruction_t instr
+    input  word_t        data, // The instruction word to decode.
+    output instruction_t instr // The decoded instruction fields.
 );
 
-    funct7_t         funct7; // Funct7 field of the instruction word.
-    register_index_t rs2;    // Source register index for operand 2.
-    register_index_t rs1;    // Source register index for operand 1.
-    funct3_t         funct3; // Funct3 field of the instruction word.
-    register_index_t rd;     // Destination register index.
-    base_opcode_t    opcode; // Base opcode of the instruction.
-    signed_word_t    imm;    // Decoded immediate value.
-    alu_fn_t         alu_fn; // Decoded ALU operation.
+    funct7_t         funct7 = data[31:25];   // Funct7 field of the instruction word.
+    register_index_t rs2    = data[24:20];   // Source register index for operand 2.
+    register_index_t rs1    = data[19:15];   // Source register index for operand 1.
+    funct3_t         funct3 = data[14:12];   // Funct3 field of the instruction word.
+    register_index_t rd     = data[11: 7];   // Destination register index.
+    base_opcode_t    opcode = data[ 6: 0];   // Base opcode of the instruction.
+    signed_word_t    imm;                    // Decoded immediate value.
+    alu_fn_t         alu_fn;                 // Decoded ALU operation.
 
-    assign funct7 = data[31:25];
-    assign rs2    = data[24:20];
-    assign rs1    = data[19:15];
-    assign funct3 = data[14:12];
-    assign rd     = data[11: 7];
-    assign opcode = data[ 6: 0];
-
+    // Decode the immediate value.
     always_comb begin
         case (opcode)
             OPCODE_OP                : imm = 0;
@@ -40,6 +39,7 @@ module Verdecode
         endcase
     end
 
+    // Decode the ALU function.
     always_comb begin
         case (opcode)
             OPCODE_LUI               : alu_fn = ALU_NOP;
@@ -73,7 +73,7 @@ module Verdecode
         alu_fn    : alu_fn,
         use_pc    : opcode == OPCODE_AUIPC || opcode == OPCODE_JAL || opcode == OPCODE_BRANCH,
         use_imm   : opcode != OPCODE_OP,
-        has_rd    : !(opcode == OPCODE_BRANCH || opcode == OPCODE_STORE || rd == 0),
+        has_rd    : opcode != OPCODE_BRANCH && opcode != OPCODE_STORE && rd != 0,
         is_load   : opcode == OPCODE_LOAD,
         is_store  : opcode == OPCODE_STORE,
         is_jump   : opcode == OPCODE_JAL || opcode == OPCODE_JALR,

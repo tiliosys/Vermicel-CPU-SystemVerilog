@@ -9,16 +9,13 @@ module Vergister_tb;
 
     import Verdata_pkg::*;
     import Veropcodes_pkg::*;
-
-    localparam int REGS_SIZE = 32;
+    import Vermicel_pkg::*;
 
     bit           regs_clk, regs_reset, regs_enable;
     instruction_t regs_src_instr, regs_dest_instr;
     word_t        regs_xd, regs_xs1, regs_xs2;
     
-    Vergister #(
-        .SIZE(REGS_SIZE)
-    ) regs (
+    Vergister regs (
         .clk(regs_clk),
         .reset(regs_reset),
         .enable(regs_enable),
@@ -78,11 +75,11 @@ module Vergister_tb;
         @(posedge regs_clk);
         regs_reset  = 0;
 
-        for (int n = 0; n < REGS_SIZE; n ++) begin
+        for (int n = 0; n < REGISTER_COUNT; n ++) begin
             write(n);
         end
 
-        for (int n = 0; n < REGS_SIZE; n += 2) begin
+        for (int n = 0; n < REGISTER_COUNT; n += 2) begin
             check_read(n, n + 1);
         end
 

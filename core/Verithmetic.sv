@@ -5,19 +5,23 @@
 
 `default_nettype none
 
+// Vermicel arithmetic and logic unit.
+//
+// This module computes:
+// - the results of arithmetic and logic instructions,
+// - the target addresses in jump/branch instructions,
+// - the addresses in memory access instructions.
 module Verithmetic
     import Verdata_pkg::*,
            Veropcodes_pkg::*;
 (
-    input  instruction_t instr,
-    input  word_t        a,
-    input  word_t        b,
-    output word_t        r
+    input  instruction_t instr, // The decoded instruction fields.
+    input  word_t        a,     // The first operand.
+    input  word_t        b,     // The second operand.
+    output word_t        r      // The result.
 );
 
-    bit[4:0] sh; // Shift amount for SLL, SRL, SRA instructions.
-
-    assign sh = b[4:0];
+    bit[4:0] sh = b[4:0]; // Shift amount for SLL, SRL, SRA instructions.
 
     always_comb begin
         case (instr.alu_fn)

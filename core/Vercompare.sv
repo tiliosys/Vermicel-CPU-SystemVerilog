@@ -5,14 +5,18 @@
 
 `default_nettype none
 
+// Vermicel comparator.
+//
+// This module determines whether a conditional branch instruction is taken.
+// Other instructions are considered not taken.
 module Vercompare
     import Verdata_pkg::*,
            Veropcodes_pkg::*;
 (
-    input  instruction_t instr,
-    input  word_t        a,
-    input  word_t        b,
-    output bit           taken
+    input  instruction_t instr, // The decoded instruction fields.
+    input  word_t        a,     // The first operand.
+    input  word_t        b,     // The second operand.
+    output bit           taken  // Is instr a conditional branch and is it taken?
 );
 
     always_comb begin
