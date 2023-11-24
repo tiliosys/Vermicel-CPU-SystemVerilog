@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2023 Guillaume Savaton <guillaume.savaton@tiliosys.fr>
 #
 
-VERMICEL=..
+VERMICEL = ..
 
 include $(VERMICEL)/sources.mk
 
@@ -28,10 +28,10 @@ all: $(BENCHMARKS_BIN)
 obj_dir/%: $(SRC) %.mem
 	verilator -sv --binary --timing --trace -Wno-lint --top-module $(TOP) -GRAM_INIT_FILENAME='"$*.mem"' -GUSE_LOOKAHEAD=$(LOOKAHEAD) -GPIPELINE=$(PIPELINE) -o $* $(SRC)
 
-C_FLAGS_USER=-O2
+C_FLAGS_USER = -O2
 LD_SCRIPT = $(TOP).ld
 
-include ../scripts/rules.mk
+include $(VERMICEL)/scripts/rules.mk
 
 clean::
 	rm -rf obj_dir *.mem *.log

@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2023 Guillaume Savaton <guillaume.savaton@tiliosys.fr>
 #
 
-VERMICEL=..
+VERMICEL = ..
 
 include $(VERMICEL)/sources.mk
 
@@ -29,7 +29,7 @@ obj_dir/rv32ui_tb: | rv32ui/tests.mem
 rv32ui/tests.mem:
 	$(MAKE) -C rv32ui $(notdir $@)
 
-include ../scripts/rules.mk
+include $(VERMICEL)/scripts/rules.mk
 
 clean::
 	rm -rf obj_dir *.log *.vcd
