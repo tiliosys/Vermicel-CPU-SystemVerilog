@@ -9,6 +9,7 @@ module Verdecode_tb;
 
     import Verdata_pkg::*;
     import Veropcodes_pkg::*;
+    import Verencode_pkg::*;
 
     word_t        dec_data;
     instruction_t dec_instr;

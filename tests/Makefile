@@ -7,7 +7,9 @@ VERMICEL = ..
 
 include $(VERMICEL)/sources.mk
 
-SRC = $(addprefix $(VERMICEL)/,$(RTL))
+SRC = \
+	$(addprefix $(VERMICEL)/,$(RTL)) \
+	Verencode_pkg.sv
 
 TESTS ?= $(basename $(wildcard *_tb.sv))
 TESTS_BIN = $(addprefix obj_dir/,$(TESTS))

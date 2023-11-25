@@ -9,6 +9,7 @@ module Vermicel_tb;
 
     import Verdata_pkg::*;
     import Veropcodes_pkg::*;
+    import Verencode_pkg::*;
 
     bit clk, reset;
 
