@@ -23,7 +23,7 @@ module Vertimer (Verbus.read_write_response bus);
     assign control_reg_as_word = word_t'(control_reg);
     assign status_reg_as_word  = word_t'(status_reg);
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             control_reg <= 0;
         end
@@ -35,7 +35,7 @@ module Vertimer (Verbus.read_write_response bus);
         end
     end
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             status_reg <= 0;
         end
@@ -47,7 +47,7 @@ module Vertimer (Verbus.read_write_response bus);
         end
     end
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             refill_reg <= 0;
             count_reg  <= 0;

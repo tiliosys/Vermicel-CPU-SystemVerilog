@@ -9,7 +9,8 @@ module Verdemo #(
     parameter RAM_SIZE_WORDS    = 32768,
     parameter RAM_INIT_FILENAME = "ram-init.mem",
     parameter bit USE_LOOKAHEAD = 0,
-    parameter bit PIPELINE      = 0
+    parameter bit PIPELINE      = 0,
+    parameter bit RESET_LEVEL   = 1
 )
 (
     input  bit clk,
@@ -23,13 +24,24 @@ module Verdemo #(
     localparam TIMER_ADDRESS = 8'h80;
     localparam UART_ADDRESS  = 8'h81;
 
-    Verbus cpu_ibus  (clk, reset);
-    Verbus cpu_dbus  (clk, reset);
-    Verbus ram_dbus  (clk, reset);
-    Verbus timer_bus (clk, reset);
-    Verbus uart_bus  (clk, reset);
+    bit int_reset;
 
-    bit[7:0] dev_address;
+    generate
+        if (RESET_LEVEL) begin : gen_reset
+            Vereset reset_gen (clk, reset, int_reset);
+        end
+        else begin : gen_reset_n
+            Vereset reset_gen (clk, !reset, int_reset);
+        end
+    endgenerate
+
+    Verbus cpu_ibus  (clk, int_reset);
+    Verbus cpu_dbus  (clk, int_reset);
+    Verbus ram_dbus  (clk, int_reset);
+    Verbus timer_bus (clk, int_reset);
+    Verbus uart_bus  (clk, int_reset);
+
+    bit[7:0] dev_address = cpu_dbus.address[24+:8];
 
     //
     // CPU instance
@@ -45,8 +57,6 @@ module Verdemo #(
     //
     // Device control
     //
-
-    assign dev_address = cpu_dbus.address[24+:8];
 
     assign cpu_dbus.irq = timer_bus.irq;
 

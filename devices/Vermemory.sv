@@ -44,7 +44,7 @@ module Vermemory #(
         end
     end
 
-    always_ff @(posedge ibus.clk) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
         if (ibus.reset) begin
             ibus_local_address_reg <= {LOCAL_ADDRESS_WIDTH{1'b1}};
         end
@@ -74,7 +74,7 @@ module Vermemory #(
         end
     end
 
-    always_ff @(posedge dbus.clk) begin
+    always_ff @(posedge dbus.clk, posedge dbus.reset) begin
         if (dbus.reset) begin
             dbus_local_address_reg <= {LOCAL_ADDRESS_WIDTH{1'b1}};
             dbus_write_reg         <= 0;

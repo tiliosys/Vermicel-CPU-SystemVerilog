@@ -52,7 +52,7 @@ module Vergoto
 
     // Enter the exception state when detecting an IRQ or executing a trap instruction.
     // Exit the exception state when executing the MRET instruction.
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk, posedge reset) begin
         if (reset) begin
             except_state_reg <= 0;
         end
@@ -69,7 +69,7 @@ module Vergoto
     assign accept_irq = irq && !except_state_reg;
 
     // Save the next program counter when switching to the exception state.
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk, posedge reset) begin
         if (reset) begin
             mepc_reg <= 0;
         end

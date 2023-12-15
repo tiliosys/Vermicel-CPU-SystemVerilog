@@ -49,7 +49,7 @@ module Verserial (
     assign status_reg_as_word  = word_t'(status_reg);
     assign rx_data_reg_as_word = word_t'(rx_data_reg);
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             control_reg <= 0;
         end
@@ -58,7 +58,7 @@ module Verserial (
         end
     end
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             status_reg <= 0;
         end
@@ -75,7 +75,7 @@ module Verserial (
         end
     end
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             division_reg <= 0;
         end
@@ -86,7 +86,7 @@ module Verserial (
 
     assign tx_enable = bus.valid && local_address == DATA_ADDRESS && bus.wstrobe[0];
     
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             tx_state_reg <= IDLE;
             tx           <= 1;
@@ -123,7 +123,7 @@ module Verserial (
         end
     end
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             rx_state_reg <= IDLE;
         end

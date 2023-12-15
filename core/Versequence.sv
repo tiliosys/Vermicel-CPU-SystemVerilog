@@ -49,7 +49,7 @@ module Versequence (
      * Sequencer
      * ------------------------------------------------------------------------- */
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             state_reg <= FETCH;
         end
@@ -96,7 +96,7 @@ module Versequence (
         .xd(xd)
     );
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             instr_reg <= INSTR_NOP;
             xs1_reg   <= 0;
@@ -141,7 +141,7 @@ module Versequence (
         .pc_next(pc_next)
     );
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             alu_r_reg   <= 0;
             pc_reg      <= 0;
@@ -162,7 +162,7 @@ module Versequence (
     assign bus.valid   = fetch_en || load_en || store_en;
     assign bus.address = fetch_en ? pc_reg : alu_r_reg;
 
-    always_ff @(posedge bus.clk) begin
+    always_ff @(posedge bus.clk, posedge bus.reset) begin
         if (bus.reset) begin
             rdata_reg <= WORD_NOP;
         end

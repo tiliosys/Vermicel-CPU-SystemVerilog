@@ -24,6 +24,7 @@ set src "
     $src_dir/core/Versequence.sv
     $src_dir/core/Verpipeline.sv
     $src_dir/core/Vermicel.sv
+    $src_dir/devices/Vereset.sv
     $src_dir/devices/Vermemory.sv
     $src_dir/devices/Vertimer_pkg.sv
     $src_dir/devices/Vertimer.sv
@@ -33,11 +34,17 @@ set src "
     $this_dir/Verdemo.sv
 "
 
+set reset_level [dict get {
+    Basys3 1
+    ArtyA7 0
+} $board_name]
+
 set generics "
     RAM_SIZE_WORDS=32768
     RAM_INIT_FILENAME=Verdemo.mem
     USE_LOOKAHEAD=1
     PIPELINE=1
+    RESET_LEVEL=$reset_level
 "
 
 set constraints "$this_dir/Verdemo-$board_name.xdc"

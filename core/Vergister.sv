@@ -27,7 +27,7 @@ module Vergister
     word_t x_reg[0:REGISTER_COUNT-1]; // The current register values.
 
     // Write to the destination register.
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk, posedge reset) begin
         if (reset) begin
             x_reg <= '{REGISTER_COUNT{0}};
         end

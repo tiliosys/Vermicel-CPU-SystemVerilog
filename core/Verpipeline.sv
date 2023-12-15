@@ -100,8 +100,11 @@ module Verpipeline (
     assign ibus_done = ibus.valid && ibus.ready;
 
     // Keep a copy of ibus.rdata if a fetch operation completes before the tick.
-    always_ff @(posedge ibus.clk) begin
-        if (ibus.reset || tick) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
+        if (ibus.reset) begin
+            fetch_pending_reg <= 0;
+        end
+        else if (tick) begin
             fetch_pending_reg <= 0;
         end
         else if (ibus_done) begin
@@ -114,7 +117,7 @@ module Verpipeline (
                           : stall             ? fetch_pc_reg
                           :                     fetch_pc_reg + 4;
 
-    always_ff @(posedge ibus.clk) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
         if (ibus.reset) begin
             fetch_pc_reg <= 0;
         end
@@ -128,7 +131,7 @@ module Verpipeline (
     assign ibus.lookahead = fetch_pc_next;
 
     // Fetch -> Decode registers.
-    always_ff @(posedge ibus.clk) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
         if (ibus.reset) begin
             decode_pc_reg    <= 0;
             decode_rdata_reg <= WORD_NOP;
@@ -182,7 +185,7 @@ module Verpipeline (
     assign decode_alu_b = decode_instr.use_imm ? decode_instr.imm : decode_xs2_fwd;
 
     // Decode -> Execute registers.
-    always_ff @(posedge ibus.clk) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
         if (ibus.reset) begin
             execute_instr_reg   <= INSTR_NOP;
         end
@@ -224,7 +227,7 @@ module Verpipeline (
     assign execute_xd = execute_instr_reg.is_jump ? execute_pc_incr_reg : execute_alu_r;
 
     // Execute -> Memory registers.
-    always_ff @(posedge ibus.clk) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
         if (ibus.reset) begin
             memory_instr_reg <= INSTR_NOP;
         end
@@ -243,8 +246,11 @@ module Verpipeline (
     assign dbus_done = dbus.valid && dbus.ready;
 
     // Keep a copy of dbus.rdata if a load operation completes before the tick.
-    always_ff @(posedge dbus.clk) begin
-        if (dbus.reset || tick) begin
+    always_ff @(posedge dbus.clk, posedge dbus.reset) begin
+        if (dbus.reset) begin
+            memory_pending_reg <= 0;
+        end
+        else if (tick) begin
             memory_pending_reg <= 0;
         end
         else if (dbus_done) begin
@@ -272,7 +278,7 @@ module Verpipeline (
     assign memory_xd = memory_instr_reg.is_load ? memory_load_data : memory_xd_partial_reg;
 
     // Memory -> Write-back registers.
-    always_ff @(posedge ibus.clk) begin
+    always_ff @(posedge ibus.clk, posedge ibus.reset) begin
         if (ibus.reset) begin
             writeback_instr_reg <= INSTR_NOP;
         end
