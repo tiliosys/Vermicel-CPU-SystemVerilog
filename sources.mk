@@ -18,6 +18,7 @@ RTL = \
 	core/Verpipeline.sv \
 	core/Vermicel.sv \
 	devices/Vereset.sv \
+	devices/Versync.sv \
 	devices/Vermemory.sv \
 	devices/Vertimer_pkg.sv \
 	devices/Vertimer.sv \

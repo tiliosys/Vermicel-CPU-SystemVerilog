@@ -24,6 +24,10 @@ module Verdemo #(
     localparam TIMER_ADDRESS = 8'h80;
     localparam UART_ADDRESS  = 8'h81;
 
+    //
+    // Reset generator and input synchronizers.
+    //
+
     bit int_reset;
 
     generate
@@ -34,6 +38,13 @@ module Verdemo #(
             Vereset reset_gen (clk, !reset, int_reset);
         end
     endgenerate
+
+    bit uart_rx_sync;
+    Versync sync (clk, uart_rx, uart_rx_sync);
+
+    //
+    // Bus interfaces.
+    //
 
     Verbus cpu_ibus  (clk, int_reset);
     Verbus cpu_dbus  (clk, int_reset);
@@ -116,7 +127,7 @@ module Verdemo #(
 
     Verserial uart (
         .bus(uart_bus.read_write_response),
-        .rx(uart_rx),
+        .rx(uart_rx_sync),
         .tx(uart_tx)
     );
 

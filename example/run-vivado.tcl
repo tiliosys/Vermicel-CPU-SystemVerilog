@@ -25,6 +25,7 @@ set src "
     $src_dir/core/Verpipeline.sv
     $src_dir/core/Vermicel.sv
     $src_dir/devices/Vereset.sv
+    $src_dir/devices/Versync.sv
     $src_dir/devices/Vermemory.sv
     $src_dir/devices/Vertimer_pkg.sv
     $src_dir/devices/Vertimer.sv
