@@ -16,12 +16,14 @@ module Verbench #(
     localparam TICK_ADDRESS      = 8'h20;
 
     bit clk, reset;
+
     Verbus cpu_ibus (clk, reset);
     Verbus cpu_dbus (clk, reset);
     Verbus ram_dbus (clk, reset);
     Verbus out_bus  (clk, reset);
     Verbus tick_bus (clk, reset);
-    bit[7:0] dev_address;
+
+    bit[7:0] dev_address = cpu_dbus.address[24+:8];
 
     always #1 clk = ~clk;
 
@@ -39,8 +41,6 @@ module Verbench #(
     //
     // Device control
     //
-
-    assign dev_address = cpu_dbus.address[24+:8];
 
     assign cpu_dbus.irq = 0;
 
