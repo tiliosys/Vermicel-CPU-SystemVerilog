@@ -11,8 +11,8 @@ include $(VERMICEL)/sources.mk
 
 SRC = \
 	$(addprefix $(VERMICEL)/,$(RTL)) \
-    $(TOP).mem \
-    $(TOP).sv
+	$(TOP).mem \
+	$(TOP).sv
 
 BOARDS ?= \
 	Basys3 \
